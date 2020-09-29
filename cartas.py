@@ -35,7 +35,7 @@ class Guarda(Carta):
             return True
         return False
 
-    def executar_acao():
+    def executar_acao(): pass
         # escolher j_alvo
         # escolher tipo
 class Padre(Carta):
