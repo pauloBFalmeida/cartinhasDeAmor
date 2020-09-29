@@ -60,10 +60,11 @@ class Jogador():
         self.__mesa.jogarCartaFora(__cartasMao.pop())
 
     def jogar_carta(self, index):
-        if isinstance(__cartasMao[index], cartas.Rei) or isinstance(__cartasMao[index], cartas.Princepe):
+        if isinstance(__cartasMao[index], cartas.Rei) or isinstance(__cartasMao[index], cartas.Principe):
             if isinstance(__cartasMao[(index+1)%2], cartas.Condessa):
                 return False
         descarte = self.__cartasMao.pop(index)
+        descarte.set_jogador(self)
         __mesa.jogarCartaFora(descarte)
         if isinstance(descarte, cartas.Princesa):
             self.morre()

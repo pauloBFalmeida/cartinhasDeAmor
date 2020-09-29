@@ -29,12 +29,15 @@ class Guarda(Carta):
     def __init__(self, im_verso, im_frente):
         super().__init__(1, 'Guarda', im_verso, im_frente)
 
-    def acuse(jogador, card_type):
+    def acuse(j_alvo, card_type):
         if isinstance(jogador.getCartaMao(),card_type):
             jogador.morre()
             return True
         return False
 
+    def executar_acao():
+        # escolher j_alvo
+        # escolher tipo
 class Padre(Carta):
 
     def __init__(self, im_verso, im_frente):
