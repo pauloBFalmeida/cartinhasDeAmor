@@ -1,6 +1,6 @@
 import jogador
 
-class Carta:
+class Carta():
 
     def __init__(self, valor, nome, im_verso, im_frente):
         self.__valor = valor
@@ -35,7 +35,7 @@ class Guarda(Carta):
             return True
         return False
 
-    def executar_acao(): pass
+    def executar_acao(self): pass
         # escolher j_alvo
         # escolher tipo
 class Padre(Carta):

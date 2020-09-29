@@ -13,7 +13,6 @@ class Jogador():
         self.__vivo = True
         self.__protected = False
 
-
     def setMesa(self, mesa):
         self.__mesa = mesa
 
