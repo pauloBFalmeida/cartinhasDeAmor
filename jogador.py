@@ -11,13 +11,14 @@ class Jogador():
         self.__cartasMao = []
         self.__cor = cor
         self.__vivo = True
+        self.__protected = False
 
     def pegarCarta(self, carta):
         self.__cartasMao.append(carta)
 
     def getCartaMao(self):
         return self.__cartasMao[0]
-    
+
     def get_vivo(self):
         return self.__vivo
 
@@ -45,3 +46,8 @@ class Jogador():
             self.morre()
         else:
             descarte.executar_acao()
+
+    def toggle(self):
+        self.__protected = not self.__protected
+
+    def discard(self):

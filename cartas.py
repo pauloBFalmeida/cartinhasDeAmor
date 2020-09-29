@@ -35,7 +35,7 @@ class Guarda(Carta):
         super().__init__(1, 'Guarda', im_verso, im_frente)
 
     def acuse(jogador, card_type):
-        if isinstance(jogador.get_hand()[0],card_type):
+        if isinstance(jogador.getCartaMao(),card_type):
             jogador.morre()
             return True
         return False
@@ -46,7 +46,7 @@ class Padre(Carta):
         super().__init__(2, 'Padre', im_verso, im_frente)
 
     def see_hand(jogador):
-        return jgoador.get_hand()[0]
+        return jogador.getCartaMao()
 
 
 class Barao(Carta):
@@ -55,9 +55,9 @@ class Barao(Carta):
         super().__init__(3, 'Barão', im_verso, im_frente)
 
     def compare_hands(j_origem, j_alvo):
-        if j_origem.get_hand()[0].get_valor() == j_alvo.get_hand()[0].get_valor():
+        if j_origem.getCartaMao().get_valor() == j_alvo.getCartaMao().get_valor():
             return False
-        elif j_origem.get_hand()[0].get_valor() > j_alvo.get_hand()[0].get_valor():
+        elif j_origem.getCartaMao().get_valor() > j_alvo.getCartaMao().get_valor():
             j_alvo.morre()
             return True
         else:
@@ -70,10 +70,16 @@ class Aia(Carta):
     def __init__(self, im_verso, im_frente):
         super().__init__(4, 'Aia', im_verso, im_frente)
 
+    def protect(jogador):
+        jogador.toggle()
+
 class Principe(Carta):
 
     def __init__(self, im_verso, im_frente):
         super().__init__(5, 'Príncipe', im_verso, im_frente)
+
+    def change_card(j_alvo):
+        j_alvo.discard()
 
 class Rei(Carta):
 
