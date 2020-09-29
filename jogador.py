@@ -12,6 +12,8 @@ class Jogador():
         self.__cor = cor
         self.__vivo = True
         self.__protected = False
+
+    def setMesa(self, mesa):
         self.__mesa = mesa
 
     def receberCarta(self, carta):
@@ -22,6 +24,9 @@ class Jogador():
 
     def getCartaMao(self):
         return self.__cartasMao[0]
+
+    def getCartasMao(self):
+        return self.__cartasMao
 
     def get_vivo(self):
         return self.__vivo
@@ -60,12 +65,11 @@ class Jogador():
         self.__mesa.jogarCartaFora(__cartasMao.pop())
 
     def jogar_carta(self, index):
-        if isinstance(__cartasMao[index], cartas.Rei) or isinstance(__cartasMao[index], cartas.Principe):
+        if isinstance(__cartasMao[index], cartas.Rei) or isinstance(__cartasMao[index], cartas.Princepe):
             if isinstance(__cartasMao[(index+1)%2], cartas.Condessa):
                 return False
         descarte = self.__cartasMao.pop(index)
-        descarte.set_jogador(self)
-        __mesa.jogarCartaFora(descarte)
+        self.__mesa.jogarCartaFora(descarte)
         if isinstance(descarte, cartas.Princesa):
             self.morre()
         else:

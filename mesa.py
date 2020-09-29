@@ -9,22 +9,27 @@ class Mesa():
         self.__id = id
         self.__maxPontos = 3
         self.__jogadores = []
-        # teste
-        for i in range(5):
-            self.addJogador(Jogador(i, 'nome'+str(i), 0, self))
+        ## teste
+        #for i in range(5):
+        #    self.addJogador(Jogador(i, 'nome'+str(i), 0))
         self.__jogadorTurno = None
         self.__partidaIniciada = False
         self.__deck = self.__criarDeck()
         self.__lixo = []
-        self.iniciarPartida()
+        #self.iniciarPartida()
     
     def iniciarPartida(self):
+        self.__partidaIniciada = True
         self.__embaralharDeck()
         self.__distribuirCartas()
         self.__jogadorTurno = self.__jogadores[0]
-        # teste
-        for j in self.__jogadores:
-            print(j.getCartaMao().get_nome())
+        ## teste
+        #for j in self.__jogadores:
+        #    print(j.getCartaMao().get_nome())
+        
+        while self.__partidaIniciada:
+            self.passarTurno()
+
 
     def passarTurno(self):
         ultimo_i = self.__jogadores.index(self.__jogadorTurno)
@@ -43,10 +48,12 @@ class Mesa():
             self.__acaoTurno()
 
     def __acaoTurno(self):
-        self.__jogadorTurno.toggle()
-
+        self.__jogadorTurno.tirarProtecao()
+        if len(self.__jogadorTurno.getCartasMao()) == 0: self.__jogadorTurno.morre()
+        self.__jogadorEscolheCarta()
 
     def __fimPartida(self):
+        self.__partidaIniciada = False
         algumVivo = False
         for j in self.__jogadores:
             if j.get_vivo():
@@ -59,10 +66,17 @@ class Mesa():
         if not algumVivo:
             print('ngm venceu esse round')
 
-        
-        
+    def __jogadorEscolheCarta(self):
+        print(self.__jogadorTurno.getNome()+' escolha uma carta')
+        for c in self.__jogadorTurno.getCartasMao():
+            print(c.get_nome())
+        i = int(input())
+        if i >= 0 and i < len(self.__jogadorTurno.getCartasMao()):
+            self.__jogadorTurno.jogar_carta(i)
+
 
     def addJogador(self, jogador):
+        jogador.setMesa(self)
         self.__jogadores.append(jogador)
 
     def pegarCarta(self, jogador):

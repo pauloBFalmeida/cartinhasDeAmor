@@ -1,5 +1,8 @@
 # coding: utf-8
 import pygame
+from mesa import *
+from jogador import *
+
 pygame.init()
 
 class CartinhaDeAmor:
@@ -20,7 +23,10 @@ class CartinhaDeAmor:
 
 
 	def start(self):
-		pass
+		self.mesa = Mesa(1)
+		for i in range(int(input('numero de jogadores\n'))):
+			self.mesa.addJogador(Jogador(i, input('nome do jogador '+str(i)+'\n'), 0))
+		self.mesa.iniciarPartida()
 
 	def input(self, keys):
 		if keys[pygame.K_ESCAPE]:
