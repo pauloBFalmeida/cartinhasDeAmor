@@ -14,8 +14,11 @@ class Jogador():
         self.__protected = False
         self.__mesa = mesa
 
-    def pegarCarta(self, carta):
+    def receberCarta(self, carta):
         self.__cartasMao.append(carta)
+
+    def addPontos(self, p):
+        self.__pontos += p
 
     def getCartaMao(self):
         return self.__cartasMao[0]
@@ -48,16 +51,20 @@ class Jogador():
         self.__vivo = False
 
     def jogar_carta(self, index):
-        
         descarte = self.__cartasMao.pop(index)
+        mesa.jogarCartaFora(descarte)
+        
         self.__mesa.jogarCartaFora(descarte)
         if isinstance(descarte, cartas.Princesa):
             self.morre()
         else:
             descarte.executar_acao()
 
-    def toggle(self):
-        self.__protected = not self.__protected
+    def darProtecao(self):
+        self.__protected = True
+
+    def tirarProtecao(self):
+        self.__protected = False
 
     def discard(self):
         self.__mesa.jogarCartaFora(__cartasMao.pop())

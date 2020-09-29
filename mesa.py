@@ -53,7 +53,7 @@ class Mesa():
                 algumVivo = True
                 print('vitoria de')
                 print(j.getNome())
-                #j.addPonto()
+                j.addPontos(1)
                 if j.getPontos() == self.__maxPontos:
                     print('final do game')
         if not algumVivo:
@@ -67,7 +67,7 @@ class Mesa():
 
     def pegarCarta(self, jogador):
         if len(self.__deck) > 0:
-            jogador.pegarCarta(self.__deck.pop(0))
+            jogador.receberCarta(self.__deck.pop(0))
         else:
             self.__fimPartidaCompararCartas()
 
@@ -97,7 +97,7 @@ class Mesa():
         shuffle(self.__deck)
 
     def __distribuirCartas(self):
-        for j in self.__jogadores: j.pegarCarta(self.__deck.pop(0))
+        for j in self.__jogadores: j.receberCarta(self.__deck.pop(0))
 
     def __criarDeck(self):
         deck = []

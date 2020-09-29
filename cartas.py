@@ -70,7 +70,7 @@ class Aia(Carta):
         super().__init__(4, 'Aia', im_verso, im_frente)
 
     def protect(jogador):
-        jogador.toggle()
+        jogador.darProtecao()
 
 class Principe(Carta):
 
