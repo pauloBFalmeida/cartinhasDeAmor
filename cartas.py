@@ -27,28 +27,81 @@ class Carta():
 
     def executar_acao(self): pass
 
+    def getJogadorAlvo(self, siMesmo):
+        jogadores = self.get_jogador().get_mesa().getJogadores()
+        possiveis = []
+        for i in range(len(jogadores)):
+            j = jogadores[i]
+            # vejo se e si mesmo
+            if j != self.get_jogador() or siMesmo:
+                texto = str(i)+' '+j.getNome()
+                if not j.get_vivo():
+                    texto += " (morto)"
+                elif j.getProtecao():
+                    texto += " (protegido)"
+                else:
+                    possiveis.append(i)
+                print(texto)
+        if len(possiveis) == 0:
+            return None
+        # dentro dos possiveis
+        aceito = False
+        while not aceito:
+            alvo_i = int(input())
+            if alvo_i in possiveis:
+                aceito = True
+            else:
+                print('escolha nao e valida')
+        # retorna o jogador escolhido
+        return jogadores[alvo_i]
+
 class Guarda(Carta):
 
     def __init__(self, im_verso, im_frente):
         super().__init__(1, 'Guarda', im_verso, im_frente)
 
-    def acuse(j_alvo, card_type):
-        if isinstance(jogador.getCartaMao(),card_type):
-            jogador.morre()
+    def acuse(self, j_alvo, card_valor):
+        if j_alvo.getCartasMao()[0].get_valor() == card_valor:
             return True
         return False
 
-    def executar_acao(self): pass
-        # escolher j_alvo
-        print("")
-        # escolher tipo
+    def executar_acao(self):
+        print("escolha outro jogador para acusar")
+        alvo = self.getJogadorAlvo(False)
+        if alvo == None: return None
+        print('escolha o tipo da carta')
+        i = 2
+        for tipo in ['Padre', 'Barao', 'Aia', 'Principe', 'Rei', 'Condessa', 'Princesa']:
+            print(str(i)+' '+tipo)
+            i += 1
+        aceito = False
+        while not aceito:
+            card_id = int(input())
+            aceito = card_id > 1 and card_id <= 8
+            if not aceito:
+                print('escolha nao e valida')
+        # acusar
+        if self.acuse(alvo, card_id):
+            print('escolha correta')
+            alvo.morre()
+        else:
+            print('escolha errada')
+
+
 class Padre(Carta):
 
     def __init__(self, im_verso, im_frente):
         super().__init__(2, 'Padre', im_verso, im_frente)
 
-    def see_hand(jogador):
-        return jogador.getCartaMao()
+    def see_hand(self, jogador):
+        return jogador.getCartasMao()[0]
+
+    def executar_acao(self):
+        print("escolha outro jogador para ver a mao")
+        alvo = self.getJogadorAlvo(False)
+        if alvo == None: return None
+        alvo_mao = self.see_hand(alvo)
+        print(alvo_mao.get_nome())
 
 
 class Barao(Carta):
@@ -56,43 +109,72 @@ class Barao(Carta):
     def __init__(self, im_verso, im_frente):
         super().__init__(3, 'Barão', im_verso, im_frente)
 
-    def compare_hands(j_origem, j_alvo):
-        if j_origem.getCartaMao().get_valor() == j_alvo.getCartaMao().get_valor():
-            return False
-        elif j_origem.getCartaMao().get_valor() > j_alvo.getCartaMao().get_valor():
-            j_alvo.morre()
-            return True
+    def compare_hands(self, j_origem, j_alvo):
+        valor_origem = j_origem.getCartasMao()[0].get_valor()
+        valor_alvo = j_alvo.getCartasMao()[0].get_valor()
+        if valor_origem < valor_alvo:
+            return j_origem
+        elif valor_origem > valor_alvo:
+            return j_alvo
         else:
-            j_origem.morre()
-            return True
+            return None
+
+    def executar_acao(self):
+        print("escolha outro jogador para comparar maos")
+        alvo = self.getJogadorAlvo(False)
+        if alvo == None: return None
+        origem = self.get_jogador()
+        morto = self.compare_hands(origem, alvo)
+        if morto != None:
+            morto.morre()
+        else:
+            print('empate')
 
 class Aia(Carta):
 
     def __init__(self, im_verso, im_frente):
         super().__init__(4, 'Aia', im_verso, im_frente)
 
-    def protect(jogador):
+    def protect(self, jogador):
         jogador.darProtecao()
+
+    def executar_acao(self):
+        self.protect(self.get_jogador())
+        print(self.get_jogador().getNome()+" esta protegido")
 
 class Principe(Carta):
 
     def __init__(self, im_verso, im_frente):
         super().__init__(5, 'Príncipe', im_verso, im_frente)
 
-    def change_card(j_alvo):
+    def change_card(self, j_alvo):
         j_alvo.discard()
         j_alvo.get_mesa().pegarCarta(j_alvo)
 
+    def executar_acao(self):
+        print("escolha jogador para pegar nova mao")
+        alvo = self.getJogadorAlvo(True)
+        if alvo == None: return None
+        self.change_card(alvo)
+        print(alvo.getNome()+" pegou outra mao")
 
 class Rei(Carta):
 
     def __init__(self, im_verso, im_frente):
         super().__init__(6, 'Rei', im_verso, im_frente)
 
-    def trade_cards(j_origem, j_alvo):
-        temp = j_origem.get_hand()
-        j_origem.set_hand(j_alvo.get_hand())
-        j_alvo.set_hand(temp)
+    def trade_cards(self, j_origem, j_alvo):
+        temp = j_origem.getCartasMao()
+        j_origem.setCartasMao(j_alvo.getCartasMao())
+        j_alvo.setCartasMao(temp)
+
+    def executar_acao(self):
+        print("escolha outro jogador para trocarem maos")
+        alvo = self.getJogadorAlvo(False)
+        if alvo == None: return None
+        origem = self.get_jogador()
+        self.trade_cards(origem, alvo)
+        print('trocadas as maos de '+origem.getNome()+' e '+alvo.getNome())
 
 class Condessa(Carta):
 
@@ -104,5 +186,5 @@ class Princesa(Carta):
     def __init__(self, im_verso, im_frente):
         super().__init__(9, 'Princesa', im_verso, im_frente)
 
-    def ja_era(jogador):
-        jogador.morre()
+    def executar_acao(self):
+        self.get_jogador().morre()

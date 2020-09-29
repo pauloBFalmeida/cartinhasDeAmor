@@ -22,34 +22,33 @@ class Mesa():
         self.__partidaIniciada = True
         self.__embaralharDeck()
         self.__distribuirCartas()
-        self.__jogadorTurno = self.__jogadores[-1]
         for j in self.__jogadores:
             j.set_vivo(True)
-            ## teste
-            #print(j.getCartaMao().get_nome())
-        
         print("INICIANDO PARTIDA")
+        self.__jogadorTurno = self.__jogadores[-1]
         while self.__partidaIniciada:
-            self.passarTurno()
-
-
-    def passarTurno(self):
-        ultimo_i = self.__jogadores.index(self.__jogadorTurno)
-        proximo_i = -1
-        qtdJogadores = len(self.__jogadores)
-        for i in range(1, qtdJogadores):
-            index = (ultimo_i + i) % qtdJogadores
-            if self.__jogadores[index].get_vivo():
-                proximo_i = index
-        # todos os outros jogadores mortos
-        if proximo_i == -1:
-            self.__fimPartida()
-        # proximo jogador vivo
-        else:
-            self.__jogadorTurno = self.__jogadores[proximo_i]
+            self.__passarTurno()
             self.__acaoTurno()
 
+
+    def __passarTurno(self):
+        ultimo_i = self.__jogadores.index(self.__jogadorTurno)
+        vivos = [j.get_vivo() for j in self.__jogadores]
+        # menos de 2 vivos
+        if sum(vivos) < 2:
+            self.__fimPartida()
+        else:
+            qtdJogadores = len(self.__jogadores)
+            curr_i = -1
+            for i in range(1, qtdJogadores):
+                curr_i = (ultimo_i + i) % qtdJogadores
+                if vivos[curr_i]:
+                    break
+            # proximo jogador
+            self.__jogadorTurno = self.__jogadores[curr_i]
+
     def __acaoTurno(self):
+        print()
         self.__jogadorTurno.tirarProtecao()
         self.pegarCarta(self.__jogadorTurno)
         if len(self.__jogadorTurno.getCartasMao()) == 0: self.__jogadorTurno.morre()
@@ -57,31 +56,34 @@ class Mesa():
 
     def __fimPartida(self):
         self.__partidaIniciada = False
-        algumVivo = False
+        ganhador = None
         for j in self.__jogadores:
             if j.get_vivo():
-                algumVivo = True
-                print('vitoria de')
-                print(j.getNome())
+                ganhador = j
+                print('vitoria de ' + j.getNome())
                 j.addPontos(1)
-                if j.getPontos() == self.__maxPontos:
-                    print('final do game')
-        if not algumVivo:
+        # nenhum ganhador
+        if ganhador == None:
             print('ngm venceu esse round')
-        # limpar partida
-        for j in self.__jogadores:
-            j.limparMao()
-        self.__deck += self.__lixo
-        self.iniciarPartida()
+        # final do game
+        if ganhador != None and j.getPontos() >= self.__maxPontos:
+            print('final do game')
+        # preparar proxima partida
+        else:
+            for j in self.__jogadores:
+                j.limparMao()
+            self.__deck += self.__lixo
+            self.iniciarPartida()
 
     def __jogadorEscolheCarta(self):
-        print(self.__jogadorTurno.getNome()+' escolha uma carta')
-        for i in range(len(self.__jogadorTurno.getCartasMao())):
-            print(str(i)+' '+self.__jogadorTurno.getCartasMao()[i].get_nome())
-        i = int(input())
-        if i >= 0 and i < len(self.__jogadorTurno.getCartasMao()):
-            self.__jogadorTurno.jogar_carta(i)
-
+        possivel = False
+        while not possivel:
+            print(self.__jogadorTurno.getNome()+' escolha uma carta')
+            for i in range(len(self.__jogadorTurno.getCartasMao())):
+                print(str(i)+' '+self.__jogadorTurno.getCartasMao()[i].get_nome())
+            i = int(input())
+            if i >= 0 and i < len(self.__jogadorTurno.getCartasMao()):
+                possivel = self.__jogadorTurno.jogar_carta(i)
 
     def addJogador(self, jogador):
         jogador.setMesa(self)
@@ -98,7 +100,7 @@ class Mesa():
         jogador_maior = None
         for j in self.__jogadores:
             if j.get_vivo():
-                valor = j.getCartaMao().get_valor()
+                valor = j.getCartasMao()[0].get_valor()
                 if valor > valor_maior:
                     valor_maior = valor
                     # mata o antigo maior
@@ -151,5 +153,6 @@ class Mesa():
 
     def getId(self):
         return self.__id
-
-Mesa(1)
+    
+    def getJogadores(self):
+        return self.__jogadores

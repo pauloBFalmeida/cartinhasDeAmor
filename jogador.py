@@ -3,7 +3,7 @@ import cartas
 # coding: utf-8
 class Jogador():
 
-    def __init__(self, id, nome, cor, mesa):
+    def __init__(self, id, nome, cor):
         self.__id = id
         self.__nome = nome
         self.__pontos = 0
@@ -12,16 +12,25 @@ class Jogador():
         self.__cor = cor
         self.__vivo = True
         self.__protected = False
+
+    def setMesa(self, mesa):
         self.__mesa = mesa
 
     def receberCarta(self, carta):
+        carta.set_jogador(self)
         self.__cartasMao.append(carta)
 
     def addPontos(self, p):
         self.__pontos += p
 
-    def getCartaMao(self):
-        return self.__cartasMao[0]
+    def sizeCartasMao(self):
+        return len(self.__cartasMao)
+
+    def getCartasMao(self):
+        return self.__cartasMao
+
+    def setCartasMao(self, cartas):
+        self.__cartasMao = cartas
 
     def get_vivo(self):
         return self.__vivo
@@ -38,7 +47,7 @@ class Jogador():
     def getCor(self):
         return self.__cor
 
-    def getCart(self):
+    def get_hand(self):
         return self.__cartasMao
 
     def set_hand(self, nova_mao):
@@ -48,7 +57,11 @@ class Jogador():
         return self.__mesa
 
     def morre(self):
+        print(self.__nome+' morto')
         self.__vivo = False
+
+    def set_vivo(self, v):
+        self.__vivo = v
 
     def darProtecao(self):
         self.__protected = True
@@ -56,18 +69,26 @@ class Jogador():
     def tirarProtecao(self):
         self.__protected = False
 
-    def discard(self):
-        self.__mesa.jogarCartaFora(__cartasMao.pop())
+    def getProtecao(self):
+        return self.__protected
 
-    def jogar_carta(self, index):
-        if isinstance(__cartasMao[index], cartas.Rei) or isinstance(__cartasMao[index], cartas.Principe):
-            if isinstance(__cartasMao[(index+1)%2], cartas.Condessa):
-                return False
-        descarte = self.__cartasMao.pop(index)
-        descarte.set_jogador(self)
-        __mesa.jogarCartaFora(descarte)
+    def discard(self):
+        descarte = self.__cartasMao.pop(0)
         if isinstance(descarte, cartas.Princesa):
             self.morre()
-        else:
-            descarte.executar_acao()
+        self.__mesa.jogarCartaFora(descarte)
+
+    def limparMao(self):
+        while len(self.__cartasMao) > 0:
+            self.discard()
+
+    def jogar_carta(self, index):
+        if isinstance(self.__cartasMao[index], cartas.Rei) or isinstance(self.__cartasMao[index], cartas.Principe) and self.sizeCartasMao() > 1:
+            if isinstance(self.__cartasMao[(index+1)%2], cartas.Condessa):
+                print('voce deve jogar a condessa, pois tem um rei ou principe na mao')
+                return False
+
+        descarte = self.__cartasMao.pop(index)
+        self.__mesa.jogarCartaFora(descarte)
+        descarte.executar_acao()
         return True
