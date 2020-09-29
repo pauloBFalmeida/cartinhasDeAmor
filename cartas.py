@@ -64,7 +64,6 @@ class Barao(Carta):
             j_origem.morre()
             return True
 
-
 class Aia(Carta):
 
     def __init__(self, im_verso, im_frente):
@@ -80,11 +79,18 @@ class Principe(Carta):
 
     def change_card(j_alvo):
         j_alvo.discard()
+        j_alvo.get_mesa().pegarCarta(j_alvo)
+
 
 class Rei(Carta):
 
     def __init__(self, im_verso, im_frente):
         super().__init__(6, 'Rei', im_verso, im_frente)
+
+    def trade_cards(j_origem, j_alvo):
+        temp = j_origem.get_hand()
+        j_origem.set_hand(j_alvo.get_hand())
+        j_alvo.set_hand(temp)
 
 class Condessa(Carta):
 
@@ -95,3 +101,6 @@ class Princesa(Carta):
 
     def __init__(self, im_verso, im_frente):
         super().__init__(9, 'Princesa', im_verso, im_frente)
+
+    def ja_era(jogador):
+        jogador.morre()

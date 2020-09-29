@@ -38,11 +38,19 @@ class Jogador():
     def get_hand(self):
         return self.__cartasMao
 
+    def set_hand(self, nova_mao):
+        self.__cartasMao = nova_mao
+
+    def get_mesa(self):
+        return self.__mesa
+
     def morre(self):
         self.__vivo = False
 
     def jogar_carta(self, index):
+        
         descarte = self.__cartasMao.pop(index)
+        self.__mesa.jogarCartaFora(descarte)
         if isinstance(descarte, cartas.Princesa):
             self.morre()
         else:
@@ -51,4 +59,5 @@ class Jogador():
     def toggle(self):
         self.__protected = not self.__protected
 
-    def discard(self): pass
+    def discard(self):
+        self.__mesa.jogarCartaFora(__cartasMao.pop())
