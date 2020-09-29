@@ -22,6 +22,9 @@ class Carta():
     def set_jogador(self, jogador):
         self.__jogador = jogador
 
+    def get_jogador(self):
+        return self.__jogador
+
     def executar_acao(self): pass
 
 class Guarda(Carta):
@@ -37,6 +40,7 @@ class Guarda(Carta):
 
     def executar_acao(self): pass
         # escolher j_alvo
+        print("")
         # escolher tipo
 class Padre(Carta):
 

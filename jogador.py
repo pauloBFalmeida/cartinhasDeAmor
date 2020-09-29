@@ -3,7 +3,7 @@ import cartas
 # coding: utf-8
 class Jogador():
 
-    def __init__(self, id, nome, cor):
+    def __init__(self, id, nome, cor, mesa):
         self.__id = id
         self.__nome = nome
         self.__pontos = 0
@@ -12,8 +12,6 @@ class Jogador():
         self.__cor = cor
         self.__vivo = True
         self.__protected = False
-
-    def setMesa(self, mesa):
         self.__mesa = mesa
 
     def receberCarta(self, carta):
@@ -22,14 +20,8 @@ class Jogador():
     def addPontos(self, p):
         self.__pontos += p
 
-    def sizeCartasMao(self):
-        return len(self.__cartasMao)
-
     def getCartaMao(self):
         return self.__cartasMao[0]
-
-    def getCartasMao(self):
-        return self.__cartasMao
 
     def get_vivo(self):
         return self.__vivo
@@ -46,7 +38,7 @@ class Jogador():
     def getCor(self):
         return self.__cor
 
-    def get_hand(self):
+    def getCart(self):
         return self.__cartasMao
 
     def set_hand(self, nova_mao):
@@ -56,11 +48,7 @@ class Jogador():
         return self.__mesa
 
     def morre(self):
-        print(self.__nome+' morto')
         self.__vivo = False
-
-    def set_vivo(self, v):
-        self.__vivo = v
 
     def darProtecao(self):
         self.__protected = True
@@ -69,18 +57,15 @@ class Jogador():
         self.__protected = False
 
     def discard(self):
-        self.__mesa.jogarCartaFora(self.__cartasMao.pop(0))
-
-    def limparMao(self):
-        while len(self.__cartasMao) > 0:
-            self.discard()
+        self.__mesa.jogarCartaFora(__cartasMao.pop())
 
     def jogar_carta(self, index):
-        if isinstance(self.__cartasMao[index], cartas.Rei) or isinstance(self.__cartasMao[index], cartas.Principe) and self.sizeCartasMao() > 1:
-            if isinstance(self.__cartasMao[(index+1)%2], cartas.Condessa):
+        if isinstance(__cartasMao[index], cartas.Rei) or isinstance(__cartasMao[index], cartas.Principe):
+            if isinstance(__cartasMao[(index+1)%2], cartas.Condessa):
                 return False
         descarte = self.__cartasMao.pop(index)
-        self.__mesa.jogarCartaFora(descarte)
+        descarte.set_jogador(self)
+        __mesa.jogarCartaFora(descarte)
         if isinstance(descarte, cartas.Princesa):
             self.morre()
         else:
