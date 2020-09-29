@@ -15,6 +15,9 @@ class Jogador():
     def pegarCarta(self, carta):
         self.__cartasMao.append(carta)
 
+    def getCartaMao(self):
+        return self.__cartasMao[0]
+    
     def get_vivo(self):
         return self.__vivo
 

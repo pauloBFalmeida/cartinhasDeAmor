@@ -31,8 +31,8 @@ class Carta:
 
 class Guarda(Carta):
 
-    def __init__(self, id, im_verso, im_frente):
-        super().__init__(id, 1, 'Guarda', im_verso, im_frente)
+    def __init__(self, im_verso, im_frente):
+        super().__init__(1, 'Guarda', im_verso, im_frente)
 
     def acuse(jogador, card_type):
         if isinstance(jogador.get_hand()[0],card_type):
@@ -42,8 +42,8 @@ class Guarda(Carta):
 
 class Padre(Carta):
 
-    def __init__(self, id, im_verso, im_frente):
-        super().__init__(id, 2, 'Padre', im_verso, im_frente)
+    def __init__(self, im_verso, im_frente):
+        super().__init__(2, 'Padre', im_verso, im_frente)
 
     def see_hand(jogador):
         return jgoador.get_hand()[0]
@@ -51,8 +51,8 @@ class Padre(Carta):
 
 class Barao(Carta):
 
-    def __init__(self, id, im_verso, im_frente):
-        super().__init__(id, 3, 'Barão', im_verso, im_frente)
+    def __init__(self, im_verso, im_frente):
+        super().__init__(3, 'Barão', im_verso, im_frente)
 
     def compare_hands(j_origem, j_alvo):
         if j_origem.get_hand()[0].get_valor() == j_alvo.get_hand()[0].get_valor():
@@ -67,25 +67,25 @@ class Barao(Carta):
 
 class Aia(Carta):
 
-    def __init__(self, id, im_verso, im_frente):
-        super().__init__(id, 4, 'Aia', im_verso, im_frente)
+    def __init__(self, im_verso, im_frente):
+        super().__init__(4, 'Aia', im_verso, im_frente)
 
 class Principe(Carta):
 
-    def __init__(self, id, im_verso, im_frente):
-        super().__init__(id, 5, 'Príncipe', im_verso, im_frente)
+    def __init__(self, im_verso, im_frente):
+        super().__init__(5, 'Príncipe', im_verso, im_frente)
 
 class Rei(Carta):
 
-    def __init__(self, id, im_verso, im_frente):
-        super().__init__(id, 6, 'Rei', im_verso, im_frente)
+    def __init__(self, im_verso, im_frente):
+        super().__init__(6, 'Rei', im_verso, im_frente)
 
 class Condessa(Carta):
 
-    def __init__(self, id, im_verso, im_frente):
-        super().__init__(id, 8, 'Condessa', im_verso, im_frente)
+    def __init__(self, im_verso, im_frente):
+        super().__init__(8, 'Condessa', im_verso, im_frente)
 
 class Princesa(Carta):
 
-    def __init__(self, id, im_verso, im_frente):
-        super().__init__(id, 9, 'Princesa', im_verso, im_frente)
+    def __init__(self, im_verso, im_frente):
+        super().__init__(9, 'Princesa', im_verso, im_frente)
