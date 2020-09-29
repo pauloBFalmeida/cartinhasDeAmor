@@ -24,15 +24,6 @@ class Carta:
 
     def executar_acao(): pass
 
-# class Mensagem:
-#
-#     def __init__(self, origem, cor, texto):
-#         # ID do jogador que enviou
-#         self.origem = origem
-#         self.cor = cor
-#         # corpo da mensagem
-#         self.texto = texto
-
 class Guarda(Carta):
 
     def __init__(self, im_verso, im_frente):
