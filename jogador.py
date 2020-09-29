@@ -12,6 +12,8 @@ class Jogador():
     def pegarCarta(self, carta):
         self.__cartasMao.append(carta)
 
+    def getCartaMao(self):
+        return self.__cartasMao[0]
     
     def getId(self):
         return self.__id
