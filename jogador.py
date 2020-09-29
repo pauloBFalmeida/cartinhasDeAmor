@@ -3,7 +3,7 @@ import cartas
 # coding: utf-8
 class Jogador():
 
-    def __init__(self, id, nome, cor):
+    def __init__(self, id, nome, cor, mesa):
         self.__id = id
         self.__nome = nome
         self.__pontos = 0
@@ -12,6 +12,7 @@ class Jogador():
         self.__cor = cor
         self.__vivo = True
         self.__protected = False
+        self.__mesa = mesa
 
     def pegarCarta(self, carta):
         self.__cartasMao.append(carta)
@@ -50,4 +51,4 @@ class Jogador():
     def toggle(self):
         self.__protected = not self.__protected
 
-    def discard(self):
+    def discard(self): pass

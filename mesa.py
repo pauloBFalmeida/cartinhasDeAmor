@@ -10,7 +10,7 @@ class Mesa():
         self.__jogadores = []
         # teste
         for i in range(5):
-            self.addJogador(Jogador(i, 'nome'+str(i), 0))
+            self.addJogador(Jogador(i, 'nome'+str(i), 0, self))
 
         self.__jogadorTurno = None
         self.__partidaIniciada = False
@@ -36,19 +36,27 @@ class Mesa():
             if self.__jogadores[index].get_vivo():
                 proximo_i = index
         if proximo_i == -1:
-            print('fim')
+            self.__fimPartida()
         else:
             self.__jogadorTurno = self.__jogadores[proximo_i]
+
 
     def addJogador(self, jogador):
         self.__jogadores.append(jogador)
 
+    def __fimPartida(self):
+        print('final')
+
+
     def __embaralhar(self):
         shuffle(self.__deck)
 
-    def pegarCarta(self):
+    def pegarCarta(self, jogador):
         if len(self.__deck) > 0:
-            self.__jogadorTurno.pegarCarta(self.__deck.pop(0))
+            jogador.pegarCarta(self.__deck.pop(0))
+        else:
+            # jogador com o valor mais alto ganha
+            pass
 
     def jogarCartaFora(self, carta):
         self.__lixo.append(carta)

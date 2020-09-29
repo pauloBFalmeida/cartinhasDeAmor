@@ -18,7 +18,7 @@ class Carta:
     def get_valor(self):
         return self.__valor
 
-    def executar_acao():
+    def executar_acao(): pass
 
 # class Mensagem:
 #
