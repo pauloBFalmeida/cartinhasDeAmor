@@ -1,12 +1,24 @@
+import jogador
+
 class Carta:
 
-    def __init__(self,id, valor, nome, im_verso, im_frente):
-        self.id = id
-        self.valor = valor
+    def __init__(self, valor, nome, im_verso, im_frente):
+        self.__valor = valor
         # desnecessario ;-;
-        self.nome = nome
-        self.im_verso = im_verso
-        self.im_frente = im_frente
+        self.__nome = nome
+        self.__im_verso = im_verso
+        self.__im_frente = im_frente
+
+    def get_id(self):
+        return self.__id
+
+    def get_nome(self):
+        return self.__nome
+
+    def get_valor(self):
+        return self.__valor
+
+    def executar_acao():
 
 # class Mensagem:
 #
@@ -22,15 +34,36 @@ class Guarda(Carta):
     def __init__(self, id, im_verso, im_frente):
         super().__init__(id, 1, 'Guarda', im_verso, im_frente)
 
+    def acuse(jogador, card_type):
+        if isinstance(jogador.get_hand()[0],card_type):
+            jogador.morre()
+            return True
+        return False
+
 class Padre(Carta):
 
     def __init__(self, id, im_verso, im_frente):
         super().__init__(id, 2, 'Padre', im_verso, im_frente)
 
+    def see_hand(jogador):
+        return jgoador.get_hand()[0]
+
+
 class Barao(Carta):
 
     def __init__(self, id, im_verso, im_frente):
         super().__init__(id, 3, 'Barão', im_verso, im_frente)
+
+    def compare_hands(j_origem, j_alvo):
+        if j_origem.get_hand()[0].get_valor() == j_alvo.get_hand()[0].get_valor():
+            return False
+        elif j_origem.get_hand()[0].get_valor() > j_alvo.get_hand()[0].get_valor():
+            j_alvo.morre()
+            return True
+        else:
+            j_origem.morre()
+            return True
+
 
 class Aia(Carta):
 

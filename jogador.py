@@ -1,3 +1,5 @@
+import cartas
+
 # coding: utf-8
 class Jogador():
 
@@ -28,5 +30,15 @@ class Jogador():
     def getCor(self):
         return self.__cor
 
-    def get_cartas(self):
+    def get_hand(self):
         return self.__cartasMao
+
+    def morre(self):
+        self.__vivo = False
+
+    def jogar_carta(self, index):
+        descarte = self.__cartasMao.pop(index)
+        if isinstance(descarte, cartas.Princesa):
+            self.morre()
+        else:
+            descarte.executar_acao()
