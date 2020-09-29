@@ -8,11 +8,14 @@ class Jogador():
         self.__imagem = None
         self.__cartasMao = []
         self.__cor = cor
+        self.__vivo = True
 
     def pegarCarta(self, carta):
         self.__cartasMao.append(carta)
 
-    
+    def get_vivo(self):
+        return self.__vivo
+
     def getId(self):
         return self.__id
 
@@ -24,3 +27,6 @@ class Jogador():
 
     def getCor(self):
         return self.__cor
+
+    def get_cartas(self):
+        return self.__cartasMao
