@@ -18,21 +18,30 @@ class Mesa():
         self.__lixo = []
         self.__embaralhar()
         self.__distribuirCartas()
+        self.iniciarPartida()
         # teste
         for j in self.__jogadores:
-            print(j.getCartaMao().nome)
-
+            print(j.getCartaMao().get_nome())
 
     
-    def addJogador(self, jogador):
-        self.__jogadores.append(jogador)
-
     def iniciarPartida(self):
         self.__jogadorTurno = self.__jogadores[0]
 
     def passarTurno(self):
-        i = (self.__jogadores.index(self.__jogadorTurno)+1 ) % len(self.__jogadores)
-        self.__jogadorTurno = self.__jogadores[i]
+        ultimo_i = self.__jogadores.index(self.__jogadorTurno)
+        proximo_i = -1
+        qtdJogadores = len(self.__jogadores)
+        for i in range(1, qtdJogadores):
+            index = (ultimo_i + i) % qtdJogadores
+            if self.__jogadores[index].get_vivo():
+                proximo_i = index
+        if proximo_i == -1:
+            print('fim')
+        else:
+            self.__jogadorTurno = self.__jogadores[proximo_i]
+
+    def addJogador(self, jogador):
+        self.__jogadores.append(jogador)
 
     def __embaralhar(self):
         shuffle(self.__deck)
@@ -52,28 +61,28 @@ class Mesa():
         deck = []
         # Guarda
         for _ in range(5):
-            deck.append(Guarda(1, None, None))
+            deck.append(Guarda(None, None))
         # Padre
         for _ in range(2):
-            deck.append(Padre(2, None, None))
+            deck.append(Padre(None, None))
         # Barao
         for _ in range(2):
-            deck.append(Barao(3, None, None))
+            deck.append(Barao(None, None))
         # Aia
         for _ in range(2):
-            deck.append(Aia(4, None, None))
+            deck.append(Aia(None, None))
         # Principe
         for _ in range(2):
-            deck.append(Principe(5, None, None))
+            deck.append(Principe(None, None))
         # Rei
         for _ in range(1):
-            deck.append(Rei(6, None, None))
+            deck.append(Rei(None, None))
         # Condessa
         for _ in range(1):
-            deck.append(Condessa(7, None, None))
+            deck.append(Condessa(None, None))
         # Princesa
         for _ in range(1):
-            deck.append(Princesa(8, None, None))
+            deck.append(Princesa(None, None))
         return deck
 
     def getId(self):
