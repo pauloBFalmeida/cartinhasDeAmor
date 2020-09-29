@@ -13,6 +13,7 @@ class Jogador():
         self.__vivo = True
         self.__protected = False
 
+
     def setMesa(self, mesa):
         self.__mesa = mesa
 
@@ -21,6 +22,9 @@ class Jogador():
 
     def addPontos(self, p):
         self.__pontos += p
+
+    def sizeCartasMao(self):
+        return len(self.__cartasMao)
 
     def getCartaMao(self):
         return self.__cartasMao[0]
@@ -65,8 +69,8 @@ class Jogador():
         self.__mesa.jogarCartaFora(__cartasMao.pop())
 
     def jogar_carta(self, index):
-        if isinstance(__cartasMao[index], cartas.Rei) or isinstance(__cartasMao[index], cartas.Princepe):
-            if isinstance(__cartasMao[(index+1)%2], cartas.Condessa):
+        if isinstance(self.__cartasMao[index], cartas.Rei) or isinstance(self.__cartasMao[index], cartas.Principe) and self.sizeCartasMao() > 1:
+            if isinstance(self.__cartasMao[(index+1)%2], cartas.Condessa):
                 return False
         descarte = self.__cartasMao.pop(index)
         self.__mesa.jogarCartaFora(descarte)

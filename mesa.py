@@ -49,6 +49,7 @@ class Mesa():
 
     def __acaoTurno(self):
         self.__jogadorTurno.tirarProtecao()
+        self.pegarCarta(self.__jogadorTurno)
         if len(self.__jogadorTurno.getCartasMao()) == 0: self.__jogadorTurno.morre()
         self.__jogadorEscolheCarta()
 
