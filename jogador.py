@@ -53,7 +53,7 @@ class Jogador():
     def jogar_carta(self, index):
         descarte = self.__cartasMao.pop(index)
         mesa.jogarCartaFora(descarte)
-        
+
         self.__mesa.jogarCartaFora(descarte)
         if isinstance(descarte, cartas.Princesa):
             self.morre()
