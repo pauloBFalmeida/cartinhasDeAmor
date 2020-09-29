@@ -56,7 +56,11 @@ class Jogador():
         return self.__mesa
 
     def morre(self):
+        print(self.__nome+' morto')
         self.__vivo = False
+
+    def set_vivo(self, v):
+        self.__vivo = v
 
     def darProtecao(self):
         self.__protected = True
@@ -65,7 +69,11 @@ class Jogador():
         self.__protected = False
 
     def discard(self):
-        self.__mesa.jogarCartaFora(__cartasMao.pop())
+        self.__mesa.jogarCartaFora(self.__cartasMao.pop(0))
+
+    def limparMao(self):
+        while len(self.__cartasMao) > 0:
+            self.discard()
 
     def jogar_carta(self, index):
         if isinstance(self.__cartasMao[index], cartas.Rei) or isinstance(self.__cartasMao[index], cartas.Principe) and self.sizeCartasMao() > 1:

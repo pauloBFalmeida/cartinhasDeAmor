@@ -10,8 +10,8 @@ class CartinhaDeAmor:
 	def __init__(self, width, height, title):
 		self.width = width
 		self.height = height
-		self.win = pygame.display.set_mode((width, height))
-		pygame.display.set_caption(title)
+		#self.win = pygame.display.set_mode((width, height))
+		#pygame.display.set_caption(title)
 		#icon = pygame.image.load("icone.png")
 		#pygame.display.set_icon(icon)
 
@@ -53,7 +53,7 @@ def main():
 				
 		game.input(pygame.key.get_pressed())
 		game.logic()
-		game.render(game.win)
+		#game.render(game.win)
 
 if __name__ == "__main__":
 	main()

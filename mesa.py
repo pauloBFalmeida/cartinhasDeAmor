@@ -22,11 +22,13 @@ class Mesa():
         self.__partidaIniciada = True
         self.__embaralharDeck()
         self.__distribuirCartas()
-        self.__jogadorTurno = self.__jogadores[0]
-        ## teste
-        #for j in self.__jogadores:
-        #    print(j.getCartaMao().get_nome())
+        self.__jogadorTurno = self.__jogadores[-1]
+        for j in self.__jogadores:
+            j.set_vivo(True)
+            ## teste
+            #print(j.getCartaMao().get_nome())
         
+        print("INICIANDO PARTIDA")
         while self.__partidaIniciada:
             self.passarTurno()
 
@@ -66,11 +68,16 @@ class Mesa():
                     print('final do game')
         if not algumVivo:
             print('ngm venceu esse round')
+        # limpar partida
+        for j in self.__jogadores:
+            j.limparMao()
+        self.__deck += self.__lixo
+        self.iniciarPartida()
 
     def __jogadorEscolheCarta(self):
         print(self.__jogadorTurno.getNome()+' escolha uma carta')
-        for c in self.__jogadorTurno.getCartasMao():
-            print(c.get_nome())
+        for i in range(len(self.__jogadorTurno.getCartasMao())):
+            print(str(i)+' '+self.__jogadorTurno.getCartasMao()[i].get_nome())
         i = int(input())
         if i >= 0 and i < len(self.__jogadorTurno.getCartasMao()):
             self.__jogadorTurno.jogar_carta(i)
