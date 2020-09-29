@@ -8,6 +8,7 @@ class Carta:
         self.__nome = nome
         self.__im_verso = im_verso
         self.__im_frente = im_frente
+        self.__jogador = None
 
     def get_id(self):
         return self.__id
@@ -17,6 +18,9 @@ class Carta:
 
     def get_valor(self):
         return self.__valor
+
+    def set_jogador(self, jogador):
+        self.__jogador = jogador
 
     def executar_acao(): pass
 

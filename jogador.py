@@ -50,16 +50,6 @@ class Jogador():
     def morre(self):
         self.__vivo = False
 
-    def jogar_carta(self, index):
-        descarte = self.__cartasMao.pop(index)
-        mesa.jogarCartaFora(descarte)
-        
-        self.__mesa.jogarCartaFora(descarte)
-        if isinstance(descarte, cartas.Princesa):
-            self.morre()
-        else:
-            descarte.executar_acao()
-
     def darProtecao(self):
         self.__protected = True
 
@@ -68,3 +58,15 @@ class Jogador():
 
     def discard(self):
         self.__mesa.jogarCartaFora(__cartasMao.pop())
+
+    def jogar_carta(self, index):
+        if isinstance(__cartasMao[index], cartas.Rei) or isinstance(__cartasMao[index], cartas.Princepe):
+            if isinstance(__cartasMao[(index+1)%2], cartas.Condessa):
+                return False
+        descarte = self.__cartasMao.pop(index)
+        __mesa.jogarCartaFora(descarte)
+        if isinstance(descarte, cartas.Princesa):
+            self.morre()
+        else:
+            descarte.executar_acao()
+        return True
