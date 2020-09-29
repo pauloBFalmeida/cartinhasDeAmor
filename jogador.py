@@ -3,7 +3,7 @@ import cartas
 # coding: utf-8
 class Jogador():
 
-    def __init__(self, id, nome, cor, mesa):
+    def __init__(self, id, nome, cor):
         self.__id = id
         self.__nome = nome
         self.__pontos = 0
