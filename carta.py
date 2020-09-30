@@ -1,5 +1,5 @@
 # coding: utf-8
-from jogador import *
+from jogador import Jogador
 
 class Carta():
 
@@ -12,9 +12,6 @@ class Carta():
 
     def set_controleJogo(self, controle):
         self.__controleJogo = controle
-
-    def get_id(self):
-        return self.__id
 
     def get_nome(self):
         return self.__nome
@@ -133,3 +130,25 @@ class Princesa(Carta):
 
     def executar_acao(self, j_origem, j_alvo, valor):
         return j_origem
+
+
+### PREMIUM EDITION - caso decidamos implementar essas classe###
+#
+#class Assassino(Carta):
+#
+#class Bobo(Carta):
+#
+#class Cardeal(Carta):
+#
+#class Baronesa(Carta):
+#
+#class Bajulador(Carta):
+#
+#class Conde(Carta):
+#
+#class Polícia(Carta):
+#
+#class Consorte(Carta):
+#
+#class Bispo(Carta):
+#    

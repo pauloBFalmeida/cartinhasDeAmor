@@ -110,8 +110,8 @@ class ControleJogo():
     def __condicaoCondessa(self, jogadorTurno, index):
         cartasMao = jogadorTurno.getCartasMao()
         if jogadorTurno.sizeCartasMao() > 1:
-            if isinstance(cartasMao[index], carta.Rei) or isinstance(cartasMao[index], carta.Principe):
-                if isinstance(cartasMao[(index+1)%2], carta.Condessa):
+            if isinstance(cartasMao[index], Rei) or isinstance(cartasMao[index], Principe):
+                if isinstance(cartasMao[(index+1)%2], Condessa):
                     return True
         return False
 

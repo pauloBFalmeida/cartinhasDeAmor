@@ -1,16 +1,17 @@
 # coding: utf-8
 import pygame
-from mesa import *
-from jogador import *
+from mesa import Mesa
+from jogador import Jogador
 from controleJogo import ControleJogo
 
 pygame.init()
 
+# classe que comunica o controle com as interfaces
 class CartinhaDeAmor:
 
-	def __init__(self, width, height, title):
-		self.width = width
-		self.height = height
+	def __init__(self): #, width, height, title):
+		#self.width = width
+		#self.height = height
 		#self.win = pygame.display.set_mode((width, height))
 		#pygame.display.set_caption(title)
 		#icon = pygame.image.load("icone.png")
@@ -18,9 +19,10 @@ class CartinhaDeAmor:
 
 		self.clock = pygame.time.Clock()
 		self.rodando = True
-		self.FPS = 30
+		#self.FPS = 30
 
-		self.background = (0,0,50)
+		#self.background = (0,0,50)
+		
 		self.controle = ControleJogo()
 
 
@@ -32,20 +34,20 @@ class CartinhaDeAmor:
 		self.controle.setMesa(self.mesa)
 		self.controle.gerenciarJogo()
 
-	def input(self, keys):
-		if keys[pygame.K_ESCAPE]:
-			self.rodando = False
-		
-	def logic(self):
-		pass
+	#def input(self, keys):
+	#	if keys[pygame.K_ESCAPE]:
+	#		self.rodando = False
+	#	
+	#def logic(self):
+	#	pass
 
-	def render(self, window):
-		window.fill(self.background)		# background
-		pygame.display.update()				# update screen
+	#def render(self, window):
+	#	window.fill(self.background)		# background
+	#	pygame.display.update()				# update screen
 
 
 def main():
-	game = CartinhaDeAmor(800, 600, "CartinhaDeAmor")
+	game = CartinhaDeAmor()
 	game.start()	# start game
 	# loop
 	#while game.rodando:

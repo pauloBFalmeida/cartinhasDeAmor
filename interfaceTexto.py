@@ -1,5 +1,5 @@
 # coding: utf-8
-from interfaceUsuario import *
+from interfaceUsuario import InterfaceUsuario
 import jogador
 import carta
 
@@ -7,7 +7,14 @@ class InterfaceTexto(InterfaceUsuario):
         
     def numeroJogadores(self) -> int:
         print('numero de jogadores')
-        return int(input())
+        valido = False
+        while not valido:
+            numero = int(input())
+            if numero < 2 or numero > 4:
+                print('este numero de jogadores não é válido, tente de novo')
+            else:
+                valido = True
+        return numero
 
     def nomeJogador(self, id: int) -> str:
         print('nome do jogador '+str(id))
