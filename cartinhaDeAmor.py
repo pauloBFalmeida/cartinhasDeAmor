@@ -2,6 +2,7 @@
 import pygame
 from mesa import *
 from jogador import *
+from controleJogo import ControleJogo
 
 pygame.init()
 
@@ -20,13 +21,16 @@ class CartinhaDeAmor:
 		self.FPS = 30
 
 		self.background = (0,0,50)
+		self.controle = ControleJogo()
 
 
 	def start(self):
 		self.mesa = Mesa(1)
-		for i in range(int(input('numero de jogadores\n'))):
-			self.mesa.addJogador(Jogador(i, input('nome do jogador '+str(i)+'\n'), 0))
-		self.mesa.iniciarPartida()
+		for i in range(self.controle.getNumeroJogadores()):
+		#	self.mesa.addJogador(Jogador(i, self.controle.getNomeJogador(i), 0))
+			self.mesa.addJogador(Jogador(i, 'j'+str(i), 0))
+		self.controle.setMesa(self.mesa)
+		self.controle.gerenciarJogo()
 
 	def input(self, keys):
 		if keys[pygame.K_ESCAPE]:
@@ -44,16 +48,16 @@ def main():
 	game = CartinhaDeAmor(800, 600, "CartinhaDeAmor")
 	game.start()	# start game
 	# loop
-	while game.rodando:
-		game.clock.tick(game.FPS)
+	#while game.rodando:
+	#	game.clock.tick(game.FPS)
 
-		for event in pygame.event.get():
-			if event.type == pygame.QUIT:
-				game.rodando = False
+	#	for event in pygame.event.get():
+	#		if event.type == pygame.QUIT:
+	#			game.rodando = False
 				
-		game.input(pygame.key.get_pressed())
-		game.logic()
-		#game.render(game.win)
+	#	game.input(pygame.key.get_pressed())
+	#	game.logic()
+	#	#game.render(game.win)
 
 if __name__ == "__main__":
 	main()

@@ -1,20 +1,17 @@
-import cartas
-
 # coding: utf-8
+#from carta import Carta
+
 class Jogador():
 
     def __init__(self, id, nome, cor):
         self.__id = id
         self.__nome = nome
+        self.__cor = cor
         self.__pontos = 0
         self.__imagem = None
         self.__cartasMao = []
-        self.__cor = cor
         self.__vivo = True
         self.__protected = False
-
-    def setMesa(self, mesa):
-        self.__mesa = mesa
 
     def receberCarta(self, carta):
         carta.set_jogador(self)
@@ -44,6 +41,9 @@ class Jogador():
     def getPontos(self):
         return self.__pontos
 
+    def zerarPontos(self):
+        self.__pontos = 0
+
     def getCor(self):
         return self.__cor
 
@@ -53,11 +53,7 @@ class Jogador():
     def set_hand(self, nova_mao):
         self.__cartasMao = nova_mao
 
-    def get_mesa(self):
-        return self.__mesa
-
     def morre(self):
-        print(self.__nome+' morto')
         self.__vivo = False
 
     def set_vivo(self, v):
@@ -72,23 +68,11 @@ class Jogador():
     def getProtecao(self):
         return self.__protected
 
-    def discard(self):
-        descarte = self.__cartasMao.pop(0)
-        if isinstance(descarte, cartas.Princesa):
-            self.morre()
-        self.__mesa.jogarCartaFora(descarte)
-
     def limparMao(self):
-        while len(self.__cartasMao) > 0:
-            self.discard()
+        cartas = list(self.__cartasMao)
+        self.__cartasMao.clear()
+        return cartas
 
     def jogar_carta(self, index):
-        if isinstance(self.__cartasMao[index], cartas.Rei) or isinstance(self.__cartasMao[index], cartas.Principe) and self.sizeCartasMao() > 1:
-            if isinstance(self.__cartasMao[(index+1)%2], cartas.Condessa):
-                print('voce deve jogar a condessa, pois tem um rei ou principe na mao')
-                return False
-
-        descarte = self.__cartasMao.pop(index)
-        self.__mesa.jogarCartaFora(descarte)
-        descarte.executar_acao()
-        return True
+        carta_descarte = self.__cartasMao.pop(index)
+        return carta_descarte
