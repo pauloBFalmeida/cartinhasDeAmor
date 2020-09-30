@@ -93,14 +93,11 @@ class Padre(Carta):
     def __init__(self, im_verso, im_frente):
         super().__init__(2, 'Padre', im_verso, im_frente)
 
-    def see_hand(self, jogador):
-        return jogador.getCartasMao()[0]
-
     def executar_acao(self):
         print("escolha outro jogador para ver a mao")
         alvo = self.getJogadorAlvo(False)
         if alvo == None: return None
-        alvo_mao = self.see_hand(alvo)
+        alvo_mao = alvo.getCartasMao()[0]
         print(alvo_mao.get_nome())
 
 
@@ -135,11 +132,8 @@ class Aia(Carta):
     def __init__(self, im_verso, im_frente):
         super().__init__(4, 'Aia', im_verso, im_frente)
 
-    def protect(self, jogador):
-        jogador.darProtecao()
-
     def executar_acao(self):
-        self.protect(self.get_jogador())
+        self.get_jogador().darProtecao()
         print(self.get_jogador().getNome()+" esta protegido")
 
 class Principe(Carta):
