@@ -62,7 +62,7 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def resultadoGuarda(self, cartaMao: carta):
+    def resultadoPadre(self, cartaMao: carta):
         raise NotImplementedError
     
     @abc.abstractmethod
