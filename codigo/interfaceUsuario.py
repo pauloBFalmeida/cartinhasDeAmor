@@ -1,7 +1,7 @@
 # coding: utf-8
 import abc
-import jogador
-import carta
+from codigo.jogador import Jogador
+from codigo.carta import Carta
 
 class InterfaceUsuario(metaclass=abc.ABCMeta):
 
@@ -18,27 +18,27 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def apresentarGanhadorDoJogo(self, j_ganhador: jogador):
+    def apresentarGanhadorDoJogo(self, j_ganhador: Jogador):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def apresentarGanhadorDoRound(self, j_ganhador: jogador):
+    def apresentarGanhadorDoRound(self, j_ganhador: Jogador):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def compararCartas(self, j_ganhador: jogador, jogadores: list):
+    def compararCartas(self, j_ganhador: Jogador, jogadores: list):
         raise NotImplementedError
     
     @abc.abstractmethod
-    def jogarCarta(self, j: jogador, c: carta):
+    def jogarCarta(self, j: Jogador, c: Carta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def jogadorEscolherCarta(self, j_origem: jogador):
+    def jogadorEscolherCarta(self, j_origem: Jogador):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def selecionaJogador(self, j_origem: jogador, jogadores: list, siMesmo: bool, textoInicio: str) -> jogador:
+    def selecionaJogador(self, j_origem: Jogador, jogadores: list, siMesmo: bool, textoInicio: str) -> Jogador:
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -46,7 +46,7 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def jogadorEscolheCarta(self, j_origem: jogador) -> int:
+    def jogadorEscolheCarta(self, j_origem: Jogador) -> int:
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -54,7 +54,7 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def anunciarMorto(self, j_origem: jogador):
+    def anunciarMorto(self, j_origem: Jogador):
         raise NotImplementedError
     
     @abc.abstractmethod
@@ -62,25 +62,29 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def resultadoPadre(self, cartaMao: carta):
+    def resultadoPadre(self, cartaMao: Carta):
         raise NotImplementedError
     
     @abc.abstractmethod
-    def resultadoBarao(self, jogadorMorto: jogador):
+    def resultadoBarao(self, jogadorMorto: Jogador):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def resultadoAia(self, j: jogador):
+    def resultadoAia(self, j: Jogador):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def resultadoPrincipe(self, j: jogador):
+    def resultadoPrincipe(self, j: Jogador):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def resultadoRei(self, j1: jogador, j2: jogador):
+    def resultadoRei(self, j1: Jogador, j2: Jogador):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def resultadoPrincesa(self, j: jogador):
+    def resultadoPrincesa(self, j: Jogador):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def addChat(self, texto: str):
         raise NotImplementedError

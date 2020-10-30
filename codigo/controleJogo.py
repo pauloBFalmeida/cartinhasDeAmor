@@ -1,13 +1,15 @@
 # coding: utf-8
-from jogador import Jogador
-from mesa import Mesa
-from carta import Carta, Guarda, Padre, Barao, Aia, Principe, Rei, Condessa, Princesa
-from interfaceTexto import InterfaceTexto
+from codigo.interfaceUsuario import InterfaceUsuario
+from codigo.jogador import Jogador
+from codigo.mesa import Mesa
+from codigo.carta import Carta, Guarda, Padre, Barao, Aia, Principe, Rei, Condessa, Princesa
+from codigo.controleRede import ControleRede
 
 class ControleJogo():
 
-    def __init__(self):
-        self.interUsuario = InterfaceTexto()
+    def __init__(self, interfaceUsuario, interfaceRede):
+        self.interUsuario = interfaceUsuario
+        self.controleRede = ControleRede(interfaceRede)
 
     def getNumeroJogadores(self):
         return self.interUsuario.numeroJogadores()

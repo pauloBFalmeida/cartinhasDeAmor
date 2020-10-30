@@ -1,5 +1,4 @@
 # coding: utf-8
-#from carta import Carta
 
 class Jogador():
 

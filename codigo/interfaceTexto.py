@@ -1,7 +1,7 @@
 # coding: utf-8
-from interfaceUsuario import InterfaceUsuario
-import jogador
-import carta
+from codigo.interfaceUsuario import InterfaceUsuario
+from codigo.jogador import Jogador
+from codigo.carta import Carta
 
 class InterfaceTexto(InterfaceUsuario):
         
@@ -23,12 +23,12 @@ class InterfaceTexto(InterfaceUsuario):
     def iniciarRound(self):
         print("--- INICIANDO ROUND ---")
 
-    def apresentarGanhadorDoJogo(self, j_ganhador: jogador):
+    def apresentarGanhadorDoJogo(self, j_ganhador: Jogador):
         nome = j_ganhador.getNome()
         pontos = str(j_ganhador.getPontos())
         print(nome+" ganhou o jogo com "+pontos+" pontos")
 
-    def apresentarGanhadorDoRound(self, j_ganhador: jogador):
+    def apresentarGanhadorDoRound(self, j_ganhador: Jogador):
         if j_ganhador != None:
             nome = j_ganhador.getNome()
             pontos = str(j_ganhador.getPontos())
@@ -36,7 +36,7 @@ class InterfaceTexto(InterfaceUsuario):
         else:
             print("nao houve ganhadores nesse round")
 
-    def compararCartas(self, j_ganhador: jogador, jogadores: list):
+    def compararCartas(self, j_ganhador: Jogador, jogadores: list):
         print('sem cartas no deck, comparando valor na mao dos jogadores restantes')
         for j in [x for x in jogadores if x.get_vivo()]:
             c = j.getCartasMao()[0]
@@ -47,10 +47,10 @@ class InterfaceTexto(InterfaceUsuario):
         else:
             print('empate no valor das cartas')
             
-    def jogarCarta(self, j: jogador, c: carta):
+    def jogarCarta(self, j: Jogador, c: Carta):
         print(j.getNome()+' jogou a carta '+c.get_nome())
 
-    def jogadorEscolherCarta(self, j_origem: jogador):
+    def jogadorEscolherCarta(self, j_origem: Jogador):
         i = -1
         possivel = False
         while not possivel:
@@ -62,7 +62,7 @@ class InterfaceTexto(InterfaceUsuario):
         return i
 
     # seleciona um dos jogadores podendo ser siMesmo
-    def selecionaJogador(self, j_origem: jogador, jogadores: list, siMesmo: bool, textoInicio: str) -> jogador:
+    def selecionaJogador(self, j_origem: Jogador, jogadores: list, siMesmo: bool, textoInicio: str) -> Jogador:
         print("escolha outro jogador para "+textoInicio)
         possiveis = []
         for i in range(len(jogadores)):
@@ -105,7 +105,7 @@ class InterfaceTexto(InterfaceUsuario):
                 print('escolha nao e valida')
         return card_id
 
-    def jogadorEscolheCarta(self, j_origem: jogador) -> int:
+    def jogadorEscolheCarta(self, j_origem: Jogador) -> int:
         possivel = False
         qtdCartas = len(j_origem.getCartasMao())
         if qtdCartas < 1:
@@ -121,7 +121,7 @@ class InterfaceTexto(InterfaceUsuario):
     def alertarSobreCondessa(self):
         print('voce deve jogar a condessa, pois tem um rei ou principe na mao')
 
-    def anunciarMorto(self, j_origem: jogador):
+    def anunciarMorto(self, j_origem: Jogador):
         print(j_origem.getNome()+' foi morto')
 
     def resultadoGuarda(self, resultadoAcusacao: bool):
@@ -130,23 +130,26 @@ class InterfaceTexto(InterfaceUsuario):
         else:
             print('errou a acusacao')
         
-    def resultadoPadre(self, cartaMao: carta):
+    def resultadoPadre(self, cartaMao: Carta):
         print('carta na mao '+cartaMao.get_nome())
         
-    def resultadoBarao(self, jogadorMorto: jogador):
+    def resultadoBarao(self, jogadorMorto: Jogador):
         if jogadorMorto == None:
             print('empate')
         else:
             print(jogadorMorto.getNome()+' possuia a carta de menor valor')
         
-    def resultadoAia(self, j: jogador):
+    def resultadoAia(self, j: Jogador):
         print(j.getNome()+' esta protegido pelo proximo round')
         
-    def resultadoPrincipe(self, j: jogador):
+    def resultadoPrincipe(self, j: Jogador):
         print(j.getNome()+' pegou uma nova mao')
         
-    def resultadoRei(self, j1: jogador, j2: jogador):
+    def resultadoRei(self, j1: Jogador, j2: Jogador):
         print('trocadas as maos de '+j1.getNome()+' e '+j2.getNome())
         
-    def resultadoPrincesa(self, j: jogador):
+    def resultadoPrincesa(self, j: Jogador):
         print(j.getNome()+" tentou descartar a Princesa")
+        
+    def addChat(self, texto: str):
+        print("chat: "+ texto)

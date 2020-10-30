@@ -1,6 +1,6 @@
 # coding: utf-8
-import jogador
-import carta
+import codigo.jogador
+import codigo.carta
 from random import shuffle
 
 class Mesa():

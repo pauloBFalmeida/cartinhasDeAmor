@@ -1,10 +1,10 @@
 # coding: utf-8
 import pygame
-from mesa import Mesa
-from jogador import Jogador
-from controleJogo import ControleJogo
-
-pygame.init()
+from codigo.mesa import Mesa
+from codigo.jogador import Jogador
+from codigo.controleJogo import ControleJogo
+from codigo.interfaceTexto import InterfaceTexto
+from codigo.interfaceMasterMind import InterfaceMasterMind
 
 # classe que comunica o controle com as interfaces
 class CartinhaDeAmor:
@@ -23,7 +23,22 @@ class CartinhaDeAmor:
 
 		#self.background = (0,0,50)
 		
-		self.controle = ControleJogo()
+		self.__interfaceUsuario = InterfaceTexto()
+		self.__interfaceRede = InterfaceMasterMind()
+		self.controle = ControleJogo(self.__interfaceUsuario, self.__interfaceRede)
+
+	def main(self):
+		self.start()	# start game
+		self.clock.tick(self.FPS)
+		# loop
+		while game.rodando:
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					game.rodando = False
+
+			self.input(pygame.key.get_pressed())
+			self.logic()
+			self.render(game.win)
 
 
 	def start(self):
@@ -45,23 +60,3 @@ class CartinhaDeAmor:
 	#	window.fill(self.background)		# background
 	#	pygame.display.update()				# update screen
 
-
-def main():
-	game = CartinhaDeAmor()
-	game.start()	# start game
-	# loop
-	#while game.rodando:
-	#	game.clock.tick(game.FPS)
-
-	#	for event in pygame.event.get():
-	#		if event.type == pygame.QUIT:
-	#			game.rodando = False
-				
-	#	game.input(pygame.key.get_pressed())
-	#	game.logic()
-	#	#game.render(game.win)
-
-if __name__ == "__main__":
-	main()
-	pygame.quit()
-	quit()
