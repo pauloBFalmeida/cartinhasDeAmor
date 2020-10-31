@@ -11,3 +11,9 @@ class InterfaceMasterMind(InterfaceRede):
     
     def enviar(self, ip: str, texto: str):
         pass
+    
+    def receber(self) -> str:
+        return ""
+    
+    def conectarHost(self, ip: str) -> bool:
+        return True

@@ -11,12 +11,6 @@ class ControleJogo():
         self.interUsuario = interfaceUsuario
         self.controleRede = controleRede
 
-    def getNumeroJogadores(self):
-        return self.interUsuario.numeroJogadores()
-
-    def getNomeJogador(self, id):
-        return self.interUsuario.nomeJogador(id)
-
     def setMesa(self, mesa):
         self.__mesa = mesa
         self.__mesa.setDeck(self.__criarDeck())

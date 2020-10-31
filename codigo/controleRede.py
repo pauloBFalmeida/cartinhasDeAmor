@@ -4,25 +4,19 @@ from codigo.jogador import Jogador
 
 class ControleRede():
 
-    def __init__(self, interfaceRede, chat, host=False):
+    def __init__(self, interfaceRede, meuIp=None):
         self.interRede = interfaceRede
-        self.chat = chat
-        self.host = host
-        self.jogadores_ips = {}
-        self.meuIp = self.interRede.getIp()
+        self.meuIp = meuIp if meuIp else self.interRede.getIp()
 
     def getIp(self):
         return self.meuIp
-
-    def addJogadorIdIp(self, id, ip):
-        self.jogadores_ips[id] = ip
 
     def setHostIp(self, ip):
         self.host_ip = ip
 
     def enviarMsgChat(self, msg):
         jogador = msg.get_origem()
-        texto = "\m" +                          \
+        texto = ":msg" +                          \
                 "\d" + msg.get_data() +         \
                 "\j" + jogador.get_nome() +     \
                 "\c" + msg.get_cor() +          \
@@ -30,11 +24,20 @@ class ControleRede():
         self.__enviarChat(texto)
 
     def __enviarChat(self, texto):
-        if self.host:
-            for id in self.jogadores_ips:
-                ip = self.jogadores_ips[id]
-                self.interRede.enviar(ip, texto)
-        else:
-            self.interRede.enviar(self.host_ip, texto)
+        self.interRede.enviar(self.host_ip, texto)
 
+    def conectarHost(self):
+        self.interRede.conectarHost(self.host_ip)
+        self.interRede.enviar(self.host_ip, ":getId")
+        id = self.interRede.receber()
+        if not id:
+            id = 0
+        return id
+
+    def enviarJogador(self, j):
+        texto = ":jogador" +                    \
+                "\id" + msg.getId() +         \
+                "\n" + jogador.getNome() +     \
+                "\c" + j.getCor() +          \
+        self.interRede.enviar(self.host_ip, texto)
         

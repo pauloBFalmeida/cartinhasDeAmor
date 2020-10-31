@@ -88,9 +88,12 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def resultadoPrincesa(self, j: Jogador):
         raise NotImplementedError
-    
+        
     @abc.abstractmethod
-    def entrarIp(self) -> str:
+    def entrarPartida(self) -> bool:
+        raise NotImplementedError
+    
+    def entrarIpHost(self) -> str:
         raise NotImplementedError
 
     @abc.abstractmethod

@@ -8,9 +8,7 @@ class InterfaceTexto(InterfaceUsuario):
     def entrarOnline(self) -> bool:
         print('deseja jogar online? (sim/nao)')
         r = input()
-        if "S" in r or "s" in r:
-            return True
-        return False
+        return ("S" in r or "s" in r)
 
     def numeroJogadores(self) -> int:
         print('numero de jogadores')
@@ -161,8 +159,13 @@ class InterfaceTexto(InterfaceUsuario):
     def resultadoPrincesa(self, j: Jogador):
         print(j.getNome()+" tentou descartar a Princesa")
 
-    def entrarIp(self) -> str:
-        print('entre com ip do jogador')
+    def entrarPartida(self) -> bool:
+        print('deseja se conectar a uma partida online? (sim/nao)')
+        r = input()
+        return ("S" in r or "s" in r)
+
+    def entrarIpHost(self) -> str:
+        print('entre com ip do host')
         return input()
 
     def addChat(self, texto: str):
