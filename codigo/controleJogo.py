@@ -7,8 +7,7 @@ from codigo.controleRede import ControleRede
 
 class ControleJogo():
 
-    def __init__(self, interfaceUsuario, controleRede):
-        self.interUsuario = interfaceUsuario
+    def __init__(self, controleRede):
         self.controleRede = controleRede
 
     def setMesa(self, mesa):
@@ -18,7 +17,7 @@ class ControleJogo():
     def gerenciarJogo(self):
         self.__mesa.iniciarJogo()
         while self.__mesa.getJogoEmExecucao():
-            self.interUsuario.iniciarRound()
+            self.controleRede.iniciarRound()
             self.__mesa.iniciarRound()
             while self.__mesa.getRoundEmExecucao():
                 self.__mesa.passarTurno()
@@ -29,17 +28,17 @@ class ControleJogo():
                     self.__mesa.fimRound()
                 elif verFimRound == 2:
                     j_ganhador = self.__mesa.compararCartas()
-                    self.interUsuario.compararCartas(j_ganhador, self.__mesa.getJogadores())
+                    self.controleRede.compararCartas(j_ganhador, self.__mesa.getJogadores())
                     for j in self.__mesa.getJogadores():
                         if j != j_ganhador:
                             self.__matarJogador(j)
                     self.__mesa.fimRound()
             # fim de round
             ganhador = self.__mesa.getGanhadorDoRound()
-            self.interUsuario.apresentarGanhadorDoRound(ganhador)
+            self.controleRede.apresentarGanhadorDoRound(ganhador)
         # fim de jogo
         ganhador = self.__mesa.getGanhadorDoJogo()
-        self.interUsuario.apresentarGanhadorDoJogo(ganhador)
+        self.controleRede.apresentarGanhadorDoJogo(ganhador)
 
     def __acaoTurno(self):
         jogadorTurno = self.__mesa.getJogadorTurno()
@@ -50,13 +49,13 @@ class ControleJogo():
         # jogar uma carta
         error = True
         while error:
-            carta_i = self.interUsuario.jogadorEscolherCarta(jogadorTurno)
+            carta_i = self.controleRede.jogadorEscolherCarta(jogadorTurno)
             error = self.__condicaoCondessa(jogadorTurno, carta_i)
             if error:
-                self.interUsuario.alertarSobreCondessa()
+                self.controleRede.alertarSobreCondessa()
             else:
                 carta_jogada = jogadorTurno.jogar_carta(carta_i)
-                self.interUsuario.jogarCarta(jogadorTurno, carta_jogada)
+                self.controleRede.jogarCarta(jogadorTurno, carta_jogada)
                 self.__acaoCarta(jogadorTurno, carta_jogada)
 
     def __acaoCarta(self, jogadorTurno, carta_jogada):
@@ -65,43 +64,43 @@ class ControleJogo():
         j_alvo, valor = 0, 0
         if carta_v in [1,2,3,5,6]:
             siMesmo = carta_v == 5              # principe
-            j_alvo = self.interUsuario.selecionaJogador(jogadorTurno, jogadores, siMesmo, carta_jogada.getFraseInicio())
+            j_alvo = self.controleRede.selecionaJogador(jogadorTurno, jogadores, siMesmo, carta_jogada.getFraseInicio())
             if carta_v == 1 and j_alvo != None: # guarda
-                valor = self.interUsuario.selecionaValorGuarda()
+                valor = self.controleRede.selecionaValorGuarda()
         if j_alvo != None:
             result = carta_jogada.executar_acao(jogadorTurno, j_alvo, valor)
             # Guarda
             if   carta_v == 1:
-                self.interUsuario.resultadoGuarda(result)
+                self.controleRede.resultadoGuarda(result)
                 if result:
                     self.__matarJogador(j_alvo)
             # Padre
             elif carta_v == 2:
-                self.interUsuario.resultadoPadre(result)
+                self.controleRede.resultadoPadre(result)
             # Barao
             elif carta_v == 3:
-                self.interUsuario.resultadoBarao(result)
+                self.controleRede.resultadoBarao(result)
                 if result != None:
                     self.__matarJogador(result)
             # Aia
             elif carta_v == 4:
-                self.interUsuario.resultadoAia(result)
+                self.controleRede.resultadoAia(result)
             # Principe
             elif carta_v == 5:
                 self.__mesa.jogadorDescartarMao(result)
                 self.__mesa.pegarCarta(result)
-                self.interUsuario.resultadoPrincipe(result)
+                self.controleRede.resultadoPrincipe(result)
             # Rei
             elif carta_v == 6:
-                self.interUsuario.resultadoRei(result, jogadorTurno)
+                self.controleRede.resultadoRei(result, jogadorTurno)
             # Princesa
             elif carta_v == 8:
-                self.interUsuario.resultadoPrincesa(result)
+                self.controleRede.resultadoPrincesa(result)
                 self.__matarJogador(result)
 
     def __matarJogador(self, jogador):
         jogador.morre()
-        self.interUsuario.anunciarMorto(jogador)
+        self.controleRede.anunciarMorto(jogador)
 
     def __condicaoCondessa(self, jogadorTurno, index):
         cartasMao = jogadorTurno.getCartasMao()
