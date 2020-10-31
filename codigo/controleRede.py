@@ -25,7 +25,7 @@ class ControleRede():
         texto = "\m" +                          \
                 "\d" + msg.get_data() +         \
                 "\j" + jogador.get_nome() +     \
-                "\c" + msg.get_cor() +          \
+                "\c" + jogador.get_cor() +          \
                 "\t" + msg.get_texto()
         self.__enviarChat(texto)
 
