@@ -113,7 +113,7 @@ class InterfaceTexto(InterfaceUsuario):
                 print('escolha nao e valida')
         return card_id
 
-    def jogadorEscolheCarta(self, j_origem: Jogador) -> int:
+    def jogadorEscolherCarta(self, j_origem: Jogador) -> int:
         possivel = False
         qtdCartas = len(j_origem.getCartasMao())
         if qtdCartas < 1:

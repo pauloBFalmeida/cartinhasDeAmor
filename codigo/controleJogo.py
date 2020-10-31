@@ -52,7 +52,7 @@ class ControleJogo():
             carta_i = self.controleRede.jogadorEscolherCarta(jogadorTurno)
             error = self.__condicaoCondessa(jogadorTurno, carta_i)
             if error:
-                self.controleRede.alertarSobreCondessa()
+                self.controleRede.alertarSobreCondessa(jogadorTurno)
             else:
                 carta_jogada = jogadorTurno.jogar_carta(carta_i)
                 self.controleRede.jogarCarta(jogadorTurno, carta_jogada)
@@ -66,7 +66,7 @@ class ControleJogo():
             siMesmo = carta_v == 5              # principe
             j_alvo = self.controleRede.selecionaJogador(jogadorTurno, jogadores, siMesmo, carta_jogada.getFraseInicio())
             if carta_v == 1 and j_alvo != None: # guarda
-                valor = self.controleRede.selecionaValorGuarda()
+                valor = self.controleRede.selecionaValorGuarda(jogadorTurno)
         if j_alvo != None:
             result = carta_jogada.executar_acao(jogadorTurno, j_alvo, valor)
             # Guarda

@@ -9,21 +9,43 @@ class ControleServer():
         self.interRede = interfaceRede
         self.meuIp = meuIp if meuIp else self.interRede.getIp()
         self.__cmd = 'cmd:'
+        self.__jogadores_ip = {}
 
     def getIp(self):
         return self.meuIp
 
+    def addJogadorIdIp(self, id, ip):
+        self.__jogadores_ip[id] = ip
+
+    def __jogadorTurnoEnviar(jogadorTurno, texto):
+        id = jogadorTurno.getId()
+        ip = self.__jogadores_ip[id]
+        self.interRede.enviar(ip, texto)
+
+    def __jogadorTurnoEnviarLista(jogadorTurno, l):
+        id = jogadorTurno.getId()
+        ip = self.__jogadores_ip[id]
+        self.interRede.enviar(ip, l)
+
     def __enviar(self, texto):
-        self.interRede.enviar(self.host_ip, texto)
+        for id in self.__jogadores_ip:
+            ip = self.__jogadores_ip[id]
+            self.interRede.enviar(ip, texto)
 
     def __enviarJogador(self, j):
-        self.interRede.enviar(self.host_ip, j)
+        for id in self.__jogadores_ip:
+            ip = self.__jogadores_ip[id]
+            self.interRede.enviar(ip, j)
 
     def __enviarCarta(self, c):
-        self.interRede.enviar(self.host_ip, c)
+        for id in self.__jogadores_ip:
+            ip = self.__jogadores_ip[id]
+            self.interRede.enviar(ip, c)
 
     def __enviarLista(self, l):
-        self.interRede.enviar(self.host_ip, l)
+        for id in self.__jogadores_ip:
+            ip = self.__jogadores_ip[id]
+            self.interRede.enviar(ip, l)
     
     def iniciarRound(self):
         self.__enviar(self.__cmd+"iniciarRound")
@@ -42,46 +64,54 @@ class ControleServer():
         self.__enviarJogador(ganhador)
 
     def jogadorEscolherCarta(self, jogadorTurno):
-        self.__enviar(self.__cmd+"jogadorEscolherCarta")
-        self.__enviarJogador(jogadorTurno)
+        self.__jogadorTurnoEnviar(jogadorTurno, self.__cmd+"jogadorEscolherCarta")
+        return None
 
-    def alertarSobreCondessa(self):
-        self.__enviar(self.__cmd+"alertarSobreCondessa")
+    def alertarSobreCondessa(self, jogadorTurno):
+        self.__jogadorTurnoEnviar(jogadorTurno, self.__cmd+"alertarSobreCondessa")
 
     def jogarCarta(self, jogadorTurno, carta_jogada):
-        self.__enviar(self.__cmd+"jogadorEscolherCarta")
+        self.__enviar(self.__cmd+"jogarCarta")
         self.__enviarJogador(jogadorTurno)
-        self.__enviarCarta(jogadorTurno)
+        self.__enviarCarta(carta_jogada)
 
     def selecionaJogador(self, jogadorTurno, jogadores, siMesmo, fraseInicio):
-        self.__enviar(self.__cmd+"selecionaJogador"+":"+str(siMesmo)+":"+fraseInicio)
-        self.__enviarJogador(jogadorTurno)
-        self.__enviarLista(jogadores)   #carta_jogada.getFraseInicio()
+        self.__jogadorTurnoEnviar(self.__cmd+"selecionaJogador"+":"+str(siMesmo)+":"+fraseInicio)
+        self.__jogadorTurnoEnviarLista(jogadores)   #carta_jogada.getFraseInicio()
+        return None
 
-    def selecionaValorGuarda(self):
-        self.__enviar(self.__cmd+"selecionaValorGuarda")
+    def selecionaValorGuarda(self, jogadorTurno):
+        self.__jogadorTurnoEnviar(jogadorTurno, self.__cmd+"selecionaValorGuarda")
+        return None
 
     def resultadoGuarda(self, result):
-        self.__enviar(self.__cmd+"resultadoGuarda"+':'+result)
+        id1 = result.getId()
+        self.__enviar(self.__cmd+"resultadoGuarda"+':'+id1)
 
     def resultadoPadre(self, result):
-        self.__enviar(self.__cmd+"resultadoPadre"+':'+result)
+        id1 = result.getId()
+        self.__enviar(self.__cmd+"resultadoPadre"+':'+id1)
 
     def resultadoBarao(self, result):
-        self.__enviar(self.__cmd+"resultadoBarao"+':'+result)
+        id1 = result.getId()
+        self.__enviar(self.__cmd+"resultadoBarao"+':'+id1)
 
     def resultadoAia(self, result):
-        self.__enviar(self.__cmd+"resultadoAia"+':'+result)
+        id1 = result.getId()
+        self.__enviar(self.__cmd+"resultadoAia"+':'+id1)
 
     def resultadoPrincipe(self, result):
-        self.__enviar(self.__cmd+"resultadoPrincipe"+':'+result)
+        id1 = result.getId()
+        self.__enviar(self.__cmd+"resultadoPrincipe"+':'+id1)
 
     def resultadoRei(self, result, jogadorTurno):
-        self.__enviar(self.__cmd+"resultadoRei"+':'+result)
-        self.__enviarJogador(jogadorTurno)
+        id1 = result.getId()
+        id2 = jogadorTurno.getId()
+        self.__enviar(self.__cmd+"resultadoRei"+':'+id1+':'+id2)
 
     def resultadoPrincesa(self, result):
-        self.__enviar(self.__cmd+"resultadoPrincesa"+':'+result)
+        id1 = result.getId()
+        self.__enviar(self.__cmd+"resultadoPrincesa"+':'+id1)
 
     def anunciarMorto(self, jogador):
         self.__enviar(self.__cmd+"anunciarMorto")
