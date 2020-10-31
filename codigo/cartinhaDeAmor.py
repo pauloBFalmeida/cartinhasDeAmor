@@ -25,9 +25,10 @@ class CartinhaDeAmor:
 		
 		self.__interfaceUsuario = InterfaceTexto()
 		self.__interfaceRede = InterfaceMasterMind()
-		self.controle = ControleJogo(self.__interfaceUsuario, self.__interfaceRede)
+		self.controleJogo = ControleJogo(self.__interfaceUsuario, self.__interfaceRede)
 
 	def main(self):
+		self.preparativos()
 		self.start()	# start game
 		self.clock.tick(self.FPS)
 		# loop
@@ -40,14 +41,35 @@ class CartinhaDeAmor:
 			self.logic()
 			self.render(game.win)
 
+	def criarJogoHost(self):
+		self.mesa = Mesa(1)
+		# criar jogador
+		nome = self.__interfaceUsuario.nomeJogador(id)
+		j = Jogador(0, nome, (200,200,200))
+		self.mesa.addJogador(j)
+		# 
+		self.controleJogo.setMesa(self.mesa)
+		self.controleRede = ControleRede(interfaceRede, True)
+		self.__interfaceUsuario.addChat('ip: '+self.ControleRede.getIp())
+		
+		for id in range(1, self.__interfaceUsuario.numeroJogadores()):
+			ip = __interfaceUsuario.entrarIp()
+			self.controleRede.addJogadorIdIp(id, ip)
+
+
+	def preparativos(self):
+		self.online = self.__interfaceUsuario.entrarOnline()
+		if self.online:
+			self.criarJogoHost()
+		else:
+			self.mesa = Mesa(1)
+			for i in range(self.controleJogo.getNumeroJogadores()):
+				self.mesa.addJogador(Jogador(i, 'j'+str(i), 0))
+			self.controleJogo.setMesa(self.mesa)
+
 
 	def start(self):
-		self.mesa = Mesa(1)
-		for i in range(self.controle.getNumeroJogadores()):
-		#	self.mesa.addJogador(Jogador(i, self.controle.getNomeJogador(i), 0))
-			self.mesa.addJogador(Jogador(i, 'j'+str(i), 0))
-		self.controle.setMesa(self.mesa)
-		self.controle.gerenciarJogo()
+		self.controleJogo.gerenciarJogo()
 
 	#def input(self, keys):
 	#	if keys[pygame.K_ESCAPE]:

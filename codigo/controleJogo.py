@@ -7,9 +7,9 @@ from codigo.controleRede import ControleRede
 
 class ControleJogo():
 
-    def __init__(self, interfaceUsuario, interfaceRede):
+    def __init__(self, interfaceUsuario, controleRede):
         self.interUsuario = interfaceUsuario
-        self.controleRede = ControleRede(interfaceRede)
+        self.controleRede = controleRede
 
     def getNumeroJogadores(self):
         return self.interUsuario.numeroJogadores()

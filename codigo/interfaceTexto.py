@@ -5,6 +5,13 @@ from codigo.carta import Carta
 
 class InterfaceTexto(InterfaceUsuario):
         
+    def entrarOnline(self) -> bool:
+        print('deseja jogar online? (sim/nao)')
+        r = input()
+        if "S" in r or "s" in r:
+            return True
+        return False
+
     def numeroJogadores(self) -> int:
         print('numero de jogadores')
         valido = False
@@ -18,7 +25,10 @@ class InterfaceTexto(InterfaceUsuario):
 
     def nomeJogador(self, id: int) -> str:
         print('nome do jogador '+str(id))
-        return input()
+        nome = input()
+        if len(nome) < 1:
+            nome = 'jogador_'+str(id)
+        return nome
 
     def iniciarRound(self):
         print("--- INICIANDO ROUND ---")
@@ -150,6 +160,10 @@ class InterfaceTexto(InterfaceUsuario):
         
     def resultadoPrincesa(self, j: Jogador):
         print(j.getNome()+" tentou descartar a Princesa")
-        
+
+    def entrarIp(self) -> str:
+        print('entre com ip do jogador')
+        return input()
+
     def addChat(self, texto: str):
         print("chat: "+ texto)

@@ -8,3 +8,6 @@ class InterfaceMasterMind(InterfaceRede):
     def getIp(self) -> str:
         external_ip_v4 = urlopen('https://v4.ident.me/').read().decode('utf8')
         return external_ip_v4
+    
+    def enviar(self, ip: str, texto: str):
+        pass

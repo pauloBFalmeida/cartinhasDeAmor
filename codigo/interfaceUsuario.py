@@ -6,6 +6,10 @@ from codigo.carta import Carta
 class InterfaceUsuario(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
+    def entrarOnline(self) -> bool:
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def numeroJogadores(self) -> int:
         raise NotImplementedError
 
@@ -83,6 +87,10 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def resultadoPrincesa(self, j: Jogador):
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def entrarIp(self) -> str:
         raise NotImplementedError
 
     @abc.abstractmethod
