@@ -5,8 +5,8 @@ from controleJogo import *
 class Server(MastermindServerTCP):
 
     def __init__(self):
-        self.__chat = Chat()
-        self.__jogo = ControleJogo()
+        self.__chat = chat.Chat()
+        self.__jogo = controlejogo.ControleJogo()
 
         #tem alguns argumentos possíveis de avaliar
         MastermindClientTCP.__init__(self)
@@ -22,4 +22,7 @@ class Server(MastermindServerTCP):
             self.__chat.adicionar_mensagem(new_msg)
             self.callback_client_send(connection_obj, self.__chat.get_mensagens())
         elif data.find('cmd') != -1:
-            ## lidar no controle jogo
+            # segunda posição da mensagem enviada é a função que deve ser executada
+            cmd = data.split(':')[1]
+            if cmd == 'compararCartas':
+                self.__jogo.iniciarRound()
