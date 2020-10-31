@@ -4,10 +4,11 @@ import threading
 
 class Mensagem:
     
-    def __init__(self, user_origem, texto):
+    def __init__(self,user_origem , cor, texto):
         # acho que a data deve ser criada quando a mensagem entrar no chat
         # self.__data = strftime("%H:%M:%S",gmtime())
         self.__origem = user_origem
+        self.__cor = cor
         self.__texto = texto
     
     def set_data(self):
