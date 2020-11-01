@@ -12,21 +12,12 @@ class ControleCliente():
     def __init__(self, interfaceRede, interfaceUsuario, meuIp=None):
         self.__interRede = interfaceRede
         self.__interUsuario = interfaceUsuario
-        self.meuIp = meuIp if meuIp else self.__interRede.getIp()
         self.__cmd = ['cmd']
         self.__ret = ['ret']
         self.__msg = ['msg']
-        self.__jogadores = []
-
-    def getIp(self):
-        return self.meuIp
 
     def setHostIp(self, ip):
         self.__hostIp = ip
-
-    def obterJogadores(self):
-        self.__enviar(self.__cmd+"jogadores")
-        self.__jogadores = list()
 
     def main(self):
         while True:
@@ -112,7 +103,7 @@ class ControleCliente():
 
     def jogadorEscolherCarta(self, jogadorTurno):
         ret = self.__interUsuario.jogadorEscolherCarta(jogadorTurno)
-        self.__interRede.clienteEnviar(ret)
+        self.__interRede.clienteEnviar([self.__ret, ret])
         
     def alertarSobreCondessa(self, jogadorTurno):
         self.__interUsuario.alertarSobreCondessa(jogadorTurno)
@@ -122,11 +113,11 @@ class ControleCliente():
 
     def selecionaJogador(self, jogadorTurno, jogadores, siMesmo, fraseInicio):
         ret = self.__interUsuario.selecionaJogador(jogadorTurno, jogadores, siMesmo, fraseInicio)
-        self.__interRede.clienteEnviar(ret)
+        self.__interRede.clienteEnviar([self.__ret, ret])
 
     def selecionaValorGuarda(self, jogadorTurno):
         ret = self.__interUsuario.selecionaValorGuarda(jogadorTurno)
-        self.__interRede.clienteEnviar(ret)
+        self.__interRede.clienteEnviar([self.__ret, ret])
 
     def resultadoGuarda(self, result):
         self.__interUsuario.resultadoGuarda(result)
@@ -154,12 +145,12 @@ class ControleCliente():
     
 
     def __enviar(self, lista):
-        self.interRede.clienteEnviar(lista)
+        self.__interRede.clienteEnviar(lista)
 
     def __esperarResposta(self):
         reply = None
         tentativas = 100
         while not reply and tentativas > 0:
-            reply = self.interRede.clienteReceber()
+            reply = self.__interRede.clienteReceber()
             tentativas -= 1
         return reply
