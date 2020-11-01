@@ -7,7 +7,7 @@ from server.interfaceRede import InterfaceRede
 
 class ControleServer():
 
-    def __init__(self, interfaceRede, meuIp=None):
+    def __init__(self, interfaceRede: InterfaceRede, meuIp=None):
         self.interRede = interfaceRede
         self.meuIp = meuIp if meuIp else self.interRede.getIp()
         self.__cmd = 'cmd:'
@@ -124,8 +124,8 @@ class ControleServer():
             self.interRede.enviar(ip, l)
 
     def __esperarResposta(self):
-        # reply = None
-        # while reply == None:
-        #     reply = self.interRede.receber()
+        reply = None
+        while reply == None:
+            reply = self.interRede.receber()
         return None
     
