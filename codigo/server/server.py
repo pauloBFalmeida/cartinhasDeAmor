@@ -29,7 +29,6 @@ class Server():
     def testeCliente(self):
         self.interC = InterfaceMasterMind()
         self.interC.startClient('localhost')
-        self.interC.enviarLista('localhost', [1,2,3])
 
     def testeEnd(self):
         self.interC.clienteEnd()

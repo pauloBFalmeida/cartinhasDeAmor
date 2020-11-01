@@ -79,7 +79,7 @@ class InterfaceMasterMind(InterfaceRede):
     def serverEnviar(self, texto: str):
         ## formato do dict de conexões do server: 
         ## {(ip, port) : MastermindConnectionThreadTCP obj}
-        print(self.__server._mm_connections)
+        ## print(self.__server._mm_connections)
         client_to_send = next(iter(self.__server._mm_connections.values()))
         self.__server.callback_client_send(client_to_send,texto)
         
