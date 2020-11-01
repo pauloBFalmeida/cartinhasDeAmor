@@ -13,13 +13,10 @@ class ControleServer():
         self.__cmd = 'cmd:'
         self.__jogadores_ip = {}
 
-    def getConnectionObject(self):
-        
-
     def getIp(self):
         return self.meuIp
 
-    def addJogadorIdIp(self, id, connection_object):
+    def addJogadorIdIp(self, id, ip):
         self.__jogadores_ip[id] = ip
 
     def iniciarRound(self):
@@ -95,40 +92,39 @@ class ControleServer():
         self.__enviar(self.__cmd+"anunciarMorto")
         self.__enviarJogador(jogador)
 
-    
-    def __jogadorTurnoEnviar(jogadorTurno, texto):
+    def __jogadorTurnoEnviar(self, jogadorTurno, texto):
         id = jogadorTurno.getId()
         ip = self.__jogadores_ip[id]
-        self.interRede.enviar(ip, texto)
+        self.interRede.serverEnviar(ip, texto)
 
-    def __jogadorTurnoEnviarLista(jogadorTurno, l):
+    def __jogadorTurnoEnviarLista(self, jogadorTurno, l):
         id = jogadorTurno.getId()
         ip = self.__jogadores_ip[id]
-        self.interRede.enviar(ip, l)
+        self.interRede.serverEnviar(ip, l)
 
     def __enviar(self, texto):
         for id in self.__jogadores_ip:
             ip = self.__jogadores_ip[id]
-            self.interRede.enviar(ip, texto)
+            self.interRede.serverEnviar(ip, texto)
 
     def __enviarJogador(self, j):
         for id in self.__jogadores_ip:
             ip = self.__jogadores_ip[id]
-            self.interRede.enviar(ip, j)
+            self.interRede.serverEnviar(ip, j)
 
     def __enviarCarta(self, c):
         for id in self.__jogadores_ip:
             ip = self.__jogadores_ip[id]
-            self.interRede.enviar(ip, c)
+            self.interRede.serverEnviar(ip, c)
 
     def __enviarLista(self, l):
         for id in self.__jogadores_ip:
             ip = self.__jogadores_ip[id]
-            self.interRede.enviar(ip, l)
+            self.interRede.serverEnviar(ip, l)
 
     def __esperarResposta(self):
         reply = None
-        while reply == None:
-            reply = self.interRede.receber()
+        while not reply:
+            reply = self.interRede.serverReceber()
         return reply
     

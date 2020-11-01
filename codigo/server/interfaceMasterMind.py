@@ -69,6 +69,11 @@ class InterfaceMasterMind(InterfaceRede):
         ## {(ip, port) : MastermindConnectionThreadTCP obj}
         self.__server.callback_client_send(self.findConnectionObject(ip),texto)
     
+    def serverEnd(self):
+        self.__server.accepting_disallow()
+        self.__server.disconnect_clients()
+        self.__server.disconnect()
+
     def clienteReceber(self):
         #if len(self.__client.respostas) > 0:
         #    print(self.__client.respostas)
@@ -84,11 +89,6 @@ class InterfaceMasterMind(InterfaceRede):
 
     def clienteEnd(self):
         self.__client.disconnect()
-
-    def serverEnd(self):
-        self.__server.accepting_disallow()
-        self.__server.disconnect_clients()
-        self.__server.disconnect()
 
     def getIp(self) -> str:
         external_ip_v4 = urlopen('https://v4.ident.me/').read().decode('utf8')
