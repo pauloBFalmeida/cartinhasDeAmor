@@ -147,6 +147,7 @@ class ControleCliente():
     def __enviar(self, lista):
         self.__interRede.clienteEnviar(lista)
 
+    ## literalmente so copiei do outro la
     def __esperarResposta(self):
         reply = None
         tentativas = 100

@@ -117,4 +117,4 @@ class ControleServer():
     def enviarMsgChat(self, msg):
         jogador = msg.get_origem()
         mensagem = ['msg', jogador.get_nome(), msg.get_cor(), msg.get_texto()]
-        self._enviar(mensagem)
+        self.__enviar(mensagem)
