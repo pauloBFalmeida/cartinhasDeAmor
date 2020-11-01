@@ -9,24 +9,16 @@ from client.interfaceUsuario import InterfaceUsuario
 
 class ControleCliente():
 
-    def __init__(self, interfaceRede, interfaceUsuario, meuIp=None):
+    def __init__(self, interfaceRede, interfaceUsuario):
         self.__interRede = interfaceRede
         self.__interUsuario = interfaceUsuario
-        self.meuIp = meuIp if meuIp else self.__interRede.getIp()
-        self.__cmd = ['cmd']
-        self.__ret = ['ret']
-        self.__msg = ['msg']
+        self.__cmd = 'cmd'
+        self.__ret = 'ret'
+        self.__msg = 'msg'
         self.__jogadores = []
-
-    def getIp(self):
-        return self.meuIp
 
     def setHostIp(self, ip):
         self.__hostIp = ip
-
-    def obterJogadores(self):
-        self.__enviar(self.__cmd+"jogadores")
-        self.__jogadores = list()
 
     def main(self):
         while True:
@@ -34,127 +26,129 @@ class ControleCliente():
             self.__processar(entrada)
 
     def __processar(self, entrada):
-        if entrada[0] == "cmd":
+        if entrada[0] == self.__cmd:
             self.__processarCmd(entrada[1:])
-        elif entrada[1] == "msg":
+        elif entrada[1] == self.__msg:
             pass
-    
-    def decode_list(self, entrada):
-        args = []
-        for i in entrada[2:]:
-            args.append(jsonpickle.decode(entrada[i]))
-        return args
 
-    def __processarCmd(self, comandos):
-        if comandos[0] == "iniciarRound":
+    
+    def __processarCmd(self, entrada):
+        comando = entrada.pop(0)
+        if comando == "iniciarRound":
             self.__iniciarRound()
-        elif comandos[0] == "apresentarGanhadorDoJogo":
-            args = self.decode_list(comandos)
-            self.apresentarGanhadorDoJogo(args[0])
-        elif comandos[0] == "apresentarGanhadorDoRound":
-            args = self.decode_list(comandos)
-            self.apresentarGanhadorDoRound(args[0])
-        elif comandos[0] == "compararCartas":
-            args = self.decode_list(comandos)
-            self.compararCartas(args[0], args[1])
-        elif comandos[0] == "jogarCarta":
-            args = self.decode_list(comandos)
-            self.jogarCarta(args[0], args[1])
-        elif comandos[0] == "selecionaJogador":
-            args = self.decode_list(comandos)
-            self.selecionaJogador(args[0], args[1], args[2], args[3])
-        elif comandos[0] == "selecionaValorGuarda":
-            args = self.decode_list(comandos)
-            self.selecionaValorGuarda(args[0])
-        elif comandos[0] == "jogadorEscolherCarta":
-            args = self.decode_list(comandos)
-            self.jogadorEscolherCarta(args[0])
-        elif comandos[0] == "alertarSobreCondessa":
-            args = self.decode_list(comandos)
-            self.alertarSobreCondessa(args[0])
-        elif comandos[0] == "anunciarMorto":
-            args = self.decode_list(comandos)
-            self.anunciarMorto(args[0],)
-        elif comandos[0] == "resultadoGuarda":
-            args = self.decode_list(comandos)
-            self.resultadoGuarda(args[0])
-        elif comandos[0] == "resultadoPadre":
-            args = self.decode_list(comandos)
-            self.resultadoPadre(args[0])
-        elif comandos[0] == "resultadoBarao":
-            args = self.decode_list(comandos)
-            self.decode_list(args[0])
-        elif comandos[0] == "resultadoAia":
-            args = self.decode_list(comandos)
-            self.resultadoAia(args[0])
-        elif comandos[0] == "resultadoPrincipe":
-            args = self.decode_list(comandos)
-            self.resultadoPrincipe(args[0])
-        elif comandos[0] == "resultadoRei":
-            args = self.decode_list(comandos)
-            self.resultadoRei(args[0], args[1])
-        elif comandos[0] == "resultadoPrincesa":
-            args = self.decode_list(comandos)
-            self.resultadoPrincesa(args[0])
-        
+        elif comando == "compararCartas":
+            j_ganhador = jsonpickle.decode(entrada[0])
+            jogadores = jsonpickle.decode(entrada[1])
+            self.__compararCartas(j_ganhador, jogadores)
+        elif comando == "apresentarGanhadorDoRound":
+            ganhador = jsonpickle.encode(entrada[0])
+            self.__apresentarGanhadorDoRound(ganhador)
+        elif comando == "apresentarGanhadorDoJogo":
+            ganhador = jsonpickle.encode(entrada[0])
+            self.__apresentarGanhadorDoJogo(ganhador)
+        elif comando == "jogadorEscolherCarta":
+            jogadorTurno = jsonpickle.encode(entrada[0])
+            self.__jogadorEscolherCarta(jogadorTurno)
+        elif comando == "alertarSobreCondessa":
+            jogadorTurno = jsonpickle.encode(entrada[0])
+            self.__alertarSobreCondessa(jogadorTurno)
+        elif comando == "jogarCarta":
+            jogadorTurno = jsonpickle.encode(entrada[0])
+            carta_jogada = jsonpickle.encode(entrada[1])
+            self.__jogarCarta(jogadorTurno, carta_jogada)
+        elif comando == "selecionaJogador":
+            jogadorTurno = jsonpickle.encode(entrada[0])
+            jogadores = [jsonpickle.encode(j) for j in entrada[1]]
+            siMesmo = entrada[2]
+            fraseInicio = entrada[3]
+            self.__selecionaJogador(jogadorTurno, jogadores, siMesmo, fraseInicio)
+        elif comando == "selecionaValorGuarda":
+            jogadorTurno = jsonpickle.encode(entrada[0])
+            self.__selecionaValorGuarda(jogadorTurno)
+        elif comando == "resultadoGuarda":
+            result = jsonpickle.encode(entrada[0])
+            self.__resultadoGuarda(result)
+        elif comando == "resultadoPadre":
+            result = jsonpickle.encode(entrada[0])
+            self.__resultadoPadre(result)
+        elif comando == "resultadoBarao":
+            result = jsonpickle.encode(entrada[0])
+            self.__resultadoBarao(result)
+        elif comando == "resultadoAia":
+            result = jsonpickle.encode(entrada[0])
+            self.__resultadoAia(result)
+        elif comando == "resultadoPrincipe":
+            result = jsonpickle.encode(entrada[0])
+            self.__resultadoPrincipe(result)
+        elif comando == "resultadoRei":
+            result = jsonpickle.encode(entrada[0])
+            jogadorTurno  = jsonpickle.encode(entrada[1])
+            self.__resultadoRei(result, jogadorTurno)
+        elif comando == "resultadoPrincesa":
+            result = jsonpickle.encode(entrada[0])
+            self.__resultadoPrincesa(result)
+        elif comando == "anunciarMorto":
+            jogador = jsonpickle.encode(entrada[0])
+            self.__anunciarMorto(jogador)
+
 
     def __iniciarRound(self):
         self.__interUsuario.iniciarRound()
 
-    def compararCartas(self, j_ganhador, jogadores):
+    def __compararCartas(self, j_ganhador, jogadores):
         self.__interUsuario.compararCartas(j_ganhador, jogadores)
     
-    def apresentarGanhadorDoRound(self, ganhador):
+    def __apresentarGanhadorDoRound(self, ganhador):
         self.__interUsuario.apresentarGanhadorDoRound(ganhador)
 
-    def apresentarGanhadorDoJogo(self, ganhador):
+    def __apresentarGanhadorDoJogo(self, ganhador):
         self.__interUsuario.apresentarGanhadorDoJogo(ganhador)
 
-    def jogadorEscolherCarta(self, jogadorTurno):
+    def __jogadorEscolherCarta(self, jogadorTurno):
         ret = self.__interUsuario.jogadorEscolherCarta(jogadorTurno)
-        self.__interRede.clienteEnviar(ret)
+        self.__enviar([self.__ret]+ret)
         
-    def alertarSobreCondessa(self, jogadorTurno):
+    def __alertarSobreCondessa(self, jogadorTurno):
         self.__interUsuario.alertarSobreCondessa(jogadorTurno)
 
-    def jogarCarta(self, jogadorTurno, carta_jogada):
+    def __jogarCarta(self, jogadorTurno, carta_jogada):
         self.__interUsuario.jogarCarta(jogadorTurno, carta_jogada)
 
-    def selecionaJogador(self, jogadorTurno, jogadores, siMesmo, fraseInicio):
+    def __selecionaJogador(self, jogadorTurno, jogadores, siMesmo, fraseInicio):
         ret = self.__interUsuario.selecionaJogador(jogadorTurno, jogadores, siMesmo, fraseInicio)
-        self.__interRede.clienteEnviar(ret)
+        self.__enviar([self.__ret]+ret)
 
-    def selecionaValorGuarda(self, jogadorTurno):
+    def __selecionaValorGuarda(self, jogadorTurno):
         ret = self.__interUsuario.selecionaValorGuarda(jogadorTurno)
-        self.__interRede.clienteEnviar(ret)
+        self.__enviar([self.__ret]+ret)
 
-    def resultadoGuarda(self, result):
+    def __resultadoGuarda(self, result):
         self.__interUsuario.resultadoGuarda(result)
 
-    def resultadoPadre(self, result):
+    def __resultadoPadre(self, result):
         self.__interUsuario.resultadoPadre(result)
 
-    def resultadoBarao(self, result):
+    def __resultadoBarao(self, result):
         self.__interUsuario.resultadoBarao(result)
 
-    def resultadoAia(self, result):
+    def __resultadoAia(self, result):
         self.__interUsuario.resultadoAia(result)
 
-    def resultadoPrincipe(self, result):
+    def __resultadoPrincipe(self, result):
         self.__interUsuario.resultadoPrincipe(result)
 
-    def resultadoRei(self, result, jogadorTurno):
+    def __resultadoRei(self, result, jogadorTurno):
         self.__interUsuario.resultadoRei(jogadorTurno)
 
-    def resultadoPrincesa(self, result):
+    def __resultadoPrincesa(self, result):
         self.__interUsuario.resultadoPrincesa(result)
 
-    def anunciarMorto(self, jogador):
+    def __anunciarMorto(self, jogador):
         self.__interUsuario.anunciarMorto(jogador)
     
 
     def __enviar(self, lista):
-        self.interRede.clienteEnviar(lista)
+        self.enviar(lista)
 
     def __esperarResposta(self):
         reply = None
