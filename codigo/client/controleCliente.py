@@ -1,6 +1,7 @@
 # coding: utf-8
 from sys import path
 path.append('codigo')
+import jsonpickle
 from jogador import Jogador
 from carta import Carta
 from server.interfaceRede import InterfaceRede
@@ -58,8 +59,9 @@ class ControleCliente():
         self.__interUsuario.apresentarGanhadorDoJogo(ganhador)
 
     def jogadorEscolherCarta(self, jogadorTurno):
-        self.__interUsuario.jogadorEscolherCarta(jogadorTurno)
-
+        ret = self.__interUsuario.jogadorEscolherCarta(jogadorTurno)
+        self.__interRede.clienteEnviar(ret)
+        
     def alertarSobreCondessa(self, jogadorTurno):
         self.__interUsuario.alertarSobreCondessa(jogadorTurno)
 
@@ -67,11 +69,12 @@ class ControleCliente():
         self.__interUsuario.jogarCarta(jogadorTurno, carta_jogada)
 
     def selecionaJogador(self, jogadorTurno, jogadores, siMesmo, fraseInicio):
-        send_back = self.__interUsuario.selecionaJogador(jogadorTurno, jogadores, siMesmo, fraseInicio)
-        self.__interRede.clienteEnviar(send_back)
+        ret = self.__interUsuario.selecionaJogador(jogadorTurno, jogadores, siMesmo, fraseInicio)
+        self.__interRede.clienteEnviar(ret)
 
     def selecionaValorGuarda(self, jogadorTurno):
-        self.__interUsuario.selecionaValorGuarda(jogadorTurno)
+        ret = self.__interUsuario.selecionaValorGuarda(jogadorTurno)
+        self.__interRede.clienteEnviar(ret)
 
     def resultadoGuarda(self, result):
         self.__interUsuario.resultadoGuarda(result)
