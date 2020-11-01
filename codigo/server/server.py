@@ -2,6 +2,7 @@
 #from chat_server import ServerChat
 from interfaceMasterMind import InterfaceMasterMind
 import time
+import socket
 
 class Server():
 
@@ -10,28 +11,49 @@ class Server():
         self.__interRede = InterfaceMasterMind()
         self.__interRede.startServer('localhost')
 
-    def main(self):
+    def testeServer1(self):
         time.sleep(1)
         reply = None
-        while reply == None:
-            #self.__interRede.enviarLista("localhost", [1,2,3])
+        while not reply:
             reply = self.__interRede.serverReceber()
-            
-        
-    def testeCliente(self):
+        print(reply)
+    
+    def teste2(self):
+        self.__interRede.serverEnviar('127.0.0.1', "mensagezeinhaa")
+
+    def testeEnd(self):
+        self.__interRede.serverEnd()
+
+class Cliente():
+    def __init__(self):
         self.interC = InterfaceMasterMind()
         self.interC.startClient('localhost')
-        self.interC.enviarLista('localhost', [1,2,3])
+
+    def testeCliente1(self):
+        self.interC.clienteEnviar([1,2,3])
+
+    def teste2(self):
+        time.sleep(1)
+        reply = None
+        while not reply:
+            reply = self.interC.clienteReceber()
+        print(reply)
 
     def testeEnd(self):
         self.interC.clienteEnd()
-        self.__interRede.serverEnd()
         
 
 s = Server()
-s.testeCliente()
-s.main()
+c = Cliente()
+print("Cliente envia pro server")
+c.testeCliente1()
+s.testeServer1()
 
+print("Server envia pro cliente")
+s.teste2()
+c.teste2()
+
+c.testeEnd()
 s.testeEnd()
 print('fim')
     

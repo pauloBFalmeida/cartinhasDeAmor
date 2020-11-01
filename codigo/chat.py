@@ -2,7 +2,7 @@ from time import gmtime, strftime
 # from Mastermind import *
 import threading
 
-class Mensagem:
+class Mensagem():
     
     def __init__(self,user_origem , cor, texto):
         # acho que a data deve ser criada quando a mensagem entrar no chat
@@ -23,7 +23,7 @@ class Mensagem:
     def get_texto(self):
         return self.__texto
 
-class Chat:
+class Chat():
 
     def __init__(self):
         self.mensagens = []

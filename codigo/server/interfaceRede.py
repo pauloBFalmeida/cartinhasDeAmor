@@ -8,15 +8,19 @@ class InterfaceRede(metaclass=abc.ABCMeta):
         raise NotImplementedError
     
     @abc.abstractmethod
-    def enviar(self, ip: str, texto: str):
+    def serverEnviar(self, ip: str, texto: str):
         raise NotImplementedError
     
     @abc.abstractmethod
-    def enviarLista(self, ip: str, lista: list):
+    def clienteEnviar(self, ip: str, message: list):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def receber(self) -> str:
+    def serverReceber(self) -> str:
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def clienteReceber(self) -> str:
         raise NotImplementedError
     
     @abc.abstractmethod
