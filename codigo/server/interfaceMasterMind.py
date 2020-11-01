@@ -1,13 +1,12 @@
 # coding: utf-8
-#from sys import path
-#path.append('codigo')
-#from server.interfaceRede import InterfaceRede
-#from server.Mastermind import *
-
-from interfaceRede import InterfaceRede
-from Mastermind import *
-from urllib.request import urlopen
 import threading
+from sys import path
+path.append('codigo')
+from server.interfaceRede import InterfaceRede
+from server.Mastermind import *
+
+#from interfaceRede import InterfaceRede
+#from Mastermind import *
 
 class InterfaceMasterMind(InterfaceRede):
 

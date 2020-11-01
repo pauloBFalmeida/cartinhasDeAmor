@@ -1,7 +1,7 @@
 # coding: utf-8
+import jsonpickle
 from sys import path
 path.append('codigo')
-import jsonpickle
 from jogador import Jogador
 from carta import Carta
 from server.interfaceRede import InterfaceRede
@@ -15,10 +15,12 @@ class ControleCliente():
         self.__cmd = 'cmd'
         self.__ret = 'ret'
         self.__msg = 'msg'
-        self.__jogadores = []
 
     def setHostIp(self, ip):
         self.__hostIp = ip
+
+    def conectarServer(self):
+        self.__enviar([])
 
     def main(self):
         while True:

@@ -4,12 +4,12 @@ path.append('codigo')
 from jogador import Jogador
 from mesa import Mesa
 from carta import Carta, Guarda, Padre, Barao, Aia, Principe, Rei, Condessa, Princesa
-from server.controleServer import ControleServer
+#from server.controleServer import ControleServer
 
 class ControleJogo():
 
     def __init__(self, controleServer):
-        self.controleServer = ControleServer
+        self.controleServer = controleServer
 
     def setMesa(self, mesa):
         self.__mesa = mesa
