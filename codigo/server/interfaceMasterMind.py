@@ -15,13 +15,23 @@ class InterfaceMasterMind(InterfaceRede):
         self.__port = 6317
 
     def startClient(self, ip):
-        self.__client = MastermindClientTCP(1.0,1.0)
+        class Client(MastermindClientTCP):
+            def __init__(self):
+                self.respostas = []
+                MastermindClientTCP.__init__(self,
+                                            1.0,    # timeout_connect
+                                            1.0)    # timeout_receive
+            def callback_client_handle(self, connection_object,data):
+                self.respostas.append(data)
+
+        self.__client = Client()
         self.__ipHost = ip
         self.__client.connect(ip, self.__port)
 
     
     def startServer(self, ip):
-        class Server(MastermindServerCallbacksEcho,MastermindServerCallbacksDebug,MastermindServerTCP):
+        #class Server(MastermindServerCallbacksEcho,MastermindServerCallbacksDebug,MastermindServerTCP):
+        class Server(MastermindServerTCP):
             def __init__(self):
                 self.respostas = []
                 MastermindServerTCP.__init__(self,
@@ -40,6 +50,9 @@ class InterfaceMasterMind(InterfaceRede):
             r = self.__server.respostas.pop()
             print('resposta')
             print(r)
+
+    def clienteReceber(self):
+        self.__client.receive(True)
 
     def clienteEnd(self):
         self.__client.disconnect()
