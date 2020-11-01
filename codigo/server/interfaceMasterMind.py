@@ -24,13 +24,12 @@ class InterfaceMasterMind(InterfaceRede):
             # esse aqui não existe
             # def callback_client_handle(self, connection_object,data):
             #    self.respostas.append(data)
-            def receive(self):
-                self.respostas.append(super(Client,self).receive(True))
+            # def receive(self):
+            #     self.respostas.append(self.receive())
 
         self.__client = Client()
         self.__ipHost = ip
         self.__client.connect(ip, self.__port)
-
     
     def startServer(self, ip):
         #class Server(MastermindServerCallbacksEcho,MastermindServerCallbacksDebug,MastermindServerTCP):
@@ -45,23 +44,34 @@ class InterfaceMasterMind(InterfaceRede):
                 self.respostas.append(data)
 
         self.__server = Server()
+        # {ip : MastermindClientThreadTCP} --> acabou que nao fiz assim
+        # self.__clientes = {}
         self.__server.connect(ip, self.__port)
         self.__server.accepting_allow()
-        
+
+    def findConnectionObject(self, ip):
+        # nao queria mexer tanto com o negocio, então tem essa solucao aqui :p
+        clientes = self.__server._mm_connections
+        for key in clientes:
+            if key[0] == ip:
+                return clientes[key]
+
     def serverReceber(self):
         if len(self.__server.respostas) > 0:
             r = self.__server.respostas.pop()
-            # print('resposta')
-            # print(r)
-            print(self.__server._mm_connections)
         return r
-
+    
+    def serverEnviar(self, ip: str, texto: str):
+        ## formato do dict de conexoes do server: 
+        ## {(ip, port) : MastermindConnectionThreadTCP obj}
+        self.__server.callback_client_send(self.findConnectionObject(ip),texto)
+    
     def clienteReceber(self):
-        if len(self.__client.respostas) > 0:
-            r = self.__client.respostas.pop()
-            # print('resposta')
-            # print(r)
-        return r
+        #if len(self.__client.respostas) > 0:
+        #    print(self.__client.respostas)
+            #print(self.__client.respostas.pop())
+        # return reply
+        return self.__client.receive(True)
 
     def clienteEnd(self):
         self.__client.disconnect()
@@ -71,20 +81,11 @@ class InterfaceMasterMind(InterfaceRede):
         self.__server.disconnect_clients()
         self.__server.disconnect()
 
-
     def getIp(self) -> str:
         external_ip_v4 = urlopen('https://v4.ident.me/').read().decode('utf8')
         return external_ip_v4
-    
-    def serverEnviar(self, texto: str):
-        ## formato do dict de conexões do server: 
-        ## {(ip, port) : MastermindConnectionThreadTCP obj}
-        ## print(self.__server._mm_connections)
-        client_to_send = next(iter(self.__server._mm_connections.values()))
-        self.__server.callback_client_send(client_to_send,texto)
-        
-    
-    def enviarLista(self, ip: str, lista: list):
+
+    def enviarLista(self, lista: list):
         self.__client.send(lista,None)
 
     def receber(self) -> str:

@@ -13,10 +13,13 @@ class ControleServer():
         self.__cmd = 'cmd:'
         self.__jogadores_ip = {}
 
+    def getConnectionObject(self):
+        
+
     def getIp(self):
         return self.meuIp
 
-    def addJogadorIdIp(self, id, ip):
+    def addJogadorIdIp(self, id, connection_object):
         self.__jogadores_ip[id] = ip
 
     def iniciarRound(self):
@@ -127,5 +130,5 @@ class ControleServer():
         reply = None
         while reply == None:
             reply = self.interRede.receber()
-        return None
+        return reply
     
