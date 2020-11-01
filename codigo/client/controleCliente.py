@@ -67,7 +67,8 @@ class ControleCliente():
         self.__interUsuario.jogarCarta(jogadorTurno, carta_jogada)
 
     def selecionaJogador(self, jogadorTurno, jogadores, siMesmo, fraseInicio):
-        self.__interUsuario.selecionaJogador(jogadorTurno, jogadores, siMesmo, fraseInicio)
+        send_back = self.__interUsuario.selecionaJogador(jogadorTurno, jogadores, siMesmo, fraseInicio)
+        self.__interRede.clienteEnviar(send_back)
 
     def selecionaValorGuarda(self, jogadorTurno):
         self.__interUsuario.selecionaValorGuarda(jogadorTurno)
