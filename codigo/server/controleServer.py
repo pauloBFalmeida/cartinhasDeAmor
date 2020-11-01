@@ -93,13 +93,16 @@ class ControleServer():
         j_json = jsonpickle.encode(jogador)
         self.__enviar([self.__cmd,"anunciarMorto",j_json])
 
+    # enviar para o jogador do turno
     def __jogadorTurnoEnviar(self, jogadorTurno, lista):
         jt_json = jsonpickle.encode(jogadorTurno)
         lista = lista[0]+['jogadorTurno',jt_json]+lista[1:]
         self.__enviar(lista)
 
+    # enviar para todos os jogadores
     def __enviar(self, lista):
-        self.interRede.clienteEnviar(lista)
+        for id in self.__jogadores_ip:
+            self.interRede.clienteEnviar(self.__jogadores_ip[id], lista)
 
     def __esperarResposta(self):
         reply = None
@@ -108,4 +111,10 @@ class ControleServer():
             reply = self.interRede.serverReceber()
             tentativas -= 1
         return reply
-    
+
+    ### CHAT ###
+
+    def enviarMsgChat(self, msg):
+        jogador = msg.get_origem()
+        mensagem = ['msg', jogador.get_nome(), msg.get_cor(), msg.get_texto()]
+        self._enviar(mensagem)

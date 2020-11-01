@@ -154,3 +154,4 @@ class ControleCliente():
             reply = self.__interRede.clienteReceber()
             tentativas -= 1
         return reply
+
