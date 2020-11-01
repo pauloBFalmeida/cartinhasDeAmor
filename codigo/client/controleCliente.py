@@ -38,57 +38,57 @@ class ControleCliente():
             self.__iniciarRound()
         elif comando == "compararCartas":
             j_ganhador = jsonpickle.decode(entrada[0])
-            jogadores = jsonpickle.decode(entrada[1])
+            jogadores = [jsonpickle.decode(j) for j in entrada[1]]
             self.__compararCartas(j_ganhador, jogadores)
         elif comando == "apresentarGanhadorDoRound":
-            ganhador = jsonpickle.encode(entrada[0])
+            ganhador = jsonpickle.decode(entrada[0])
             self.__apresentarGanhadorDoRound(ganhador)
         elif comando == "apresentarGanhadorDoJogo":
-            ganhador = jsonpickle.encode(entrada[0])
+            ganhador = jsonpickle.decode(entrada[0])
             self.__apresentarGanhadorDoJogo(ganhador)
         elif comando == "jogadorEscolherCarta":
-            jogadorTurno = jsonpickle.encode(entrada[0])
+            jogadorTurno = jsonpickle.decode(entrada[0])
             self.__jogadorEscolherCarta(jogadorTurno)
         elif comando == "alertarSobreCondessa":
-            jogadorTurno = jsonpickle.encode(entrada[0])
+            jogadorTurno = jsonpickle.decode(entrada[0])
             self.__alertarSobreCondessa(jogadorTurno)
         elif comando == "jogarCarta":
-            jogadorTurno = jsonpickle.encode(entrada[0])
-            carta_jogada = jsonpickle.encode(entrada[1])
+            jogadorTurno = jsonpickle.decode(entrada[0])
+            carta_jogada = jsonpickle.decode(entrada[1])
             self.__jogarCarta(jogadorTurno, carta_jogada)
         elif comando == "selecionaJogador":
-            jogadorTurno = jsonpickle.encode(entrada[0])
-            jogadores = [jsonpickle.encode(j) for j in entrada[1]]
+            jogadorTurno = jsonpickle.decode(entrada[0])
+            jogadores = [jsonpickle.decode(j) for j in entrada[1]]
             siMesmo = entrada[2]
             fraseInicio = entrada[3]
             self.__selecionaJogador(jogadorTurno, jogadores, siMesmo, fraseInicio)
         elif comando == "selecionaValorGuarda":
-            jogadorTurno = jsonpickle.encode(entrada[0])
+            jogadorTurno = jsonpickle.decode(entrada[0])
             self.__selecionaValorGuarda(jogadorTurno)
         elif comando == "resultadoGuarda":
-            result = jsonpickle.encode(entrada[0])
+            result = jsonpickle.decode(entrada[0])
             self.__resultadoGuarda(result)
         elif comando == "resultadoPadre":
-            result = jsonpickle.encode(entrada[0])
+            result = jsonpickle.decode(entrada[0])
             self.__resultadoPadre(result)
         elif comando == "resultadoBarao":
-            result = jsonpickle.encode(entrada[0])
+            result = jsonpickle.decode(entrada[0])
             self.__resultadoBarao(result)
         elif comando == "resultadoAia":
-            result = jsonpickle.encode(entrada[0])
+            result = jsonpickle.decode(entrada[0])
             self.__resultadoAia(result)
         elif comando == "resultadoPrincipe":
-            result = jsonpickle.encode(entrada[0])
+            result = jsonpickle.decode(entrada[0])
             self.__resultadoPrincipe(result)
         elif comando == "resultadoRei":
-            result = jsonpickle.encode(entrada[0])
-            jogadorTurno  = jsonpickle.encode(entrada[1])
+            result = jsonpickle.decode(entrada[0])
+            jogadorTurno  = jsonpickle.decode(entrada[1])
             self.__resultadoRei(result, jogadorTurno)
         elif comando == "resultadoPrincesa":
-            result = jsonpickle.encode(entrada[0])
+            result = jsonpickle.decode(entrada[0])
             self.__resultadoPrincesa(result)
         elif comando == "anunciarMorto":
-            jogador = jsonpickle.encode(entrada[0])
+            jogador = jsonpickle.decode(entrada[0])
             self.__anunciarMorto(jogador)
 
 
@@ -109,7 +109,7 @@ class ControleCliente():
         self.__enviar([self.__ret]+ret)
         
     def __alertarSobreCondessa(self, jogadorTurno):
-        self.__interUsuario.alertarSobreCondessa(jogadorTurno)
+        self.__interUsuario.alertarSobreCondessa()
 
     def __jogarCarta(self, jogadorTurno, carta_jogada):
         self.__interUsuario.jogarCarta(jogadorTurno, carta_jogada)
@@ -119,7 +119,7 @@ class ControleCliente():
         self.__enviar([self.__ret]+ret)
 
     def __selecionaValorGuarda(self, jogadorTurno):
-        ret = self.__interUsuario.selecionaValorGuarda(jogadorTurno)
+        ret = self.__interUsuario.selecionaValorGuarda()
         self.__enviar([self.__ret]+ret)
 
     def __resultadoGuarda(self, result):
