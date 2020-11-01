@@ -124,5 +124,8 @@ class ControleServer():
             self.interRede.enviar(ip, l)
 
     def __esperarResposta(self):
+        # reply = None
+        # while reply == None:
+        #     reply = self.interRede.receber()
         return None
     

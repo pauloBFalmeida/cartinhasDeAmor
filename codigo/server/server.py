@@ -12,10 +12,11 @@ class Server():
 
     def main(self):
         time.sleep(1)
-        while True:
+        reply = None
+        while reply == None:
             #self.__interRede.enviarLista("localhost", [1,2,3])
-            self.__interRede.serverReceber()
-            break
+            reply = self.__interRede.serverReceber()
+            
         
     def testeCliente(self):
         self.interC = InterfaceMasterMind()

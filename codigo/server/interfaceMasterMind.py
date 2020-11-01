@@ -50,6 +50,7 @@ class InterfaceMasterMind(InterfaceRede):
             r = self.__server.respostas.pop()
             print('resposta')
             print(r)
+        return r
 
     def clienteReceber(self):
         self.__client.receive(True)
