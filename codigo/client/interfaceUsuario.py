@@ -1,7 +1,9 @@
 # coding: utf-8
 import abc
-from codigo.jogador import Jogador
-from codigo.carta import Carta
+from sys import path
+path.append('codigo')
+from jogador import Jogador
+from carta import Carta
 
 class InterfaceUsuario(metaclass=abc.ABCMeta):
 
@@ -38,10 +40,6 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def jogadorEscolherCarta(self, j_origem: Jogador):
-        raise NotImplementedError
-
-    @abc.abstractmethod
     def selecionaJogador(self, j_origem: Jogador, jogadores: list, siMesmo: bool, textoInicio: str) -> Jogador:
         raise NotImplementedError
 
@@ -50,7 +48,7 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def jogadorEscolheCarta(self, j_origem: Jogador) -> int:
+    def jogadorEscolherCarta(self, j_origem: Jogador) -> int:
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -88,9 +86,12 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def resultadoPrincesa(self, j: Jogador):
         raise NotImplementedError
-    
+        
     @abc.abstractmethod
-    def entrarIp(self) -> str:
+    def entrarPartida(self) -> bool:
+        raise NotImplementedError
+    
+    def entrarIpHost(self) -> str:
         raise NotImplementedError
 
     @abc.abstractmethod

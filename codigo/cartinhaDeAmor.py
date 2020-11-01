@@ -1,10 +1,16 @@
 # coding: utf-8
 import pygame
-from codigo.mesa import Mesa
-from codigo.jogador import Jogador
-from codigo.controleJogo import ControleJogo
-from codigo.interfaceTexto import InterfaceTexto
-from codigo.interfaceMasterMind import InterfaceMasterMind
+from sys import path
+path.append('codigo')
+from mesa import Mesa
+from jogador import Jogador
+from server.controleJogo import ControleJogo
+from server.controleRede import ControleRede
+from server.controleServer import ControleServer
+#from server.interfaceMasterMind import InterfaceMasterMind
+from server.interfaceMasterMind import InterfaceMasterMindClient
+#from server.interfaceMasterMind import InterfaceMasterMindServer
+from client.interfaceTexto import InterfaceTexto
 
 # classe que comunica o controle com as interfaces
 class CartinhaDeAmor:
@@ -25,7 +31,15 @@ class CartinhaDeAmor:
 		
 		self.__interfaceUsuario = InterfaceTexto()
 		self.__interfaceRede = InterfaceMasterMind()
-		self.controleJogo = ControleJogo(self.__interfaceUsuario, self.__interfaceRede)
+		self.__controleServer = ControleServer(self.__interfaceRede, "localhost")
+		self.controleJogo = ControleJogo(self.__controleServer)
+		self.cores = [	(200,200,200),
+						(200,100,100),
+						(100,0,0),
+						(100,200,100),
+						(0,100,0),
+						(100,100,200),
+						(0,0,100)	]
 
 	def main(self):
 		self.preparativos()
@@ -41,31 +55,45 @@ class CartinhaDeAmor:
 			self.logic()
 			self.render(game.win)
 
-	def criarJogoHost(self):
-		self.mesa = Mesa(1)
+	#def criarJogoHost(self):
+	#	self.mesa = Mesa(1)
+	#	# criar jogador
+	#	id = 0
+	#	nome = self.__interfaceUsuario.nomeJogador(id)
+	#	j = Jogador(id, nome, self.cores[id])
+	#	self.mesa.addJogador(j)
+	#	# 
+	#	self.controleJogo.setMesa(self.mesa)
+	#	self.controleRede = ControleRede(interfaceRede, True)
+	#	self.__interfaceUsuario.addChat('ip: '+self.ControleRede.getIp())
+		
+	#	for id in range(1, self.__interfaceUsuario.numeroJogadores()):
+	#		ip = self.__interfaceUsuario.entrarIpJogador()
+	#		self.controleRede.addJogadorIdIp(id, ip)
+
+	def entrarJogo(self):
+		if self.__online:
+			host_ip = self.__interfaceUsuario.entrarIpHost()
+			cliente_ip = None
+		else:
+			host_ip = "localhost"
+			cliente_ip = "localhost"
+		self.controleRede = ControleRede(self.__interfaceRede, cliente_ip)
+		self.controleRede.setHostIp(host_ip)
+		id = self.controleRede.conectarHost()
 		# criar jogador
 		nome = self.__interfaceUsuario.nomeJogador(id)
-		j = Jogador(0, nome, (200,200,200))
-		self.mesa.addJogador(j)
+		j = Jogador(id, nome, self.cores[id])
 		# 
-		self.controleJogo.setMesa(self.mesa)
-		self.controleRede = ControleRede(interfaceRede, True)
-		self.__interfaceUsuario.addChat('ip: '+self.ControleRede.getIp())
-		
-		for id in range(1, self.__interfaceUsuario.numeroJogadores()):
-			ip = __interfaceUsuario.entrarIp()
-			self.controleRede.addJogadorIdIp(id, ip)
-
+		self.controleRede.enviarJogador(j)
 
 	def preparativos(self):
-		self.online = self.__interfaceUsuario.entrarOnline()
-		if self.online:
-			self.criarJogoHost()
-		else:
-			self.mesa = Mesa(1)
-			for i in range(self.controleJogo.getNumeroJogadores()):
-				self.mesa.addJogador(Jogador(i, 'j'+str(i), 0))
-			self.controleJogo.setMesa(self.mesa)
+		#self.__online = self.__interfaceUsuario.entrarOnline()
+		#entrarPartida = self.__interfaceUsuario.entrarPartida()
+		self.__online = False
+		entrarPartida = True
+		if entrarPartida:
+			self.entrarJogo()
 
 
 	def start(self):
