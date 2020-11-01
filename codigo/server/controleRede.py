@@ -1,6 +1,9 @@
 # coding: utf-8
-from codigo.interfaceRede import InterfaceRede
-from codigo.jogador import Jogador
+from sys import path
+path.append('codigo')
+from jogador import Jogador
+from chat import Mensagem
+from server.interfaceRede import InterfaceRede
 
 class ControleRede():
 
@@ -23,9 +26,6 @@ class ControleRede():
                 "\t" + msg.get_texto()
         self.__enviarChat(texto)
 
-    def __enviarChat(self, texto):
-        self.interRede.enviar(self.host_ip, texto)
-
     def conectarHost(self):
         self.interRede.conectarHost(self.host_ip)
         self.interRede.enviar(self.host_ip, ":getId")
@@ -35,9 +35,8 @@ class ControleRede():
         return id
 
     def enviarJogador(self, j):
-        texto = ":jogador" +                    \
-                "\id" + msg.getId() +         \
-                "\n" + jogador.getNome() +     \
-                "\c" + j.getCor() +          \
-        self.interRede.enviar(self.host_ip, texto)
+        dado = ["cmd:jogador", j]
+        self.interRede.enviar(self.host_ip, dado)
         
+    def __enviarChat(self, texto):
+        self.interRede.enviar(self.host_ip, texto)

@@ -10,6 +10,10 @@ class InterfaceRede(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def enviar(self, ip: str, texto: str):
         raise NotImplementedError
+    
+    @abc.abstractmethod
+    def enviarLista(self, ip: str, lista: list):
+        raise NotImplementedError
 
     @abc.abstractmethod
     def receber(self) -> str:

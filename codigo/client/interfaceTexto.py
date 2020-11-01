@@ -1,7 +1,9 @@
 # coding: utf-8
-from codigo.interfaceUsuario import InterfaceUsuario
-from codigo.jogador import Jogador
-from codigo.carta import Carta
+from sys import path
+path.append('codigo')
+from jogador import Jogador
+from carta import Carta
+from client.interfaceUsuario import InterfaceUsuario
 
 class InterfaceTexto(InterfaceUsuario):
         
@@ -58,17 +60,6 @@ class InterfaceTexto(InterfaceUsuario):
     def jogarCarta(self, j: Jogador, c: Carta):
         print(j.getNome()+' jogou a carta '+c.get_nome())
 
-    def jogadorEscolherCarta(self, j_origem: Jogador):
-        i = -1
-        possivel = False
-        while not possivel:
-            print(j_origem.getNome()+' escolha uma carta')
-            for i in range(len(j_origem.getCartasMao())):
-                print(str(i)+' '+j_origem.getCartasMao()[i].get_nome())
-            i = int(input())
-            possivel = (i >= 0 and i < len(j_origem.getCartasMao()))
-        return i
-
     # seleciona um dos jogadores podendo ser siMesmo
     def selecionaJogador(self, j_origem: Jogador, jogadores: list, siMesmo: bool, textoInicio: str) -> Jogador:
         print("escolha outro jogador para "+textoInicio)
@@ -112,8 +103,9 @@ class InterfaceTexto(InterfaceUsuario):
             if not aceito:
                 print('escolha nao e valida')
         return card_id
-
+    
     def jogadorEscolherCarta(self, j_origem: Jogador) -> int:
+        i = -1
         possivel = False
         qtdCartas = len(j_origem.getCartasMao())
         if qtdCartas < 1:
@@ -123,8 +115,8 @@ class InterfaceTexto(InterfaceUsuario):
             for i in range(qtdCartas):
                 print(str(i)+' '+j_origem.getCartasMao()[i].get_nome())
             i = int(input())
-            if i >= 0 and i < qtdCartas:
-                return i
+            possivel = (i >= 0 and i < qtdCartas)
+        return i
 
     def alertarSobreCondessa(self):
         print('voce deve jogar a condessa, pois tem um rei ou principe na mao')

@@ -1,6 +1,8 @@
 # coding: utf-8
-import codigo.jogador
-import codigo.carta
+from sys import path
+path.append('codigo')
+import jogador
+import carta
 from random import shuffle
 
 class Mesa():

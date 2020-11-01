@@ -1,5 +1,7 @@
 # coding: utf-8
-from codigo.jogador import Jogador
+from sys import path
+path.append('codigo')
+from jogador import Jogador
 
 class Carta():
 

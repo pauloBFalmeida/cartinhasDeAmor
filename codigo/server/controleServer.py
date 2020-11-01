@@ -1,7 +1,9 @@
 # coding: utf-8
-from codigo.interfaceRede import InterfaceRede
-from codigo.jogador import Jogador
-from codigo.carta import Carta
+from sys import path
+path.append('codigo')
+from jogador import Jogador
+from carta import Carta
+from server.interfaceRede import InterfaceRede
 
 class ControleServer():
 

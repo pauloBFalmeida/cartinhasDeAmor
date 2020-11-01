@@ -1,9 +1,10 @@
 # coding: utf-8
-from codigo.interfaceUsuario import InterfaceUsuario
-from codigo.jogador import Jogador
-from codigo.mesa import Mesa
-from codigo.carta import Carta, Guarda, Padre, Barao, Aia, Principe, Rei, Condessa, Princesa
-from codigo.controleServer import ControleServer
+from sys import path
+path.append('codigo')
+from jogador import Jogador
+from mesa import Mesa
+from carta import Carta, Guarda, Padre, Barao, Aia, Principe, Rei, Condessa, Princesa
+from server.controleServer import ControleServer
 
 class ControleJogo():
 

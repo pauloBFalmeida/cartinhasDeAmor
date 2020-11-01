@@ -1,10 +1,16 @@
 # coding: utf-8
 import pygame
-from codigo.mesa import Mesa
-from codigo.jogador import Jogador
-from codigo.controleJogo import ControleJogo
-from codigo.interfaceTexto import InterfaceTexto
-from codigo.interfaceMasterMind import InterfaceMasterMind
+from sys import path
+path.append('codigo')
+from mesa import Mesa
+from jogador import Jogador
+from server.controleJogo import ControleJogo
+from server.controleRede import ControleRede
+from server.controleServer import ControleServer
+#from server.interfaceMasterMind import InterfaceMasterMind
+from server.interfaceMasterMind import InterfaceMasterMindClient
+#from server.interfaceMasterMind import InterfaceMasterMindServer
+from client.interfaceTexto import InterfaceTexto
 
 # classe que comunica o controle com as interfaces
 class CartinhaDeAmor:
@@ -25,7 +31,8 @@ class CartinhaDeAmor:
 		
 		self.__interfaceUsuario = InterfaceTexto()
 		self.__interfaceRede = InterfaceMasterMind()
-		self.controleJogo = ControleJogo(self.__interfaceUsuario, self.__interfaceRede)
+		self.__controleServer = ControleServer(self.__interfaceRede, "localhost")
+		self.controleJogo = ControleJogo(self.__controleServer)
 		self.cores = [	(200,200,200),
 						(200,100,100),
 						(100,0,0),
@@ -65,11 +72,13 @@ class CartinhaDeAmor:
 	#		self.controleRede.addJogadorIdIp(id, ip)
 
 	def entrarJogo(self):
-		self.controleRede = ControleRede(interfaceRede, False)
 		if self.__online:
 			host_ip = self.__interfaceUsuario.entrarIpHost()
+			cliente_ip = None
 		else:
 			host_ip = "localhost"
+			cliente_ip = "localhost"
+		self.controleRede = ControleRede(self.__interfaceRede, cliente_ip)
 		self.controleRede.setHostIp(host_ip)
 		id = self.controleRede.conectarHost()
 		# criar jogador
@@ -79,8 +88,10 @@ class CartinhaDeAmor:
 		self.controleRede.enviarJogador(j)
 
 	def preparativos(self):
-		self.__online = self.__interfaceUsuario.entrarOnline()
-		entrarPartida = self.__interfaceUsuario.entrarPartida()
+		#self.__online = self.__interfaceUsuario.entrarOnline()
+		#entrarPartida = self.__interfaceUsuario.entrarPartida()
+		self.__online = False
+		entrarPartida = True
 		if entrarPartida:
 			self.entrarJogo()
 
