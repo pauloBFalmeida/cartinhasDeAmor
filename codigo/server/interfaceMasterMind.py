@@ -7,6 +7,7 @@
 from interfaceRede import InterfaceRede
 from Mastermind import *
 from urllib.request import urlopen
+import threading
 
 class InterfaceMasterMind(InterfaceRede):
 
@@ -24,9 +25,12 @@ class InterfaceMasterMind(InterfaceRede):
             # esse aqui não existe
             # def callback_client_handle(self, connection_object,data):
             #    self.respostas.append(data)
-            # def receive(self):
-            #     self.respostas.append(self.receive())
+            def receive(self):
+                self.respostas.append(super(Client, self).receive(True))
+                self._lock.acquire()
 
+
+        self._lock = threading.Lock()
         self.__client = Client()
         self.__ipHost = ip
         self.__client.connect(ip, self.__port)
@@ -69,9 +73,14 @@ class InterfaceMasterMind(InterfaceRede):
     def clienteReceber(self):
         #if len(self.__client.respostas) > 0:
         #    print(self.__client.respostas)
-            #print(self.__client.respostas.pop())
-        # return reply
-        return self.__client.receive(True)
+        #    reply = self.__client.respostas.pop()
+        #return reply
+        self.__client.receive()
+        self._lock.release()
+        return self.__client.respostas.pop()
+
+    def clienteEnviar(self, message):
+        self.__client.send(message,None)
 
     def clienteEnd(self):
         self.__client.disconnect()
@@ -85,11 +94,5 @@ class InterfaceMasterMind(InterfaceRede):
         external_ip_v4 = urlopen('https://v4.ident.me/').read().decode('utf8')
         return external_ip_v4
 
-    def enviarLista(self, lista: list):
-        self.__client.send(lista,None)
-
-    def receber(self) -> str:
-        return ""
-    
     def conectarHost(self, ip: str) -> bool:
         return True

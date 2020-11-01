@@ -30,14 +30,13 @@ class Cliente():
         self.interC.startClient('localhost')
 
     def testeCliente1(self):
-        self.interC.enviarLista([1,2,3])
+        self.interC.clienteEnviar([1,2,3])
 
     def teste2(self):
         time.sleep(1)
         reply = None
         while not reply:
-            # reply = self.interC.clienteReceber()
-            print(reply)
+            reply = self.interC.clienteReceber()
         print(reply)
 
     def testeEnd(self):
