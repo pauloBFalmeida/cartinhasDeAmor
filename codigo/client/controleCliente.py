@@ -20,7 +20,7 @@ class ControleCliente():
         self.__hostIp = ip
 
     def conectarServer(self):
-        self.__enviar([])
+        self.__interRede.startClient(self.__hostIp)
 
     def main(self):
         while True:
@@ -150,7 +150,7 @@ class ControleCliente():
     
 
     def __enviar(self, lista):
-        self.enviar(lista)
+        self.__interRede.clienteEnviar(lista)
 
     def __esperarResposta(self):
         reply = None
