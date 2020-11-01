@@ -64,10 +64,10 @@ class InterfaceMasterMind(InterfaceRede):
             r = self.__server.respostas.pop()
         return r
     
-    def serverEnviar(self, ip: str, texto: str):
+    def serverEnviar(self, ip: str, lista: list):
         ## formato do dict de conexoes do server: 
         ## {(ip, port) : MastermindConnectionThreadTCP obj}
-        self.__server.callback_client_send(self.findConnectionObject(ip),texto)
+        self.__server.callback_client_send(self.findConnectionObject(ip),lista)
     
     def serverEnd(self):
         self.__server.accepting_disallow()
@@ -84,8 +84,8 @@ class InterfaceMasterMind(InterfaceRede):
         self._lock.release()
         return self.__client.respostas.pop()
 
-    def clienteEnviar(self, message):
-        self.__client.send(message,None)
+    def clienteEnviar(self, lista: list):
+        self.__client.send(lista,None)
 
     def clienteEnd(self):
         self.__client.disconnect()
