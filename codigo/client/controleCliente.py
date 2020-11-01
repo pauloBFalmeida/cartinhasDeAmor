@@ -38,13 +38,65 @@ class ControleCliente():
             self.__processarCmd(entrada[1:])
         elif entrada[1] == "msg":
             pass
+    
+    def decode_list(self, entrada):
+        args = []
+        for i in entrada[2:]:
+            args.append(jsonpickle.decode(entrada[i]))
+        return args
 
     def __processarCmd(self, comandos):
         if comandos[0] == "iniciarRound":
             self.__iniciarRound()
-        if comandos[0] == "compararCartas":
-            pass
-
+        elif comandos[0] == "apresentarGanhadorDoJogo":
+            args = self.decode_list(comandos)
+            self.apresentarGanhadorDoJogo(args[0])
+        elif comandos[0] == "apresentarGanhadorDoRound":
+            args = self.decode_list(comandos)
+            self.apresentarGanhadorDoRound(args[0])
+        elif comandos[0] == "compararCartas":
+            args = self.decode_list(comandos)
+            self.compararCartas(args[0], args[1])
+        elif comandos[0] == "jogarCarta":
+            args = self.decode_list(comandos)
+            self.jogarCarta(args[0], args[1])
+        elif comandos[0] == "selecionaJogador":
+            args = self.decode_list(comandos)
+            self.selecionaJogador(args[0], args[1], args[2], args[3])
+        elif comandos[0] == "selecionaValorGuarda":
+            args = self.decode_list(comandos)
+            self.selecionaValorGuarda(args[0])
+        elif comandos[0] == "jogadorEscolherCarta":
+            args = self.decode_list(comandos)
+            self.jogadorEscolherCarta(args[0])
+        elif comandos[0] == "alertarSobreCondessa":
+            args = self.decode_list(comandos)
+            self.alertarSobreCondessa(args[0])
+        elif comandos[0] == "anunciarMorto":
+            args = self.decode_list(comandos)
+            self.anunciarMorto(args[0],)
+        elif comandos[0] == "resultadoGuarda":
+            args = self.decode_list(comandos)
+            self.resultadoGuarda(args[0])
+        elif comandos[0] == "resultadoPadre":
+            args = self.decode_list(comandos)
+            self.resultadoPadre(args[0])
+        elif comandos[0] == "resultadoBarao":
+            args = self.decode_list(comandos)
+            self.decode_list(args[0])
+        elif comandos[0] == "resultadoAia":
+            args = self.decode_list(comandos)
+            self.resultadoAia(args[0])
+        elif comandos[0] == "resultadoPrincipe":
+            args = self.decode_list(comandos)
+            self.resultadoPrincipe(args[0])
+        elif comandos[0] == "resultadoRei":
+            args = self.decode_list(comandos)
+            self.resultadoRei(args[0], args[1])
+        elif comandos[0] == "resultadoPrincesa":
+            args = self.decode_list(comandos)
+            self.resultadoPrincesa(args[0])
+        
 
     def __iniciarRound(self):
         self.__interUsuario.iniciarRound()
@@ -101,41 +153,13 @@ class ControleCliente():
         self.__interUsuario.anunciarMorto(jogador)
     
 
-
-
-
-
-
-    def __jogadorTurnoEnviar(jogadorTurno, texto):
-        id = jogadorTurno.getId()
-        ip = self.__jogadores_ip[id]
-        self.__interRede.enviar(ip, texto)
-
-    def __jogadorTurnoEnviarLista(jogadorTurno, l):
-        id = jogadorTurno.getId()
-        ip = self.__jogadores_ip[id]
-        self.__interRede.enviar(ip, l)
-
-    def __enviar(self, texto):
-        for id in self.__jogadores_ip:
-            ip = self.__jogadores_ip[id]
-            self.__interRede.enviar(ip, texto)
-
-    def __enviarJogador(self, j):
-        for id in self.__jogadores_ip:
-            ip = self.__jogadores_ip[id]
-            self.__interRede.enviar(ip, j)
-
-    def __enviarCarta(self, c):
-        for id in self.__jogadores_ip:
-            ip = self.__jogadores_ip[id]
-            self.__interRede.enviar(ip, c)
-
-    def __enviarLista(self, l):
-        for id in self.__jogadores_ip:
-            ip = self.__jogadores_ip[id]
-            self.__interRede.interfaceRede(ip, l)
+    def __enviar(self, lista):
+        self.interRede.clienteEnviar(lista)
 
     def __esperarResposta(self):
-        return ""
-    
+        reply = None
+        tentativas = 100
+        while not reply and tentativas > 0:
+            reply = self.interRede.clienteReceber()
+            tentativas -= 1
+        return reply
