@@ -22,14 +22,20 @@ class Server():
         self.__interfaceRede = InterfaceMasterMind()
         self.__controleServer = ControleServer(self.__interfaceRede, "localhost")
         self.__controleJogo = ControleJogo(self.__controleServer)
-        self.__interfaceRede.startServer('localhost')
 
     def start(self):
+        self.__interfaceRede.startServer('localhost')
+
+    def iniciarJogo(self):
         self.__mesa = Mesa(0)
         self.__controleJogo.setMesa(self.__mesa)
         self.__controleJogo.gerenciarJogo()
 
+    def main(self):
 
+
+    def desligar(self):
+        self.__interRede.serverEnd()
 
 
 #class Server():

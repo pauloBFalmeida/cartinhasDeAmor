@@ -155,6 +155,11 @@ class InterfaceTexto(InterfaceUsuario):
         print('deseja se conectar a uma partida online? (sim/nao)')
         r = input()
         return ("S" in r or "s" in r)
+    
+    def criarServer(self) -> bool:
+        print('deseja se criar o server? (sim/nao)')
+        r = input()
+        return ("S" in r or "s" in r)
 
     def entrarIpHost(self) -> str:
         print('entre com ip do host')

@@ -91,6 +91,10 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
     def entrarPartida(self) -> bool:
         raise NotImplementedError
     
+    @abc.abstractmethod
+    def criarServer(self) -> bool:
+        raise NotImplementedError
+    
     def entrarIpHost(self) -> str:
         raise NotImplementedError
 

@@ -27,6 +27,9 @@ class ControleCliente():
             entrada = self.__esperarResposta()
             self.__processar(entrada)
 
+    def desligar(self):
+        self.__interRede.clienteEnd()
+
     def __processar(self, entrada):
         if entrada[0] == self.__cmd:
             self.__processarCmd(entrada[1:])

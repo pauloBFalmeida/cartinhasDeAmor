@@ -5,14 +5,20 @@ path.append('codigo')
 from server.interfaceRede import InterfaceRede
 from server.Mastermind import *
 
-#from interfaceRede import InterfaceRede
-#from Mastermind import *
 
 class InterfaceMasterMind(InterfaceRede):
 
     def __init__(self):
-        meuIp = "localhost"
         self.__port = 6317
+
+    def getIp(self) -> str:
+        external_ip_v4 = urlopen('https://v4.ident.me/').read().decode('utf8')
+        return external_ip_v4
+
+    def conectarHost(self, ip: str) -> bool:
+        return True
+        
+# ================ Cliente ======================
 
     def startClient(self, ip):
         class Client(MastermindClientTCP):
@@ -33,6 +39,24 @@ class InterfaceMasterMind(InterfaceRede):
         self.__ipHost = ip
         self.__client.connect(ip, self.__port)
     
+    def clienteReceber(self):
+        #if len(self.__client.respostas) > 0:
+        #    print(self.__client.respostas)
+        #    reply = self.__client.respostas.pop()
+        #return reply
+        self._lock.acquire()
+        self.__client.receive()
+        self._lock.release()
+        return self.__client.respostas.pop()
+
+    def clienteEnviar(self, lista: list):
+        self.__client.send(lista,None)
+
+    def clienteEnd(self):
+        self.__client.disconnect()
+
+# ================ Server ======================
+
     def startServer(self, ip):
         #class Server(MastermindServerCallbacksEcho,MastermindServerCallbacksDebug,MastermindServerTCP):
         class Server(MastermindServerTCP):
@@ -72,26 +96,3 @@ class InterfaceMasterMind(InterfaceRede):
         self.__server.accepting_disallow()
         self.__server.disconnect_clients()
         self.__server.disconnect()
-
-    def clienteReceber(self):
-        #if len(self.__client.respostas) > 0:
-        #    print(self.__client.respostas)
-        #    reply = self.__client.respostas.pop()
-        #return reply
-        self._lock.acquire()
-        self.__client.receive()
-        self._lock.release()
-        return self.__client.respostas.pop()
-
-    def clienteEnviar(self, lista: list):
-        self.__client.send(lista,None)
-
-    def clienteEnd(self):
-        self.__client.disconnect()
-
-    def getIp(self) -> str:
-        external_ip_v4 = urlopen('https://v4.ident.me/').read().decode('utf8')
-        return external_ip_v4
-
-    def conectarHost(self, ip: str) -> bool:
-        return True
