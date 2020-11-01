@@ -27,7 +27,6 @@ class InterfaceMasterMind(InterfaceRede):
             #    self.respostas.append(data)
             def receive(self):
                 self.respostas.append(super(Client, self).receive(True))
-                self._lock.acquire()
 
 
         self._lock = threading.Lock()
@@ -75,6 +74,7 @@ class InterfaceMasterMind(InterfaceRede):
         #    print(self.__client.respostas)
         #    reply = self.__client.respostas.pop()
         #return reply
+        self._lock.acquire()
         self.__client.receive()
         self._lock.release()
         return self.__client.respostas.pop()
