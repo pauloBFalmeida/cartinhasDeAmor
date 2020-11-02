@@ -8,18 +8,45 @@ class InterfaceRede(metaclass=abc.ABCMeta):
         raise NotImplementedError
     
     @abc.abstractmethod
-    def serverEnviar(self, ip: str, texto: str):
+    def startClient(self, ip):
         raise NotImplementedError
     
     @abc.abstractmethod
-    def clienteEnviar(self, ip: str, message: list):
+    def clienteReceber(self) -> list:
         raise NotImplementedError
-
+        
     @abc.abstractmethod
-    def serverReceber(self) -> str:
+    def clienteEnviar(self, lista: list):
         raise NotImplementedError
-    
+        
     @abc.abstractmethod
-    def clienteReceber(self) -> str:
+    def clienteEnd(self):
         raise NotImplementedError
-    
+        
+    @abc.abstractmethod
+    def startServer(self, ip: str):
+        raise NotImplementedError
+        
+    @abc.abstractmethod
+    def getJogadores_ip(self) -> dict:
+        raise NotImplementedError
+        
+    @abc.abstractmethod
+    def findConnectionObject(self, ip: str):
+        raise NotImplementedError
+        
+    @abc.abstractmethod
+    def getNConectados(self) -> int:
+        raise NotImplementedError
+        
+    @abc.abstractmethod
+    def serverReceber(self) -> list:
+        raise NotImplementedError
+        
+    @abc.abstractmethod
+    def serverEnviar(self, ip: str, lista: list):
+        raise NotImplementedError
+        
+    @abc.abstractmethod
+    def serverEnd(self):
+        raise NotImplementedError

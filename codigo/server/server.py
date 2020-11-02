@@ -33,7 +33,6 @@ class Server():
             time.sleep(0.5)
             self.__controleServer.esperarResposta(None)
             self.__jogadores = self.__controleServer.getJogadores()
-            print(len(self.__jogadores))
 
     def iniciarJogo(self):
         self.__mesa = Mesa(0)

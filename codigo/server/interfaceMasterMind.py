@@ -36,7 +36,7 @@ class InterfaceMasterMind(InterfaceRede):
         self.__ipHost = ip
         self.__client.connect(ip, self.__port)
     
-    def clienteReceber(self):
+    def clienteReceber(self) -> list:
         #if len(self.__client.respostas) > 0:
         #    print(self.__client.respostas)
         #    reply = self.__client.respostas.pop()
@@ -57,7 +57,7 @@ class InterfaceMasterMind(InterfaceRede):
 
 # ================ Server ======================
 
-    def startServer(self, ip):
+    def startServer(self, ip: str):
         class Server(MastermindServerCallbacksEcho,MastermindServerCallbacksDebug,MastermindServerTCP):
         #class Server(MastermindServerTCP):
             def __init__(self):
@@ -99,20 +99,20 @@ class InterfaceMasterMind(InterfaceRede):
         self.__server.connect(ip, self.__port)
         self.__server.accepting_allow()
 
-    def getJogadores_ip(self):
+    def getJogadores_ip(self) -> dict:
         return self.__server.jogadores_ip
 
-    def findConnectionObject(self, ip):
+    def findConnectionObject(self, ip: str):
         # nao queria mexer tanto com o negocio, então tem essa solucao aqui :p
         clientes = self.__server._mm_connections
         for key in clientes:
             if key[0] == ip:
                 return clientes[key]
 
-    def getNConectados(self):
+    def getNConectados(self) -> int:
         return self.__server.nConectados
 
-    def serverReceber(self):
+    def serverReceber(self) -> list:
         r = None
         if len(self.__server.respostas) > 0:
             r = self.__server.respostas.pop()
