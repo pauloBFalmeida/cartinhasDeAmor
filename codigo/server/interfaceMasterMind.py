@@ -47,9 +47,6 @@ class InterfaceMasterMind(InterfaceRede):
         return self.__client.respostas.pop()
 
     def clienteEnviar(self, lista: list):
-        print()
-        print(lista)
-        print()
         self.__client.send(lista, None)
 
     def clienteEnd(self):
@@ -58,8 +55,8 @@ class InterfaceMasterMind(InterfaceRede):
 # ================ Server ======================
 
     def startServer(self, ip: str):
-        class Server(MastermindServerCallbacksEcho,MastermindServerCallbacksDebug,MastermindServerTCP):
-        #class Server(MastermindServerTCP):
+        #class Server(MastermindServerCallbacksEcho,MastermindServerCallbacksDebug,MastermindServerTCP):
+        class Server(MastermindServerTCP):
             def __init__(self):
                 self.respostas = []
                 self.nConectados = -1

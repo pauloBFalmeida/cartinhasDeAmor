@@ -62,13 +62,10 @@ class ControleServer():
 
     def __processarCmd(self, entrada):
         comando = entrada.pop(0)
-        print('processar comando')
-        print(comando)
         if comando == "id":
             id = len(self.__jogadores_ip)
             self.__enviarJogadorEspecifico(id, [self.__ret, 'id', id])
         elif comando == "criarJogador":
-            print('======= jhogador criado =========')
             nome = entrada[0]
             id = len(self.__jogadores)
             j = Jogador(id, nome, self.cores[id])

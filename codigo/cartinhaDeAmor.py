@@ -45,6 +45,11 @@ class CartinhaDeAmor:
 
     # criar server 
     def criarServer(self):
+        self.__server = Server(self.__interfaceRede)
+        nJogadores = self.__interfaceUsuario.numeroJogadores()
+        self.__server.start()
+        self.__server.esperarEntrarJogadores(nJogadores)
+        self.__server.iniciarJogo()
         #class ServerThread(Thread):
         #    def __init__ (self, server):
         #        Thread.__init__(self)
@@ -60,13 +65,6 @@ class CartinhaDeAmor:
         #nJogadores = self.__interfaceUsuario.numeroJogadores()
         #self.__serverThread = ServerThread(self.__server)
         #self.__serverThread.run(nJogadores) 
-
-        
-        self.__server = Server()
-        nJogadores = self.__interfaceUsuario.numeroJogadores()
-        self.__server.start()
-        self.__server.esperarEntrarJogadores(nJogadores)
-        self.__server.iniciarJogo()
 
     def entrarJogo(self):
         if self.__online:
