@@ -23,6 +23,3 @@ class InterfaceRede(metaclass=abc.ABCMeta):
     def clienteReceber(self) -> str:
         raise NotImplementedError
     
-    @abc.abstractmethod
-    def conectarHost(self, ip: str) -> bool:
-        raise NotImplementedError

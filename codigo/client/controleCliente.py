@@ -15,6 +15,7 @@ class ControleCliente():
         self.__cmd = 'cmd'
         self.__ret = 'ret'
         self.__msg = 'msg'
+        self.__id = -1
 
     def setHostIp(self, ip):
         self.__hostIp = ip
@@ -22,24 +23,45 @@ class ControleCliente():
     def conectarServer(self):
         self.__interRede.startClient(self.__hostIp)
 
+    def sendJogador(self, j):
+        j_json = jsonpickle.encode(j)
+        self.__enviar([self.__cmd,'addJogador',j_json])
+
+    def getId(self):
+        self.__enviar([self.__cmd,'id'])
+        while self.__id == -1:
+            self.__esperarResposta('id')
+        return self.__id
+
     def main(self):
         while True:
-            entrada = self.__esperarResposta()
-            self.__processar(entrada)
+            self.__esperarResposta(None)
 
     def desligar(self):
         self.__interRede.clienteEnd()
 
+    def returnId(self):
+        return self.__id
+    
+# ======== Processar ==============
+
     def __processar(self, entrada):
-        if entrada[0] == self.__cmd:
-            self.__processarCmd(entrada[1:])
-        elif entrada[1] == self.__msg:
+        comando = entrada.pop(0)
+        if   comando == self.__cmd:
+            self.__processarCmd(entrada)
+        elif comando == self.__ret:
+            self.__processarRet(entrada)
+        elif comando == self.__msg:
             pass
 
-    
+    def __processarRet(self, entrada):
+        comando = entrada.pop(0)
+        if comando == "id":
+            self.__id = entrada[0]
+
     def __processarCmd(self, entrada):
         comando = entrada.pop(0)
-        if comando == "iniciarRound":
+        if   comando == "iniciarRound":
             self.__iniciarRound()
         elif comando == "compararCartas":
             j_ganhador = jsonpickle.decode(entrada[0])
@@ -55,8 +77,7 @@ class ControleCliente():
             jogadorTurno = jsonpickle.decode(entrada[0])
             self.__jogadorEscolherCarta(jogadorTurno)
         elif comando == "alertarSobreCondessa":
-            jogadorTurno = jsonpickle.decode(entrada[0])
-            self.__alertarSobreCondessa(jogadorTurno)
+            self.__alertarSobreCondessa()
         elif comando == "jogarCarta":
             jogadorTurno = jsonpickle.decode(entrada[0])
             carta_jogada = jsonpickle.decode(entrada[1])
@@ -68,8 +89,7 @@ class ControleCliente():
             fraseInicio = entrada[3]
             self.__selecionaJogador(jogadorTurno, jogadores, siMesmo, fraseInicio)
         elif comando == "selecionaValorGuarda":
-            jogadorTurno = jsonpickle.decode(entrada[0])
-            self.__selecionaValorGuarda(jogadorTurno)
+            self.__selecionaValorGuarda()
         elif comando == "resultadoGuarda":
             result = jsonpickle.decode(entrada[0])
             self.__resultadoGuarda(result)
@@ -95,7 +115,8 @@ class ControleCliente():
         elif comando == "anunciarMorto":
             jogador = jsonpickle.decode(entrada[0])
             self.__anunciarMorto(jogador)
-
+            
+# ======== Funcoes com a interface usuario ==============
 
     def __iniciarRound(self):
         self.__interUsuario.iniciarRound()
@@ -111,9 +132,9 @@ class ControleCliente():
 
     def __jogadorEscolherCarta(self, jogadorTurno):
         ret = self.__interUsuario.jogadorEscolherCarta(jogadorTurno)
-        self.__enviar([self.__ret]+ret)
+        self.__enviar([self.__ret, 'jogadorEscolherCarta', ret])
         
-    def __alertarSobreCondessa(self, jogadorTurno):
+    def __alertarSobreCondessa(self):
         self.__interUsuario.alertarSobreCondessa()
 
     def __jogarCarta(self, jogadorTurno, carta_jogada):
@@ -121,11 +142,11 @@ class ControleCliente():
 
     def __selecionaJogador(self, jogadorTurno, jogadores, siMesmo, fraseInicio):
         ret = self.__interUsuario.selecionaJogador(jogadorTurno, jogadores, siMesmo, fraseInicio)
-        self.__enviar([self.__ret]+ret)
+        self.__enviar([self.__ret, 'selecionaJogador', ret])
 
-    def __selecionaValorGuarda(self, jogadorTurno):
+    def __selecionaValorGuarda(self):
         ret = self.__interUsuario.selecionaValorGuarda()
-        self.__enviar([self.__ret]+ret)
+        self.__enviar([self.__ret, 'selecionaValorGuarda', ret])
 
     def __resultadoGuarda(self, result):
         self.__interUsuario.resultadoGuarda(result)
@@ -151,14 +172,20 @@ class ControleCliente():
     def __anunciarMorto(self, jogador):
         self.__interUsuario.anunciarMorto(jogador)
     
+# ======== Rede ==============
 
     def __enviar(self, lista):
         self.__interRede.clienteEnviar(lista)
 
-    def __esperarResposta(self):
-        reply = None
-        tentativas = 100
-        while not reply and tentativas > 0:
-            reply = self.interRede.clienteReceber()
-            tentativas -= 1
-        return reply
+    def __esperarResposta(self, comando):
+        comandoEsperado = False
+        while comando or (not comandoEsperado):
+            reply = None
+            tentativas = 100
+            while not reply and tentativas > 0:
+                reply = self.__interRede.clienteReceber()
+                tentativas -= 1
+            if comando:
+                comandoEsperado = (comando == reply[1])
+            if reply:
+                self.__processar(reply)
