@@ -172,9 +172,6 @@ class ControleServer():
 
     def __enviarJogadorEspecifico(self, jogador_id, lista):
         self.__atualizarJogadores_ip()
-        print()
-        print(self.__jogadores_ip)
-        print()
         self.__interRede.serverEnviar(self.__jogadores_ip[jogador_id], lista)
 
     def esperarResposta(self, comando):
