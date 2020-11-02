@@ -15,7 +15,7 @@ path.append('codigo')
 from mesa import Mesa
 from server.controleJogo import ControleJogo
 from server.controleServer import *        #ControleServer
-from server.interfacRede import *
+from server.interfaceRede import *
 
 class Server():
 

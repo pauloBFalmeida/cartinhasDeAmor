@@ -152,7 +152,7 @@ class InterfaceTexto(InterfaceUsuario):
         print(j.getNome()+" tentou descartar a Princesa")
 
     def entrarPartida(self) -> bool:
-        print('deseja se conectar a uma partida online? (sim/nao)')
+        print('deseja se conectar a uma partida? (sim/nao)')
         r = input()
         return ("S" in r or "s" in r)
     
