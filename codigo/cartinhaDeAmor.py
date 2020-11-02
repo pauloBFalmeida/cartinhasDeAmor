@@ -3,7 +3,6 @@ import pygame
 #from threading import Thread
 from sys import path
 path.append('codigo')
-from jogador import Jogador
 from server.server import Server
 from server.interfaceMasterMind import InterfaceMasterMind
 from client.controleCliente import ControleCliente
@@ -28,13 +27,6 @@ class CartinhaDeAmor:
         
         self.__interfaceUsuario = InterfaceTexto()
         self.__interfaceRede = InterfaceMasterMind()
-        self.cores = [(200,200,200),
-                      (200,100,100),
-                      (100,0,0),
-                      (100,200,100),
-                      (0,100,0),
-                      (100,100,200),
-                      (0,0,100)]
 
     def main(self):
         self.preparativos()
@@ -85,11 +77,7 @@ class CartinhaDeAmor:
         self.__controleCliente.setHostIp(host_ip)
         self.__controleCliente.conectarServer()
         # criar jogador
-        #id = self.__controleCliente.getId()
-        id = 0
-        nome = self.__interfaceUsuario.nomeJogador(id)
-        j = Jogador(id, nome, self.cores[id])
-        self.__controleCliente.sendJogador(j)
+        self.__controleCliente.criarJogador()
         #
         self.__controleCliente.main()
         #

@@ -23,9 +23,10 @@ class ControleCliente():
     def conectarServer(self):
         self.__interRede.startClient(self.__hostIp)
 
-    def sendJogador(self, j):
-        j_json = jsonpickle.encode(j)
-        self.__enviar([self.__cmd,'addJogador',j_json])
+    def criarJogador(self):
+        id = 0
+        nome = self.__interUsuario.nomeJogador(id)
+        self.__enviar([self.__cmd,'criarJogador',nome])
 
     def getId(self):
         self.__enviar([self.__cmd,'id'])

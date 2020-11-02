@@ -19,6 +19,13 @@ class ControleServer():
         self.__retJogadorEscolherCarta = None
         self.__retSelecionaJogador = None
         self.__retSelecionaValorGuarda = None
+        self.cores = [(200,200,200),
+                      (200,100,100),
+                      (100,0,0),
+                      (100,200,100),
+                      (0,100,0),
+                      (100,100,200),
+                      (0,0,100)]
 
     def addJogadorIdIp(self, id, ip):
         self.__jogadores_ip[id] = ip
@@ -55,12 +62,17 @@ class ControleServer():
 
     def __processarCmd(self, entrada):
         comando = entrada.pop(0)
+        print('processar comando')
+        print(comando)
         if comando == "id":
             id = len(self.__jogadores_ip)
             self.__enviarJogadorEspecifico(id, [self.__ret, 'id', id])
-        elif comando == "addJogador":
-            j = jsonpickle.decode(entrada[0])
-            self.addJogador(j)
+        elif comando == "criarJogador":
+            print('======= jhogador criado =========')
+            nome = entrada[0]
+            id = len(self.__jogadores)
+            j = Jogador(id, nome, self.cores[id])
+            self.__jogadores.append(j)
 
 # ============= enviar ================
 
