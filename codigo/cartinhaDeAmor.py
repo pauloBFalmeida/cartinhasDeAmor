@@ -1,112 +1,117 @@
 # coding: utf-8
 import pygame
+#from threading import Thread
 from sys import path
 path.append('codigo')
-from mesa import Mesa
-from jogador import Jogador
-from server.controleJogo import ControleJogo
-from server.controleRede import ControleRede
-from server.controleServer import ControleServer
-#from server.interfaceMasterMind import InterfaceMasterMind
-from server.interfaceMasterMind import InterfaceMasterMindClient
-#from server.interfaceMasterMind import InterfaceMasterMindServer
+from server.server import Server
+from server.interfaceMasterMind import InterfaceMasterMind
+from client.controleCliente import ControleCliente
 from client.interfaceTexto import InterfaceTexto
 
 # classe que comunica o controle com as interfaces
 class CartinhaDeAmor:
 
-	def __init__(self): #, width, height, title):
-		#self.width = width
-		#self.height = height
-		#self.win = pygame.display.set_mode((width, height))
-		#pygame.display.set_caption(title)
-		#icon = pygame.image.load("icone.png")
-		#pygame.display.set_icon(icon)
+    def __init__(self): #, width, height, title):
+        #self.width = width
+        #self.height = height
+        #self.win = pygame.display.set_mode((width, height))
+        #pygame.display.set_caption(title)
+        #icon = pygame.image.load("icone.png")
+        #pygame.display.set_icon(icon)
 
-		self.clock = pygame.time.Clock()
-		self.rodando = True
-		#self.FPS = 30
+        #self.clock = pygame.time.Clock()
+        #self.rodando = True
+        #self.FPS = 30
 
-		#self.background = (0,0,50)
-		
-		self.__interfaceUsuario = InterfaceTexto()
-		self.__interfaceRede = InterfaceMasterMind()
-		self.__controleServer = ControleServer(self.__interfaceRede, "localhost")
-		self.controleJogo = ControleJogo(self.__controleServer)
-		self.cores = [	(200,200,200),
-						(200,100,100),
-						(100,0,0),
-						(100,200,100),
-						(0,100,0),
-						(100,100,200),
-						(0,0,100)	]
+        #self.background = (0,0,50)
+        
+        self.__interfaceUsuario = InterfaceTexto()
+        self.__interfaceRede = InterfaceMasterMind()
 
-	def main(self):
-		self.preparativos()
-		self.start()	# start game
-		self.clock.tick(self.FPS)
-		# loop
-		while game.rodando:
-			for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					game.rodando = False
+    def main(self):
+        self.preparativos()
+        self.start()    # start game
 
-			self.input(pygame.key.get_pressed())
-			self.logic()
-			self.render(game.win)
+        #self.clock.tick(self.FPS)
+        ## loop
+        #while game.rodando:
+        #    for event in pygame.event.get():
+        #        if event.type == pygame.QUIT:
+        #            game.rodando = False
 
-	#def criarJogoHost(self):
-	#	self.mesa = Mesa(1)
-	#	# criar jogador
-	#	id = 0
-	#	nome = self.__interfaceUsuario.nomeJogador(id)
-	#	j = Jogador(id, nome, self.cores[id])
-	#	self.mesa.addJogador(j)
-	#	# 
-	#	self.controleJogo.setMesa(self.mesa)
-	#	self.controleRede = ControleRede(interfaceRede, True)
-	#	self.__interfaceUsuario.addChat('ip: '+self.ControleRede.getIp())
-		
-	#	for id in range(1, self.__interfaceUsuario.numeroJogadores()):
-	#		ip = self.__interfaceUsuario.entrarIpJogador()
-	#		self.controleRede.addJogadorIdIp(id, ip)
+        #    self.input(pygame.key.get_pressed())
+        #    self.logic()
+        #    self.render(game.win)
 
-	def entrarJogo(self):
-		if self.__online:
-			host_ip = self.__interfaceUsuario.entrarIpHost()
-			cliente_ip = None
-		else:
-			host_ip = "localhost"
-			cliente_ip = "localhost"
-		self.controleRede = ControleRede(self.__interfaceRede, cliente_ip)
-		self.controleRede.setHostIp(host_ip)
-		id = self.controleRede.conectarHost()
-		# criar jogador
-		nome = self.__interfaceUsuario.nomeJogador(id)
-		j = Jogador(id, nome, self.cores[id])
-		# 
-		self.controleRede.enviarJogador(j)
+    # criar server 
+    def criarServer(self):
+        self.__server = Server(self.__interfaceRede)
+        nJogadores = self.__interfaceUsuario.numeroJogadores()
+        self.__server.start()
+        self.__server.esperarEntrarJogadores(nJogadores)
+        self.__server.iniciarJogo()
+        #class ServerThread(Thread):
+        #    def __init__ (self, server):
+        #        Thread.__init__(self)
+        #        self.__server = server
 
-	def preparativos(self):
-		#self.__online = self.__interfaceUsuario.entrarOnline()
-		#entrarPartida = self.__interfaceUsuario.entrarPartida()
-		self.__online = False
-		entrarPartida = True
-		if entrarPartida:
-			self.entrarJogo()
+        #    def run(self, nJogadores):
+        #        self.__server.start()
+        #        self.__server.esperarEntrarJogadores(nJogadores)
+        #        # esperar todos se conectarem
+
+        ##
+        #self.__server = Server()
+        #nJogadores = self.__interfaceUsuario.numeroJogadores()
+        #self.__serverThread = ServerThread(self.__server)
+        #self.__serverThread.run(nJogadores) 
+
+    def entrarJogo(self):
+        if self.__online:
+            host_ip = self.__interfaceUsuario.entrarIpHost()
+        else:
+            host_ip = "localhost"
+        self.__controleCliente = ControleCliente(self.__interfaceRede, self.__interfaceUsuario)
+        self.__controleCliente.setHostIp(host_ip)
+        self.__controleCliente.conectarServer()
+        # criar jogador
+        self.__controleCliente.criarJogador()
+        #
+        self.__controleCliente.main()
+        #
+        self.fim()
+
+    def preparativos(self):
+        self.__online = self.__interfaceUsuario.entrarOnline()
+        self.__criarServer   = self.__interfaceUsuario.criarServer()
+        if self.__criarServer:
+            self.criarServer()
+        else:
+            entrarPartida = self.__interfaceUsuario.entrarPartida()
+            if entrarPartida:
+                self.entrarJogo()
 
 
-	def start(self):
-		self.controleJogo.gerenciarJogo()
+    def start(self):
+        #self.__controleJogo.gerenciarJogo()
+        pass
 
-	#def input(self, keys):
-	#	if keys[pygame.K_ESCAPE]:
-	#		self.rodando = False
-	#	
-	#def logic(self):
-	#	pass
+    def fim(self):
+        if self.__criarServer:
+            self.__serverThread.join()
+            self.__server.desligar()
+        self.__controleCliente.desligar()
 
-	#def render(self, window):
-	#	window.fill(self.background)		# background
-	#	pygame.display.update()				# update screen
+
+
+    #def input(self, keys):
+    #    if keys[pygame.K_ESCAPE]:
+    #        self.rodando = False
+    #    
+    #def logic(self):
+    #    pass
+
+    #def render(self, window):
+    #    window.fill(self.background)        # background
+    #    pygame.display.update()                # update screen
 

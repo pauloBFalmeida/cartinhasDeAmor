@@ -67,19 +67,6 @@ class Mesa():
             self.jogadorDescartarMao(j)
         self.__deck += self.__lixo
 
-    def compararCartas(self):
-        valor_maior = -1
-        jogador_maior = None
-        for j in self.__jogadores:
-            if j.get_vivo():
-                valor = j.getCartasMao()[0].get_valor()
-                if valor > valor_maior:
-                    valor_maior = valor
-                    jogador_maior = j
-                elif valor == valor_maior:
-                    jogador_maior = None
-        return jogador_maior
-
     def addJogador(self, jogador):
         self.__jogadores.append(jogador)
 

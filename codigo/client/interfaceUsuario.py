@@ -24,19 +24,23 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def apresentarGanhadorDoJogo(self, j_ganhador: Jogador):
+    def apresentarGanhadorDoJogo(self, jg_nome: str, jg_pontos: int):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def apresentarGanhadorDoRound(self, j_ganhador: Jogador):
+    def apresentarGanhadorDoRound(self, jg_nome: str, jg_pontos: int):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def compararCartas(self, j_ganhador: Jogador, jogadores: list):
+    def anunciarCompararCartas(self):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def compararCartas(self, set_m: tuple,  set_j: tuple, ganhador_j: bool):
         raise NotImplementedError
     
     @abc.abstractmethod
-    def jogarCarta(self, j: Jogador, c: Carta):
+    def anunciarCarta(self, j_nome: str, c_nome: str):
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -48,7 +52,7 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def jogadorEscolherCarta(self, j_origem: Jogador) -> int:
+    def jogadorEscolherCarta(self, cartasMao_nomes: list) -> int:
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -56,7 +60,7 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def anunciarMorto(self, j_origem: Jogador):
+    def anunciarMorto(self, j_nome: str):
         raise NotImplementedError
     
     @abc.abstractmethod
@@ -64,31 +68,35 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def resultadoPadre(self, cartaMao: Carta):
+    def resultadoPadre(self, c_nome: str):
         raise NotImplementedError
     
     @abc.abstractmethod
-    def resultadoBarao(self, jogadorMorto: Jogador):
+    def resultadoBarao(self, j_nome: str):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def resultadoAia(self, j: Jogador):
+    def resultadoAia(self, j_nome: str):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def resultadoPrincipe(self, j: Jogador):
+    def resultadoPrincipe(self, j_nome: str):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def resultadoRei(self, j1: Jogador, j2: Jogador):
+    def resultadoRei(self, j1_nome: str, j2_nome: str):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def resultadoPrincesa(self, j: Jogador):
+    def resultadoPrincesa(self, j_nome: str):
         raise NotImplementedError
         
     @abc.abstractmethod
     def entrarPartida(self) -> bool:
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def criarServer(self) -> bool:
         raise NotImplementedError
     
     def entrarIpHost(self) -> str:
