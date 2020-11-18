@@ -30,8 +30,7 @@ class InterfaceMasterMind(InterfaceRede):
             def receive(self):
                 self.respostas.append(super(Client, self).receive(True))
 
-
-        self._lock = threading.Lock()
+        self.__lock = threading.Lock()
         self.__client = Client()
         self.__ipHost = ip
         self.__client.connect(ip, self.__port)
@@ -41,12 +40,14 @@ class InterfaceMasterMind(InterfaceRede):
         #    print(self.__client.respostas)
         #    reply = self.__client.respostas.pop()
         #return reply
-        self._lock.acquire()
+        #
+        self.__lock.acquire()
         self.__client.receive()
-        self._lock.release()
+        self.__lock.release()
         return self.__client.respostas.pop()
 
     def clienteEnviar(self, lista: list):
+        #print(lista)
         self.__client.send(lista, None)
 
     def clienteEnd(self):
@@ -62,12 +63,17 @@ class InterfaceMasterMind(InterfaceRede):
                 self.nConectados = -1
                 self.jogadores_ip = {}
                 self.connection_objects = {}
+                self.sem = threading.Semaphore(0)
                 MastermindServerTCP.__init__(self,
                                             0.5,   # server refresh
                                             0.5,   # connections refresh
                                             60.0)  # connection timeout
-            def callback_client_handle(self, connection_object,data):
+            def callback_client_handle(self, connection_object, data):
+                #print('callback_client_handle')
+                #print(data)
                 self.respostas.append(data)
+                self.sem.release()
+                return super(MastermindServerTCP,self).callback_client_handle(connection_object,data)
 
             def callback_connect_client(self, connection_object):
                 self.nConectados += 1
@@ -111,6 +117,7 @@ class InterfaceMasterMind(InterfaceRede):
 
     def serverReceber(self) -> list:
         r = None
+        self.__server.sem.acquire()
         if len(self.__server.respostas) > 0:
             r = self.__server.respostas.pop()
         return r
