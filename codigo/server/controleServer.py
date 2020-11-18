@@ -30,9 +30,6 @@ class ControleServer():
     def addJogadorIdIp(self, id, ip):
         self.__jogadores_ip[id] = ip
 
-    def addJogador(self, j):
-        self.__jogadores.append(j)
-
     def getJogadores(self):
         return self.__jogadores
 
@@ -59,36 +56,31 @@ class ControleServer():
         elif comando == "selecionaValorGuarda":
             self.__retSelecionaValorGuarda = entrada[0]
 
-
     def __processarCmd(self, entrada):
         comando = entrada.pop(0)
-        if comando == "id":
-            id = len(self.__jogadores_ip)
-            self.__enviarJogadorEspecifico(id, [self.__ret, 'id', id])
-        elif comando == "criarJogador":
+        if comando == "criarJogador":
             nome = entrada[0]
             id = len(self.__jogadores)
             j = Jogador(id, nome, self.cores[id])
             self.__jogadores.append(j)
+            self.__atualizarJogadores_ip()
 
 # ============= enviar ================
 
-    def compararCartas(self, j_ganhador, jogadores):
-        j_g_json = jsonpickle.encode(j_ganhador)
-        js_json = [jsonpickle.encode(j) for j in jogadores]
-        self.__enviar([self.__cmd,"compararCartas", j_g_json, js_json])
+    def anunciarCompararCartas(self):
+        self.__enviar([self.__cmd,"anunciarCompararCartas"])
+
+    def compararCartas(self, set_m, set_j, ganhador_j):
+        self.__enviar([self.__cmd,"compararCartas", set_m, set_j, ganhador_j])
     
-    def apresentarGanhadorDoRound(self, ganhador):
-        g_json = jsonpickle.encode(ganhador)
-        self.__enviar([self.__cmd,"apresentarGanhadorDoRound",g_json])
+    def apresentarGanhadorDoRound(self, jg_nome, jg_pontos):
+        self.__enviar([self.__cmd,"apresentarGanhadorDoRound", jg_nome, jg_pontos])
 
-    def apresentarGanhadorDoJogo(self, ganhador):
-        g_json = jsonpickle.encode(ganhador)
-        self.__enviar([self.__cmd,"apresentarGanhadorDoJogo",g_json])
+    def apresentarGanhadorDoJogo(self, jg_nome, jg_pontos):
+        self.__enviar([self.__cmd,"apresentarGanhadorDoJogo", jg_nome, jg_pontos])
 
-    def jogadorEscolherCarta(self, jogadorTurno):
-        jt_json = jsonpickle.encode(jogadorTurno)
-        self.__jogadorTurnoEnviar(jogadorTurno, [self.__cmd,"jogadorEscolherCarta",jt_json])
+    def jogadorEscolherCarta(self, jogadorTurno, cartasMao_nomes):
+        self.__jogadorTurnoEnviar(jogadorTurno, [self.__cmd,"jogadorEscolherCarta", cartasMao_nomes])
         # esperar resposta
         self.esperarResposta("jogadorEscolherCarta")
         index_carta = self.__retJogadorEscolherCarta
@@ -98,15 +90,11 @@ class ControleServer():
     def alertarSobreCondessa(self, jogadorTurno):
         self.__jogadorTurnoEnviar(jogadorTurno, [self.__cmd,"alertarSobreCondessa"])
 
-    def jogarCarta(self, jogadorTurno, carta_jogada):
-        jt_json = jsonpickle.encode(jogadorTurno)
-        c_json = jsonpickle.encode(carta_jogada)
-        self.__enviar([self.__cmd,"jogarCarta",jt_json, c_json])
+    def anunciarCarta(self, j_nome, c_nome):
+        self.__enviar([self.__cmd,"anunciarCarta", j_nome, c_nome])
 
-    def selecionaJogador(self, jogadorTurno, jogadores, siMesmo, fraseInicio):
-        jt_json = jsonpickle.encode(jogadorTurno)
-        js_json = [jsonpickle.encode(j) for j in jogadores]
-        self.__jogadorTurnoEnviar(jogadorTurno, [self.__cmd,"selecionaJogador",jt_json,js_json,siMesmo,fraseInicio])
+    def selecionaJogador(self, jogadorTurno, jogadores_texto, possiveis, fraseInicio):
+        self.__jogadorTurnoEnviar(jogadorTurno, [self.__cmd,"selecionaJogador", jogadores_texto, possiveis, fraseInicio])
         # esperar resposta
         self.esperarResposta("selecionaJogador")
         index_jogador = self.__retSelecionaJogador
@@ -121,74 +109,59 @@ class ControleServer():
         self.__retSelecionaValorGuarda = None
         return id_carta
 
-    def resultadoGuarda(self, result):
-        r_json = jsonpickle.encode(result)
-        self.__enviar([self.__cmd,"resultadoGuarda",r_json])
+    def resultadoGuarda(self, resultAcusacao):
+        self.__enviar([self.__cmd,"resultadoGuarda", resultAcusacao])
 
-    def resultadoPadre(self, result):
-        r_json = jsonpickle.encode(result)
-        self.__enviar([self.__cmd,"resultadoPadre",r_json])
+    def resultadoPadre(self, jogadorTurno, c_nome):
+        self.__jogadorTurnoEnviar(jogadorTurno, [self.__cmd,"resultadoPadre", c_nome])
 
-    def resultadoBarao(self, result):
-        r_json = jsonpickle.encode(result)
-        self.__enviar([self.__cmd,"resultadoBarao",r_json])
+    def resultadoBarao(self, j_nome):
+        self.__enviar([self.__cmd,"resultadoBarao", j_nome])
 
-    def resultadoAia(self, result):
-        r_json = jsonpickle.encode(result)
-        self.__enviar([self.__cmd,"resultadoAia",r_json])
+    def resultadoAia(self, j_nome):
+        self.__enviar([self.__cmd,"resultadoAia", j_nome])
 
-    def resultadoPrincipe(self, result):
-        r_json = jsonpickle.encode(result)
-        self.__enviar([self.__cmd,"resultadoPrincipe",r_json])
+    def resultadoPrincipe(self, j_nome):
+        self.__enviar([self.__cmd,"resultadoPrincipe", j_nome])
 
-    def resultadoRei(self, result, jogadorTurno):
-        r_json = jsonpickle.encode(result)
-        jt_json = jsonpickle.encode(jogadorTurno)
-        self.__enviar([self.__cmd,"resultadoRei",r_json,jt_json])
+    def resultadoRei(self, j1_nome, j2_nome):
+        self.__enviar([self.__cmd,"resultadoRei", j1_nome, j2_nome])
 
-    def resultadoPrincesa(self, result):
-        r_json = jsonpickle.encode(result)
-        self.__enviar([self.__cmd,"resultadoPrincesa",r_json])
+    def resultadoPrincesa(self, j_nome):
+        self.__enviar([self.__cmd,"resultadoPrincesa", j_nome])
 
-    def anunciarMorto(self, jogador):
-        j_json = jsonpickle.encode(jogador)
-        self.__enviar([self.__cmd,"anunciarMorto",j_json])
+    def anunciarMorto(self, j_nome):
+        self.__enviar([self.__cmd,"anunciarMorto", j_nome])
 
 # ============= Rede ================
-        
+
+    # enviar para todos os jogadores
+    def __enviar(self, lista):
+        for id in self.__jogadores_ip:
+            self.__enviarJogadorEspecifico(id, lista)
+            #self.__interRede.serverEnviar(self.__jogadores_ip[id], lista)
+
     # enviar para o jogador do turno
     def __jogadorTurnoEnviar(self, jogadorTurno, lista):
-        jogador_id = jogadorTurno.getId()
-        self.__enviarJogadorEspecifico(jogador_id, lista)
+        self.__enviarJogadorEspecifico(jogadorTurno.getId(), lista)
+
+    def __enviarJogadorEspecifico(self, id, lista):
+        self.__interRede.serverEnviar(self.__jogadores_ip[id], lista)
 
     def __atualizarJogadores_ip(self):
         self.__jogadores_ip = self.__interRede.getJogadores_ip()
 
-    # enviar para todos os jogadores
-    def __enviar(self, lista):
-        self.__atualizarJogadores_ip()
-        for id in self.__jogadores_ip:
-            self.__interRede.serverEnviar(self.__jogadores_ip[id], lista)
-
-    def __enviarJogadorEspecifico(self, jogador_id, lista):
-        self.__atualizarJogadores_ip()
-        self.__interRede.serverEnviar(self.__jogadores_ip[jogador_id], lista)
-
+    # espera pela resposta
     def esperarResposta(self, comando):
+        reply = None
         comandoEsperado = False
-        while comando or not comandoEsperado:
-            reply = None
-            tentativas = 100
-            while not reply and tentativas > 0:
-                reply = self.__interRede.serverReceber()
-                tentativas -= 1
-            if comando:
-                if reply:
-                    comandoEsperado = (comando == reply[1])
-            else:
-                comandoEsperado = True
+        while not comandoEsperado:
+            reply = self.__interRede.serverReceber()
             if reply:
-                self.__processar(reply)
+                comandoEsperado = (comando == reply[1]) if comando else True
+        # processar reply
+        if reply:
+            self.__processar(reply)
 
 # ============= CHAT ================
 
