@@ -19,6 +19,7 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
     def esperarPartida(self) -> list:
         raise NotImplementedError
     
+    @abc.abstractmethod
     def entrarIpHost(self) -> str:
         raise NotImplementedError
 

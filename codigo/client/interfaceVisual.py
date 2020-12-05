@@ -8,6 +8,7 @@ from client.interfaceUsuario import InterfaceUsuario
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import simpledialog
+from tkinter import *
 
 import threading
 
@@ -15,66 +16,51 @@ import threading
 class InterfaceVisual(InterfaceUsuario):
 
     def __init__(self):
-        self.__entrarOnline = False
-        self.__criarServer = False
-        # self.__sem_esperarPartida = threading.Semaphore(0)
-        self.__entrarPartida = False
-        
         self.root = tk.Tk()
         self.root.title("Cartinha de Amor")
         self.root.geometry("800x500")
-        
+
         self.telaInicial()
 
 
     def telaInicial(self):
-        def entrarOnlineCallBack():
-            self.__entrarOnline = not self.__entrarOnline
-            self.btn_entrarOnline.config(bg= "yellow" if self.__entrarOnline else "white")
-        self.btn_entrarOnline = tk.Button(self.root, text = "Entrar Online", command = entrarOnlineCallBack)
-        self.btn_entrarOnline.place(x = 50,y = 50)
-            
-        def criarServerCallBack():
-            self.__criarServer = not self.__criarServer
-            self.btn_criarServer.config(bg= "yellow" if self.__criarServer else "white")
+        self.__entrarOnline = False
+        self.__criarServer = False
+        self.__esperarPartida = BooleanVar(False)
 
-        self.btn_criarServer = tk.Button(self.root, text = "Criar Server", command = criarServerCallBack)
-        self.btn_criarServer.place(x = 50,y = 100)
-        
-        def esperarPartidaCallBack():
-            self.root.quit()
-            self.__esperarPartida = not self.__esperarPartida
-        self.btn_esperarPartida = tk.Button(self.root, text = "Entrar Partida", command = esperarPartidaCallBack)
+        def entrarOnlineToggle():
+            self.__entrarOnline = not self.__entrarOnline
+        def criarServerToggle():
+            self.__criarServer = not self.__criarServer
+
+        # botoes e checks
+        self.check_entrarOnline = Checkbutton(self.root, text = "Entrar Online", command=entrarOnlineToggle)
+        self.check_criarServer = Checkbutton(self.root, text = "Criar Server", command=criarServerToggle)
+        self.btn_esperarPartida = Button(self.root, text = "Entrar Partida", command=lambda: self.__esperarPartida.set(True))
+        self.check_entrarOnline.place(x = 50,y = 50)
+        self.check_criarServer.place(x = 50,y = 100)
         self.btn_esperarPartida.place(x = 50,y = 150)
-        
         # nome jogador
-        self.entrythingy = yk.Entry()
-        self.entrythingy.pack()
         self.nome_contents = tk.StringVar()
         self.nome_contents.set("Insira o nome")
-        self.entrythingy["textvariable"] = self.nome_contents
-
-        self.root.mainloop()
-
-
-
-    def entrarOnline(self) -> bool:
-        pass
+        entrythingy = Entry()
+        entrythingy.pack()
+        entrythingy["textvariable"] = self.nome_contents
 
     def numeroJogadores(self) -> int:
-        numero = simpledialog.askinteger("numero", "Entre o número de jogadores:", parent=self.root, minvalue=2, maxvalue=4)
+        numero = simpledialog.askinteger("numero", "Entre o número de jogadores:",
+                                            parent=self.root, minvalue=2, maxvalue=4)
         return numero
 
     def nomeJogador(self) -> str:
         nome = self.nome_contents.get()
+        if nome == "Insira o nome" or len(nome) < 1:
+            nome = 'jogador_'
         if len(nome) > 10:
             nome = nome[:10]
-        if nome == "Insira o nome" or len(nome) < 1:
-            nome = jogador +'_'
         return nome
 
-    def esperarPartida(self) -> bool:
-        # self.__sem_esperarPartida.acquire()
+    def esperarPartida(self) -> list:
         self.btn_esperarPartida.wait_variable(self.__esperarPartida)
         return [self.__entrarOnline, self.__criarServer]
         

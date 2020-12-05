@@ -1,6 +1,5 @@
 # coding: utf-8
-import pygame
-#from threading import Thread
+from threading import Thread
 from sys import path
 path.append('codigo')
 from server.server import Server
@@ -23,9 +22,8 @@ class CartinhaDeAmor:
         self.preparativos()
 
     # criar server 
-    def criarServer(self):
+    def criarServer(self, nJogadores):
         self.__server = Server(self.__interfaceRede)
-        nJogadores = self.__interfaceUsuario.numeroJogadores()
         self.__server.start()
         self.__server.esperarEntrarJogadores(nJogadores)
         self.__server.iniciarJogo()
@@ -47,13 +45,16 @@ class CartinhaDeAmor:
 
     def preparativos(self):
         self.__online, self.__criarServer = self.__interfaceUsuario.esperarPartida()
+        print(self.__online)
+        print(self.__criarServer)
         if self.__criarServer:
-            self.criarServer()
-        else:
-            self.entrarJogo()
+            nJogadores = self.__interfaceUsuario.numeroJogadores()
+            self.__serverThread = Thread(target=self.criarServer, args=(nJogadores,))
+            self.__serverThread.start()
+        self.entrarJogo()
 
     def fim(self):
         if self.__criarServer:
-            self.__serverThread.join()
             self.__server.desligar()
+            self.__serverThread.join()
         self.__controleCliente.desligar()
