@@ -1,39 +1,57 @@
 # coding: utf-8
-import tkinter as tk
 from sys import path
 path.append('codigo')
 from jogador import Jogador
 from carta import Carta
 from client.interfaceUsuario import InterfaceUsuario
 
+from tkinter import *
+from tkinter import messagebox
+import threading
+
+
 class InterfaceVisual(InterfaceUsuario):
 
     def __init__(self):
-        root = tk.Tk()
+        self.__entrarOnline = False
+        self.__criarServer = False
+        self.__sem_esperarPartida = threading.Semaphore(0)
         
-        tk.Frame.master.title("My Do-Nothing Application")
-        tk.Frame.master.maxsize(1000, 400)
+        self.root = Tk()
+        self.root.title("Cartinha de Amor")
+        self.root.geometry("800x500")
         
-        l1 = tk.Label(text="Test", fg="black", bg="white")
+        self.telaInicial()
 
-        self.entrythingy = tk.Entry()
+
+    def telaInicial(self):
+        def entrarOnlineCallBack():
+            self.__entrarOnline = not self.__entrarOnline
+            btn_entrarOnline.config(bg= "yellow" if self.__entrarOnline else "white")
+        btn_entrarOnline = Button(self.root, text = "Entrar Online", command = entrarOnlineCallBack)
+        #btn_entrarOnline.place(x = 50,y = 50)
+            
+        def criarServerCallBack():
+            self.__criarServer = not self.__criarServer
+            btn_criarServer.config(bg= "yellow" if self.__criarServer else "white")
+        btn_criarServer = Button(self.root, text = "Criar Server", command = criarServerCallBack)
+        btn_criarServer.place(x = 50,y = 100)
+        
+        def esperarPartidaCallBack():
+            self.root.quit()
+            self.__sem_esperarPartida.release()
+        btn_esperarPartida = Button(self.root, text = "Entrar Partida", command = esperarPartidaCallBack)
+        btn_esperarPartida.place(x = 50,y = 150)
+        
+        # nome jogador
+        self.entrythingy = Entry()
         self.entrythingy.pack()
-
-        # Create the application variable.
-        self.nome_contents = tk.StringVar()
+        self.nome_contents = StringVar()
         self.nome_contents.set("Insira o nome")
-
-    #    # Tell the entry widget to watch this variable.
         self.entrythingy["textvariable"] = self.nome_contents
 
-    #    # Define a callback for when the user hits return.
-    #    # It prints the current value of the variable.
-    #    self.entrythingy.bind('<Key-Return>',
-    #                         self.print_contents)
+        self.root.mainloop()
 
-    #def print_contents(self, event):
-    #    print("Hi. The current entry content is:",
-    #          self.contents.get())
 
 
     def entrarOnline(self) -> bool:
@@ -53,7 +71,28 @@ class InterfaceVisual(InterfaceUsuario):
         return numero
 
     def nomeJogador(self) -> str:
-        return self.nome_contents.get()
+        nome = self.nome_contents.get()
+        if len(nome) > 10:
+            nome = nome[:10]
+        if nome == "Insira o nome" or len(nome) < 1:
+            nome = jogador+'_'
+        return nome
+
+    def esperarPartida(self) -> bool:
+        self.__sem_esperarPartida.acquire()
+        return [self.__entrarOnline, self.__criarServer]
+        
+    def criarServer(self) -> bool:
+        print('deseja se criar o server? (sim/nao)')
+        r = input()
+        return ("S" in r or "s" in r)
+
+    def entrarIpHost(self) -> str:
+        print('entre com ip do host')
+        return input()
+
+    def addChat(self, texto: str):
+        print("chat: "+ texto)
 
     def iniciarRound(self):
         print("--- INICIANDO ROUND ---")
@@ -169,20 +208,3 @@ class InterfaceVisual(InterfaceUsuario):
         
     def resultadoPrincesa(self, j_nome: str):
         print(j_nome+" tentou descartar a Princesa")
-
-    def entrarPartida(self) -> bool:
-        print('deseja se conectar a uma partida? (sim/nao)')
-        r = input()
-        return ("S" in r or "s" in r)
-    
-    def criarServer(self) -> bool:
-        print('deseja se criar o server? (sim/nao)')
-        r = input()
-        return ("S" in r or "s" in r)
-
-    def entrarIpHost(self) -> str:
-        print('entre com ip do host')
-        return input()
-
-    def addChat(self, texto: str):
-        print("chat: "+ texto)

@@ -7,11 +7,6 @@ from client.interfaceUsuario import InterfaceUsuario
 
 class InterfaceTexto(InterfaceUsuario):
         
-    def entrarOnline(self) -> bool:
-        print('deseja jogar online? (sim/nao)')
-        r = input()
-        return ("S" in r or "s" in r)
-
     def numeroJogadores(self) -> int:
         print('numero de jogadores')
         valido = False
@@ -29,6 +24,23 @@ class InterfaceTexto(InterfaceUsuario):
         if len(nome) < 1:
             nome = 'jogador_'
         return nome
+
+    def esperarPartida(self) -> list:
+        print('deseja jogar online? (sim/nao)')
+        r = input()
+        jogarOnline = ("S" in r or "s" in r)
+        #
+        print('deseja se criar o server? (sim/nao)')
+        r = input()
+        criarServer = ("S" in r or "s" in r)
+        return [jogarOnline, criarServer]
+
+    def entrarIpHost(self) -> str:
+        print('entre com ip do host')
+        return input()
+
+    def addChat(self, texto: str):
+        print("chat: "+ texto)
 
     def iniciarRound(self):
         print("--- INICIANDO ROUND ---")
@@ -144,20 +156,3 @@ class InterfaceTexto(InterfaceUsuario):
         
     def resultadoPrincesa(self, j_nome: str):
         print(j_nome+" tentou descartar a Princesa")
-
-    def entrarPartida(self) -> bool:
-        print('deseja se conectar a uma partida? (sim/nao)')
-        r = input()
-        return ("S" in r or "s" in r)
-    
-    def criarServer(self) -> bool:
-        print('deseja se criar o server? (sim/nao)')
-        r = input()
-        return ("S" in r or "s" in r)
-
-    def entrarIpHost(self) -> str:
-        print('entre com ip do host')
-        return input()
-
-    def addChat(self, texto: str):
-        print("chat: "+ texto)

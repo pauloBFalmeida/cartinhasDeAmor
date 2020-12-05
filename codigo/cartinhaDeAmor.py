@@ -46,14 +46,11 @@ class CartinhaDeAmor:
         self.fim()
 
     def preparativos(self):
-        self.__online = self.__interfaceUsuario.entrarOnline()
-        self.__criarServer   = self.__interfaceUsuario.criarServer()
+        self.__online, self.__criarServer = self.__interfaceUsuario.esperarPartida()
         if self.__criarServer:
             self.criarServer()
         else:
-            entrarPartida = self.__interfaceUsuario.entrarPartida()
-            if entrarPartida:
-                self.entrarJogo()
+            self.entrarJogo()
 
     def fim(self):
         if self.__criarServer:

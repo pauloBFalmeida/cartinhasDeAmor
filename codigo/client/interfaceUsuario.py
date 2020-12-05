@@ -8,15 +8,22 @@ from carta import Carta
 class InterfaceUsuario(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
-    def entrarOnline(self) -> bool:
-        raise NotImplementedError
-
-    @abc.abstractmethod
     def numeroJogadores(self) -> int:
         raise NotImplementedError
 
     @abc.abstractmethod
     def nomeJogador(self) -> str:
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def esperarPartida(self) -> list:
+        raise NotImplementedError
+    
+    def entrarIpHost(self) -> str:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def addChat(self, texto: str):
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -89,19 +96,4 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def resultadoPrincesa(self, j_nome: str):
-        raise NotImplementedError
-        
-    @abc.abstractmethod
-    def entrarPartida(self) -> bool:
-        raise NotImplementedError
-    
-    @abc.abstractmethod
-    def criarServer(self) -> bool:
-        raise NotImplementedError
-    
-    def entrarIpHost(self) -> str:
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def addChat(self, texto: str):
         raise NotImplementedError
