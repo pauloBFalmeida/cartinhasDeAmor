@@ -5,8 +5,10 @@ from jogador import Jogador
 from carta import Carta
 from client.interfaceUsuario import InterfaceUsuario
 
-from tkinter import *
+import tkinter as tk
 from tkinter import messagebox
+from tkinter import simpledialog
+
 import threading
 
 
@@ -17,7 +19,7 @@ class InterfaceVisual(InterfaceUsuario):
         self.__criarServer = False
         self.__sem_esperarPartida = threading.Semaphore(0)
         
-        self.root = Tk()
+        self.root = tk.Tk()
         self.root.title("Cartinha de Amor")
         self.root.geometry("800x500")
         
@@ -34,6 +36,7 @@ class InterfaceVisual(InterfaceUsuario):
         def criarServerCallBack():
             self.__criarServer = not self.__criarServer
             btn_criarServer.config(bg= "yellow" if self.__criarServer else "white")
+
         btn_criarServer = Button(self.root, text = "Criar Server", command = criarServerCallBack)
         btn_criarServer.place(x = 50,y = 100)
         
@@ -60,14 +63,7 @@ class InterfaceVisual(InterfaceUsuario):
         return ("S" in r or "s" in r)
 
     def numeroJogadores(self) -> int:
-        print('numero de jogadores')
-        valido = False
-        while not valido:
-            numero = int(input())
-            if numero < 2 or numero > 4:
-                print('este numero de jogadores não é válido, tente de novo')
-            else:
-                valido = True
+        numero = simpledialog.askinteger("2", "Entre o número de jogadores:", parent=self.root, minvalue=2, maxvalue=4)
         return numero
 
     def nomeJogador(self) -> str:
@@ -79,7 +75,8 @@ class InterfaceVisual(InterfaceUsuario):
         return nome
 
     def esperarPartida(self) -> bool:
-        self.__sem_esperarPartida.acquire()
+        # self.__sem_esperarPartida.acquire()
+        wait_variable()
         return [self.__entrarOnline, self.__criarServer]
         
     def criarServer(self) -> bool:
