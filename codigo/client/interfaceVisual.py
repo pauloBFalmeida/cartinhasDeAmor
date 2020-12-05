@@ -17,7 +17,8 @@ class InterfaceVisual(InterfaceUsuario):
     def __init__(self):
         self.__entrarOnline = False
         self.__criarServer = False
-        self.__sem_esperarPartida = threading.Semaphore(0)
+        # self.__sem_esperarPartida = threading.Semaphore(0)
+        self.__entrarPartida = False
         
         self.root = tk.Tk()
         self.root.title("Cartinha de Amor")
@@ -29,27 +30,27 @@ class InterfaceVisual(InterfaceUsuario):
     def telaInicial(self):
         def entrarOnlineCallBack():
             self.__entrarOnline = not self.__entrarOnline
-            btn_entrarOnline.config(bg= "yellow" if self.__entrarOnline else "white")
-        btn_entrarOnline = Button(self.root, text = "Entrar Online", command = entrarOnlineCallBack)
-        #btn_entrarOnline.place(x = 50,y = 50)
+            self.btn_entrarOnline.config(bg= "yellow" if self.__entrarOnline else "white")
+        self.btn_entrarOnline = tk.Button(self.root, text = "Entrar Online", command = entrarOnlineCallBack)
+        self.btn_entrarOnline.place(x = 50,y = 50)
             
         def criarServerCallBack():
             self.__criarServer = not self.__criarServer
-            btn_criarServer.config(bg= "yellow" if self.__criarServer else "white")
+            self.btn_criarServer.config(bg= "yellow" if self.__criarServer else "white")
 
-        btn_criarServer = Button(self.root, text = "Criar Server", command = criarServerCallBack)
-        btn_criarServer.place(x = 50,y = 100)
+        self.btn_criarServer = tk.Button(self.root, text = "Criar Server", command = criarServerCallBack)
+        self.btn_criarServer.place(x = 50,y = 100)
         
         def esperarPartidaCallBack():
             self.root.quit()
-            self.__sem_esperarPartida.release()
-        btn_esperarPartida = Button(self.root, text = "Entrar Partida", command = esperarPartidaCallBack)
-        btn_esperarPartida.place(x = 50,y = 150)
+            self.__esperarPartida = not self.__esperarPartida
+        self.btn_esperarPartida = tk.Button(self.root, text = "Entrar Partida", command = esperarPartidaCallBack)
+        self.btn_esperarPartida.place(x = 50,y = 150)
         
         # nome jogador
-        self.entrythingy = Entry()
+        self.entrythingy = yk.Entry()
         self.entrythingy.pack()
-        self.nome_contents = StringVar()
+        self.nome_contents = tk.StringVar()
         self.nome_contents.set("Insira o nome")
         self.entrythingy["textvariable"] = self.nome_contents
 
@@ -58,12 +59,10 @@ class InterfaceVisual(InterfaceUsuario):
 
 
     def entrarOnline(self) -> bool:
-        print('deseja jogar online? (sim/nao)')
-        r = input()
-        return ("S" in r or "s" in r)
+        pass
 
     def numeroJogadores(self) -> int:
-        numero = simpledialog.askinteger("2", "Entre o número de jogadores:", parent=self.root, minvalue=2, maxvalue=4)
+        numero = simpledialog.askinteger("numero", "Entre o número de jogadores:", parent=self.root, minvalue=2, maxvalue=4)
         return numero
 
     def nomeJogador(self) -> str:
@@ -71,22 +70,20 @@ class InterfaceVisual(InterfaceUsuario):
         if len(nome) > 10:
             nome = nome[:10]
         if nome == "Insira o nome" or len(nome) < 1:
-            nome = jogador+'_'
+            nome = jogador +'_'
         return nome
 
     def esperarPartida(self) -> bool:
         # self.__sem_esperarPartida.acquire()
-        wait_variable()
+        self.btn_esperarPartida.wait_variable(self.__esperarPartida)
         return [self.__entrarOnline, self.__criarServer]
         
     def criarServer(self) -> bool:
-        print('deseja se criar o server? (sim/nao)')
-        r = input()
-        return ("S" in r or "s" in r)
+        pass
 
     def entrarIpHost(self) -> str:
-        print('entre com ip do host')
-        return input()
+        IP = simpledialog.askstring("IP do Host", "Insira o IP do host")
+        return IP
 
     def addChat(self, texto: str):
         print("chat: "+ texto)
