@@ -61,6 +61,8 @@ class ControleServer():
         if comando == "criarJogador":
             nome = entrada[0]
             id = len(self.__jogadores)
+            if len(nome) < 1:
+                nome = 'jogador_'+str(id)
             j = Jogador(id, nome, self.cores[id])
             self.__jogadores.append(j)
             self.__atualizarJogadores_ip()

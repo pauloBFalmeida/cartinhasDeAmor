@@ -65,7 +65,7 @@ class InterfaceVisual(InterfaceUsuario):
     def nomeJogador(self) -> str:
         nome = self.nome_contents.get()
         if nome == "Insira o nome" or len(nome) < 1:
-            nome = 'jogador_'
+            nome = ""
         if len(nome) > 10:
             nome = nome[:10]
         return nome
