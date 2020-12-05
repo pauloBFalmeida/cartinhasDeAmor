@@ -13,17 +13,22 @@ from tkinter import *
 import threading
 
 
+from time import sleep
+
 class InterfaceVisual(InterfaceUsuario):
 
     def __init__(self):
+        self.size = (800,500)
+        self.centro = (self.size[0]//2, self.size[1]//2)
         self.root = tk.Tk()
         self.root.title("Cartinha de Amor")
-        self.root.geometry("800x500")
+        self.root.resizable(False, False)
+        self.root.geometry(str(self.size[0])+'x'+str(self.size[1]))
 
-        self.telaInicial()
+        self.__telaInicial()
 
 
-    def telaInicial(self):
+    def __telaInicial(self):
         self.__entrarOnline = False
         self.__criarServer = False
         self.__esperarPartida = BooleanVar(False)
@@ -34,18 +39,23 @@ class InterfaceVisual(InterfaceUsuario):
             self.__criarServer = not self.__criarServer
 
         # botoes e checks
-        self.check_entrarOnline = Checkbutton(self.root, text = "Entrar Online", command=entrarOnlineToggle)
-        self.check_criarServer = Checkbutton(self.root, text = "Criar Server", command=criarServerToggle)
+        check_entrarOnline = Checkbutton(self.root, text = "Entrar Online", command=entrarOnlineToggle)
+        check_criarServer = Checkbutton(self.root, text = "Criar Server", command=criarServerToggle)
         self.btn_esperarPartida = Button(self.root, text = "Entrar Partida", command=lambda: self.__esperarPartida.set(True))
-        self.check_entrarOnline.place(x = 50,y = 50)
-        self.check_criarServer.place(x = 50,y = 100)
-        self.btn_esperarPartida.place(x = 50,y = 150)
+        check_entrarOnline.place(x = self.centro[0], y= 50)
+        check_criarServer.place (x = self.centro[0], y= 75)
+        self.btn_esperarPartida.place(x = self.centro[0], y= 150)
         # nome jogador
         self.nome_contents = tk.StringVar()
         self.nome_contents.set("Insira o nome")
-        entrythingy = Entry()
-        entrythingy.pack()
-        entrythingy["textvariable"] = self.nome_contents
+        entrada_nome = Entry()
+        entrada_nome["textvariable"] = self.nome_contents
+        entrada_nome.place(x = self.centro[0], y= 10)
+
+    def __reset(self):
+        for child in self.root.winfo_children():
+            child.destroy()
+        self.root.update()
 
     def numeroJogadores(self) -> int:
         numero = simpledialog.askinteger("numero", "Entre o número de jogadores:",
@@ -62,11 +72,9 @@ class InterfaceVisual(InterfaceUsuario):
 
     def esperarPartida(self) -> list:
         self.btn_esperarPartida.wait_variable(self.__esperarPartida)
+        self.__reset()
         return [self.__entrarOnline, self.__criarServer]
         
-    def criarServer(self) -> bool:
-        pass
-
     def entrarIpHost(self) -> str:
         IP = simpledialog.askstring("IP do Host", "Insira o IP do host")
         return IP
