@@ -5,8 +5,60 @@ from jogador import Jogador
 from carta import Carta
 from client.interfaceUsuario import InterfaceUsuario
 
-class InterfaceTexto(InterfaceUsuario):
+from tkinter import *
+from tkinter import messagebox
+import threading
+
+
+class InterfaceVisual(InterfaceUsuario):
+
+    def __init__(self):
+        self.__entrarOnline = False
+        self.__criarServer = False
+        self.__sem_esperarPartida = threading.Semaphore(0)
         
+        self.root = Tk()
+        self.root.title("Cartinha de Amor")
+        self.root.geometry("800x500")
+        
+        self.telaInicial()
+
+
+    def telaInicial(self):
+        def entrarOnlineCallBack():
+            self.__entrarOnline = not self.__entrarOnline
+            btn_entrarOnline.config(bg= "yellow" if self.__entrarOnline else "white")
+        btn_entrarOnline = Button(self.root, text = "Entrar Online", command = entrarOnlineCallBack)
+        #btn_entrarOnline.place(x = 50,y = 50)
+            
+        def criarServerCallBack():
+            self.__criarServer = not self.__criarServer
+            btn_criarServer.config(bg= "yellow" if self.__criarServer else "white")
+        btn_criarServer = Button(self.root, text = "Criar Server", command = criarServerCallBack)
+        btn_criarServer.place(x = 50,y = 100)
+        
+        def esperarPartidaCallBack():
+            self.root.quit()
+            self.__sem_esperarPartida.release()
+        btn_esperarPartida = Button(self.root, text = "Entrar Partida", command = esperarPartidaCallBack)
+        btn_esperarPartida.place(x = 50,y = 150)
+        
+        # nome jogador
+        self.entrythingy = Entry()
+        self.entrythingy.pack()
+        self.nome_contents = StringVar()
+        self.nome_contents.set("Insira o nome")
+        self.entrythingy["textvariable"] = self.nome_contents
+
+        self.root.mainloop()
+
+
+
+    def entrarOnline(self) -> bool:
+        print('deseja jogar online? (sim/nao)')
+        r = input()
+        return ("S" in r or "s" in r)
+
     def numeroJogadores(self) -> int:
         print('numero de jogadores')
         valido = False
@@ -19,21 +71,21 @@ class InterfaceTexto(InterfaceUsuario):
         return numero
 
     def nomeJogador(self) -> str:
-        print('nome do jogador')
-        nome = input()
-        if len(nome) < 1:
-            nome = 'jogador_'
+        nome = self.nome_contents.get()
+        if len(nome) > 10:
+            nome = nome[:10]
+        if nome == "Insira o nome" or len(nome) < 1:
+            nome = jogador+'_'
         return nome
 
-    def esperarPartida(self) -> list:
-        print('deseja jogar online? (sim/nao)')
-        r = input()
-        jogarOnline = ("S" in r or "s" in r)
-        #
+    def esperarPartida(self) -> bool:
+        self.__sem_esperarPartida.acquire()
+        return [self.__entrarOnline, self.__criarServer]
+        
+    def criarServer(self) -> bool:
         print('deseja se criar o server? (sim/nao)')
         r = input()
-        criarServer = ("S" in r or "s" in r)
-        return [jogarOnline, criarServer]
+        return ("S" in r or "s" in r)
 
     def entrarIpHost(self) -> str:
         print('entre com ip do host')
