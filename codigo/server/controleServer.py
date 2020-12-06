@@ -36,7 +36,7 @@ class ControleServer():
     def iniciarRound(self):
         self.__enviar([self.__cmd,"iniciarRound"])
         for j in self.__jogadores:
-            cartas_tipo = [c.getValor() for c in j.getCartasMao()]
+            cartas_tipo = [c.get_valor() for c in j.getCartasMao()]
             self.__enviarJogadorEspecifico(j.getId(), [self.__cmd,"mostrarMao",cartas_tipo])
 
 # ======== Processar ==============
