@@ -34,6 +34,9 @@ class InterfaceTexto(InterfaceUsuario):
         r = input()
         criarServer = ("S" in r or "s" in r)
         return [jogarOnline, criarServer]
+    
+    def esperarandoJogadores(self):
+        print('esperando jogadores')
 
     def entrarIpHost(self) -> str:
         print('entre com ip do host')

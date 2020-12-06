@@ -48,7 +48,7 @@ class ControleJogo():
         while error:
             carta_i = self.controleServer.jogadorEscolherCarta(
                 jogadorTurno,
-                [c.get_tipo() for c in jogadorTurno.getCartasMao()]
+                [c.get_valor() for c in jogadorTurno.getCartasMao()]
                 )
             error = self.__condicaoCondessa(jogadorTurno, carta_i)
             if error:
@@ -114,16 +114,17 @@ class ControleJogo():
         possiveis = []
         for i in range(len(jogadores)):
             j = jogadores[i]
-            # vejo se e si mesmo
-            if siMesmo or j != jogadorTurno:
-                j_texto = str(i) +' '+ j.getNome()
-                if not j.get_vivo():
-                    j_texto += " (morto)"
-                elif j.getProtecao():
-                    j_texto += " (protegido)"
-                else:
-                    possiveis.append(i)
-                jogadores_texto.append(j_texto)
+            j_texto = j.getNome()
+            #
+            if (not siMesmo) and j == jogadorTurno:
+                j_texto += " (nao possivel)"
+            elif not j.get_vivo():
+                j_texto += " (morto)"
+            elif j.getProtecao():
+                j_texto += " (protegido)"
+            else:
+                possiveis.append(i)
+            jogadores_texto.append(j_texto)
         #
         index_alvo = self.controleServer.selecionaJogador(jogadorTurno,
                                                           jogadores_texto,

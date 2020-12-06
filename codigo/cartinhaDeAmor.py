@@ -51,6 +51,7 @@ class CartinhaDeAmor:
             nJogadores = self.__interfaceUsuario.numeroJogadores()
             self.__serverThread = Thread(target=self.criarServer, args=(nJogadores,))
             self.__serverThread.start()
+            self.__interfaceUsuario.esperarandoJogadores()
         self.entrarJogo()
 
     def fim(self):

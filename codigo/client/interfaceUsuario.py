@@ -20,6 +20,10 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
         raise NotImplementedError
     
     @abc.abstractmethod
+    def esperarandoJogadores(self):
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def entrarIpHost(self) -> str:
         raise NotImplementedError
 

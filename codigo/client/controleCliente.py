@@ -15,7 +15,7 @@ class ControleCliente():
         self.__cmd = 'cmd'
         self.__ret = 'ret'
         self.__msg = 'msg'
-        self.__id = -1
+        self.__jogoRodando = True
 
     def setHostIp(self, ip):
         self.__hostIp = ip
@@ -27,37 +27,21 @@ class ControleCliente():
         nome = self.__interUsuario.nomeJogador()
         self.__enviar([self.__cmd,'criarJogador',nome])
 
-    def getId(self):
-        self.__enviar([self.__cmd,'id'])
-        while self.__id == -1:
-            self.__esperarResposta('id')
-        return self.__id
-
     def main(self):
-        while True:
+        while self.__jogoRodando:
             self.__esperarResposta(None)
 
     def desligar(self):
         self.__interRede.clienteEnd()
 
-    def returnId(self):
-        return self.__id
-    
 # ======== Processar ==============
 
     def __processar(self, entrada):
         comando = entrada.pop(0)
         if   comando == self.__cmd:
             self.__processarCmd(entrada)
-        elif comando == self.__ret:
-            self.__processarRet(entrada)
         elif comando == self.__msg:
             pass
-
-    def __processarRet(self, entrada):
-        comando = entrada.pop(0)
-        if comando == "id":
-            self.__id = entrada[0]
 
     def __processarCmd(self, entrada):
         comando = entrada.pop(0)
@@ -79,7 +63,7 @@ class ControleCliente():
             jg_pontos = entrada[1]
             self.__apresentarGanhadorDoJogo(jg_nome, jg_pontos)
         elif comando == "jogadorEscolherCarta":
-            cartasMao_tipos = entrada[0]
+            cartasMao_tipos = [int(t) for t in entrada[0]]
             self.__jogadorEscolherCarta(cartasMao_tipos)
         elif comando == "alertarSobreCondessa":
             self.__alertarSobreCondessa()
@@ -136,6 +120,7 @@ class ControleCliente():
 
     def __apresentarGanhadorDoJogo(self, jg_nome, jg_pontos):
         self.__interUsuario.apresentarGanhadorDoJogo(jg_nome, jg_pontos)
+        self.__jogoRodando = False
 
     def __jogadorEscolherCarta(self, cartasMao_tipos):
         ret = self.__interUsuario.jogadorEscolherCarta(cartasMao_tipos)
