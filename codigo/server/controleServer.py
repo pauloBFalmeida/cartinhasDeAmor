@@ -42,9 +42,9 @@ class ControleServer():
 # ======== Processar ==============
 
     def __processar(self, entrada):
-        comando = entrada.pop(0)
         print('\n processar server')
         print(entrada)
+        comando = entrada.pop(0)
         if comando == self.__cmd:
             self.__processarCmd(entrada)
         elif comando == self.__ret:
@@ -91,7 +91,6 @@ class ControleServer():
         # esperar resposta
         self.esperarResposta("jogadorEscolherCarta")
         index_carta = self.__retJogadorEscolherCarta
-        self.__retJogadorEscolherCarta = None
         return index_carta
 
     def alertarSobreCondessa(self, jogadorTurno):
@@ -105,7 +104,8 @@ class ControleServer():
         # esperar resposta
         self.esperarResposta("selecionaJogador")
         index_jogador = self.__retSelecionaJogador
-        self.__retSelecionaJogador = None
+        print('2')
+        print(index_jogador)
         return index_jogador
 
     def selecionaValorGuarda(self, jogadorTurno):
@@ -113,7 +113,6 @@ class ControleServer():
         # esperar resposta
         self.esperarResposta("selecionaValorGuarda")
         id_carta = self.__retSelecionaValorGuarda
-        self.__retSelecionaValorGuarda = None
         return id_carta
 
     def resultadoGuarda(self, resultAcusacao):

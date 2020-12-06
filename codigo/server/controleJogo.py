@@ -66,10 +66,14 @@ class ControleJogo():
     def __acaoCarta(self, jogadorTurno, carta_jogada):
         carta_v = carta_jogada.get_valor()
         # jogador do turno escolhe o jogador alvo
-        j_alvo = None
+        j_alvo = True
         if carta_v in [1,2,3,5,6]:      # guarda, padre, barao, principe, rei
             j_alvo = self.__selecionaJogador(jogadorTurno, carta_jogada)
+            print('3')
+            print(j_alvo)
         # acao da carta
+        print('\n\n j_alvo')
+        print(j_alvo)
         if j_alvo != None:
             # guarda
             valor = self.controleServer.selecionaValorGuarda(jogadorTurno) if (carta_v == 1) else -1
@@ -137,7 +141,7 @@ class ControleJogo():
                                                           jogadores_texto,
                                                           possiveis,
                                                           carta_jogada.getFraseInicio())
-        if index_alvo:
+        if index_alvo != None and (index_alvo >= 0 and index_alvo < len(jogadores)):
             return jogadores[index_alvo]
         return None
 

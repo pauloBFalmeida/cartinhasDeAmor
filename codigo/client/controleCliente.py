@@ -37,11 +37,10 @@ class ControleCliente():
 # ======== Processar ==============
 
     def __processar(self, entrada):
+        print('\n processar cliente')
+        print(entrada)
         comando = entrada.pop(0)
         if   comando == self.__cmd:
-            print()
-            print('processar cliente')
-            print(entrada)
             self.__processarCmd(entrada)
         elif comando == self.__msg:
             pass
