@@ -24,6 +24,11 @@ class InterfaceVisual(InterfaceUsuario):
         self.root.title("Cartinha de Amor")
         self.root.resizable(False, False)
         self.root.geometry(str(self.size[0])+'x'+str(self.size[1]))
+        
+        # carrega as imagens
+        path.append('../../')
+        self.imagens = [PhotoImage(file=r"cartas/carta"+str(i)+".png") for i in range(9)]
+        self.imagens_size = (150, 210)
 
         self.__telaInicial()
 
@@ -53,10 +58,12 @@ class InterfaceVisual(InterfaceUsuario):
         entrada_nome.place(x = self.centro[0], y= 10)
         
     def __telaJogo(self):
-        self.btn_carta1.place(x = self.centro[0]-50, y= self.centro[1])
-        self.btn_carta2.place(x = self.centro[0]+50, y= self.centro[1])
-        self.btn_carta1.place(x = self.centro[0]-50, y= self.centro[1])
-        self.btn_carta2.place(x = self.centro[0]+50, y= self.centro[1])
+        self.carta_escolhida = IntVar(1)
+
+        self.btn_carta0 = Button(self.root, image=self.imagens[0], command=lambda: self.carta_escolhida.set(0))
+        self.btn_carta1 = Button(self.root, image=self.imagens[0], command=lambda: self.carta_escolhida.set(1))
+        self.btn_carta0.place(x = self.centro[0]-self.imagens_size[0]//2,   y= self.size[1]-self.imagens_size[1]-20)
+        self.btn_carta1.place(x = self.centro[0]+5+self.imagens_size[0]//2, y= self.size[1]-self.imagens_size[1]-20)
 
 
     def __reset(self):
@@ -146,31 +153,25 @@ class InterfaceVisual(InterfaceUsuario):
 
     def selecionaValorGuarda(self):
         print('escolha o tipo da carta')
-        i = 2
-        for tipo in ['Padre', 'Barao', 'Aia', 'Principe', 'Rei', 'Condessa', 'Princesa']:
-            print(str(i)+' '+tipo)
-            i += 1
-        aceito = False
-        while not aceito:
-            card_id = int(input())
-            aceito = card_id > 1 and card_id <= 8
-            if not aceito:
-                print('escolha nao e valida')
-        return card_id
+        options = ['Padre', 'Barao', 'Aia', 'Principe', 'Rei', 'Condessa', 'Princesa']
+        menu = tk.Menu(self.root, tk.StringVar(), *options, command=self.calcula_carta)
+        menu.pack()
+        # menu.post() # centralizar
+        return self.card_id
     
-    def jogadorEscolherCarta(self, cartasMao_nomes: list) -> int:
-        i = -1
-        possivel = False
-        qtdCartas = len(cartasMao_nomes)
-        if qtdCartas < 1:
-            return None
-        while not possivel:
-            print('escolha uma carta')
-            for i in range(qtdCartas):
-                print(str(i)+' '+cartasMao_nomes[i])
-            i = int(input())
-            possivel = (i >= 0 and i < qtdCartas)
-        return i
+    def calcula_carta(self, value):
+        options = ['Padre', 'Barao', 'Aia', 'Principe', 'Rei', 'Condessa', 'Princesa']
+        for i in range(len(options)):
+            if value == options[i]:
+                self.card_id = i + 2
+
+    def jogadorEscolherCarta(self, cartasMao_tipos: list) -> int:
+        self.btn_carta0.configure(image=self.imagens[cartasMao_tipos[0]])
+        self.btn_carta1.configure(image=self.imagens[cartasMao_tipos[1]])
+        self.root.update()
+        # espera clicar em uma das cartas
+        self.btn_carta0.wait_variable(self.carta_escolhida)
+        return self.carta_escolhida
 
     def alertarSobreCondessa(self):
         messagebox.showinfo(message='Voce deve jogar a condessa, pois tem um rei ou principe na mão!')
