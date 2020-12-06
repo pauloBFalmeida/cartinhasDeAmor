@@ -43,6 +43,9 @@ class ControleServer():
         if comando == self.__cmd:
             self.__processarCmd(entrada)
         elif comando == self.__ret:
+            print()
+            print('retorno server')
+            print(entrada)
             self.__processarRet(entrada)
         elif comando == self.__msg:
             pass
@@ -151,6 +154,10 @@ class ControleServer():
         self.__enviarJogadorEspecifico(jogadorTurno.getId(), lista)
 
     def __enviarJogadorEspecifico(self, id, lista):
+        print()
+        print('enviar server')
+        print('id'+str(id))
+        print(lista)
         self.__interRede.serverEnviar(self.__jogadores_ip[id], lista)
 
     def __atualizarJogadores_ip(self):

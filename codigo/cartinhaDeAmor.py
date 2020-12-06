@@ -26,7 +26,10 @@ class CartinhaDeAmor:
         self.__server = Server(self.__interfaceRede)
         self.__server.start()
         self.__server.esperarEntrarJogadores(nJogadores)
+        # iniciar partida
         self.__server.iniciarJogo()
+        # fim
+        self.__server.desligar()
 
     def entrarJogo(self):
         if self.__online:
@@ -38,9 +41,9 @@ class CartinhaDeAmor:
         self.__controleCliente.conectarServer()
         # criar jogador
         self.__controleCliente.criarJogador()
-        #
+        # 
         self.__controleCliente.main()
-        #
+        # fim
         self.fim()
 
     def preparativos(self):
@@ -55,7 +58,6 @@ class CartinhaDeAmor:
         self.entrarJogo()
 
     def fim(self):
-        if self.__criarServer:
-            self.__server.desligar()
-            self.__serverThread.join()
         self.__controleCliente.desligar()
+        if self.__criarServer:
+            self.__serverThread.join()

@@ -39,6 +39,9 @@ class ControleCliente():
     def __processar(self, entrada):
         comando = entrada.pop(0)
         if   comando == self.__cmd:
+            print()
+            print('processar')
+            print(entrada)
             self.__processarCmd(entrada)
         elif comando == self.__msg:
             pass
@@ -173,17 +176,22 @@ class ControleCliente():
 # ======== Rede ==============
 
     def __enviar(self, lista):
+        print()
+        print('enviar')
+        print(lista)
         self.__interRede.clienteEnviar(lista)
 
     def __esperarResposta(self, comando):
         comandoEsperado = False
-        while comando or (not comandoEsperado):
+        while not comandoEsperado:
             reply = None
             tentativas = 100
             while not reply and tentativas > 0:
                 reply = self.__interRede.clienteReceber()
                 tentativas -= 1
-            if comando:
-                comandoEsperado = (comando == reply[1])
+            # se obter uma resposta
             if reply:
                 self.__processar(reply)
+                # se tiver um comando, verificar se ele e o que eu esperava
+                comandoEsperado = (comando == reply[1]) if comando else True
+

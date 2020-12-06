@@ -73,6 +73,8 @@ class ControleJogo():
             # resultado da acao da carta
             result = carta_jogada.executar_acao(jogadorTurno, j_alvo, valor)
             if result:
+                print('\n \n\nresult')
+                print(result)
                 # Guarda
                 if carta_v == 1:
                     # result = bool de se acusacao do j_alvo deu certo ou nao
