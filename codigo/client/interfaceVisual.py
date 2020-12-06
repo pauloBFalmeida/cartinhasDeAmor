@@ -24,6 +24,11 @@ class InterfaceVisual(InterfaceUsuario):
         self.root.title("Cartinha de Amor")
         self.root.resizable(False, False)
         self.root.geometry(str(self.size[0])+'x'+str(self.size[1]))
+        
+        # carrega as imagens
+        path.append('../../')
+        self.imagens = [PhotoImage(file=r"cartas/carta"+str(i)+".png") for i in range(9)]
+        self.imagens_size = (150, 210)
 
         self.__telaInicial()
 
@@ -45,9 +50,15 @@ class InterfaceVisual(InterfaceUsuario):
 
         # botoes e checks
         check_entrarOnline = Checkbutton(self.root, text = "Entrar Online", command=entrarOnlineToggle)
-        check_criarServer = Checkbutton(self.root, text = "Criar Server", command=criarServerToggle)
-        self.btn_esperarPartida = Button(self.root, text = "Entrar Partida", image=self.imagens[1], command=lambda: self.__esperarPartida.set(True))
-        self.btn_esperarPartida2 = Button(self.root, text = "Entrar Partida", image=self.imagens[2], command=lambda: self.__esperarPartida.set(True))
+#<<<<<<< HEAD
+#        check_criarServer = Checkbutton(self.root, text = "Criar Server", command=criarServerToggle)
+#        self.btn_esperarPartida = Button(self.root, text = "Entrar Partida", image=self.imagens[1], command=lambda: self.__esperarPartida.set(True))
+#        self.btn_esperarPartida2 = Button(self.root, text = "Entrar Partida", image=self.imagens[2], command=lambda: self.__esperarPartida.set(True))
+#=======
+#        check_criarServer = Checkbutton(self.root, text  = "Criar Server", command=criarServerToggle)
+#        self.btn_esperarPartida = Button(self.root, text = "Entrar Partida", command=lambda: self.__esperarPartida.set(True))
+#>>>>>>> predo
+
         check_entrarOnline.place(x = self.centro[0], y= 50)
         check_criarServer.place (x = self.centro[0], y= 75)
         self.btn_esperarPartida.place(x = self.centro[0]-100, y= 500-220)
@@ -58,6 +69,15 @@ class InterfaceVisual(InterfaceUsuario):
         entrada_nome = Entry()
         entrada_nome["textvariable"] = self.nome_contents
         entrada_nome.place(x = self.centro[0], y= 10)
+        
+    def __telaJogo(self):
+        self.carta_escolhida = IntVar(1)
+
+        self.btn_carta0 = Button(self.root, image=self.imagens[0], command=lambda: self.carta_escolhida.set(0))
+        self.btn_carta1 = Button(self.root, image=self.imagens[0], command=lambda: self.carta_escolhida.set(1))
+        self.btn_carta0.place(x = self.centro[0]-self.imagens_size[0]//2,   y= self.size[1]-self.imagens_size[1]-20)
+        self.btn_carta1.place(x = self.centro[0]+5+self.imagens_size[0]//2, y= self.size[1]-self.imagens_size[1]-20)
+
 
     def __reset(self):
         for child in self.root.winfo_children():
@@ -90,21 +110,19 @@ class InterfaceVisual(InterfaceUsuario):
         print("chat: "+ texto)
 
     def iniciarRound(self):
-        
-
-        print("--- INICIANDO ROUND ---")
+        self.__telaJogo()
 
     def apresentarGanhadorDoJogo(self, jg_nome: str, jg_pontos: int):
-        print(jg_nome+" ganhou o jogo com "+str(jg_pontos)+" pontos")
+        messagebox.showinfo(message=jg_nome+" ganhou o jogo com "+str(jg_pontos)+" pontos")
 
     def apresentarGanhadorDoRound(self, jg_nome: str, jg_pontos: int):
         if jg_nome:
-            print(jg_nome+" ganhou o round, agora possui "+str(jg_pontos)+" pontos")
+            messagebox.showinfo(message=jg_nome+" ganhou o round, agora possui "+str(jg_pontos)+" pontos")
         else:
-            print("nao houve ganhadores nesse round")
+            messagebox.showinfo(message="nao houve ganhadores nesse round")
 
     def anunciarCompararCartas(self):
-        print('sem cartas no deck, comparando valor na mao dos jogadores restantes')
+        messagebox.showinfo(message='sem cartas no deck, comparando valor na mao dos jogadores restantes')
 
     def compararCartas(self, set_m: tuple,  set_j: tuple, ganhador_j: bool):
         n_m, c_n_m, v_m = set_m     # antigo maior
@@ -121,14 +139,14 @@ class InterfaceVisual(InterfaceUsuario):
             
             
     def anunciarCarta(self, j_nome: str, c_nome: str):
-        print(j_nome+' jogou a carta '+c_nome)
+        messagebox.showinfo(message=j_nome+' jogou a carta '+c_nome)
 
     # seleciona um dos jogadores podendo ser siMesmo
     def selecionaJogador(self, jogadores_texto: list, possiveis: list, textoInicio: str) -> int:
         print("escolha outro jogador para "+textoInicio)
         # 
         if len(possiveis) == 0:
-            print('nenhum jogador possivel de ser escolhido')
+            messagebox.showinfo(message='nenhum jogador possivel de ser escolhido')
             return None
         #
         for t in jogadores_texto:
@@ -141,67 +159,61 @@ class InterfaceVisual(InterfaceUsuario):
             if alvo_i in possiveis:
                 aceito = True
             else:
-                print('escolha nao e valida')
+                messagebox.showinfo(message='escolha nao e valida')
         # retorna o indice do jogador escolhido
         return alvo_i
 
     def selecionaValorGuarda(self):
         print('escolha o tipo da carta')
-        i = 2
-        for tipo in ['Padre', 'Barao', 'Aia', 'Principe', 'Rei', 'Condessa', 'Princesa']:
-            print(str(i)+' '+tipo)
-            i += 1
-        aceito = False
-        while not aceito:
-            card_id = int(input())
-            aceito = card_id > 1 and card_id <= 8
-            if not aceito:
-                print('escolha nao e valida')
-        return card_id
+        options = ['Padre', 'Barao', 'Aia', 'Principe', 'Rei', 'Condessa', 'Princesa']
+        menu = tk.Menu(self.root, tk.StringVar(), *options, command=self.calcula_carta)
+        menu.pack()
+        # menu.post() # centralizar
+        return self.card_id
     
-    def jogadorEscolherCarta(self, cartasMao_nomes: list) -> int:
-        i = -1
-        possivel = False
-        qtdCartas = len(cartasMao_nomes)
-        if qtdCartas < 1:
-            return None
-        while not possivel:
-            print('escolha uma carta')
-            for i in range(qtdCartas):
-                print(str(i)+' '+cartasMao_nomes[i])
-            i = int(input())
-            possivel = (i >= 0 and i < qtdCartas)
-        return i
+    def calcula_carta(self, value):
+        options = ['Padre', 'Barao', 'Aia', 'Principe', 'Rei', 'Condessa', 'Princesa']
+        for i in range(len(options)):
+            if value == options[i]:
+                self.card_id = i + 2
+
+    def jogadorEscolherCarta(self, cartasMao_tipos: list) -> int:
+        self.btn_carta0.configure(image=self.imagens[cartasMao_tipos[0]])
+        self.btn_carta1.configure(image=self.imagens[cartasMao_tipos[1]])
+        self.root.update()
+        # espera clicar em uma das cartas
+        self.btn_carta0.wait_variable(self.carta_escolhida)
+        return self.carta_escolhida
 
     def alertarSobreCondessa(self):
-        print('voce deve jogar a condessa, pois tem um rei ou principe na mao')
+        messagebox.showinfo(message='Voce deve jogar a condessa, pois tem um rei ou principe na mão!')
 
     def anunciarMorto(self, j_nome: str):
-        print(j_nome+' foi morto')
+        messagebox.showinfo(message=j_nome+' foi morto')
 
     def resultadoGuarda(self, resultadoAcusacao: bool):
         if resultadoAcusacao:
-            print('acertou a acusacao')
+            messagebox.showinfo(message='acertou a acusacao')
         else:
-            print('errou a acusacao')
+            messagebox.showinfo(message='errou a acusacao')
         
     def resultadoPadre(self, c_nome: str):
-        print('carta na mao '+c_nome)
+        messagebox.showinfo(message='carta na mao '+c_nome)
         
     def resultadoBarao(self, j_nome: str):
         if j_nome:
-            print(j_nome+' possuia a carta de menor valor')
+            messagebox.showinfo(message=j_nome+' possuia a carta de menor valor')
         else:
-            print('empate')
+            messagebox.showinfo(message='empate')
         
     def resultadoAia(self, j_nome: str):
-        print(j_nome+' esta protegido pelo proximo round')
+        messagebox.showinfo(message=j_nome+' esta protegido pelo proximo round')
         
     def resultadoPrincipe(self, j_nome: str):
-        print(j_nome+' pegou uma nova mao')
+        messagebox.showinfo(message=j_nome+' pegou uma nova mao')
         
     def resultadoRei(self, j1_nome: str, j2_nome: str):
-        print('trocadas as maos de '+j1_nome+' e '+j2_nome)
+        messagebox.showinfo(message='trocadas as maos de '+j1_nome+' e '+j2_nome)
         
     def resultadoPrincesa(self, j_nome: str):
-        print(j_nome+" tentou descartar a Princesa")
+        messagebox.showinfo(message=j_nome+" tentou descartar a Princesa")
