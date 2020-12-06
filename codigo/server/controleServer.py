@@ -135,6 +135,9 @@ class ControleServer():
     def anunciarMorto(self, j_nome):
         self.__enviar([self.__cmd,"anunciarMorto", j_nome])
 
+    def atualizarPlacar(self, placar):
+        self.__enviar([self.__cmd, "atualizarPlacar", placar])
+
 # ============= Rede ================
 
     # enviar para todos os jogadores

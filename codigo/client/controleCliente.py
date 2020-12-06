@@ -103,6 +103,9 @@ class ControleCliente():
         elif comando == "anunciarMorto":
             j_nome = entrada[0]
             self.__anunciarMorto(j_nome)
+        elif comando == "atualizarPlacar":
+            placar = entrada[0]
+            self.__atualizarPlacar(placar)
             
 # ======== Funcoes com a interface usuario ==============
 
@@ -164,6 +167,9 @@ class ControleCliente():
     def __anunciarMorto(self, j_nome):
         self.__interUsuario.anunciarMorto(j_nome)
     
+    def __atualizarPlacar(self, placar):
+        self.__interUsuario.atualizarPlacar(placar)
+
 # ======== Rede ==============
 
     def __enviar(self, lista):

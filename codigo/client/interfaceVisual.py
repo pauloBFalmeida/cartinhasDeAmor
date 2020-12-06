@@ -66,12 +66,19 @@ class InterfaceVisual(InterfaceUsuario):
         self.btn_carta1 = Button(self.root, image=self.imagens[0], command=lambda: self.carta_escolhida.set(1))
         self.btn_carta0.place(x = self.centro[0]-self.imagens_size[0]//2,   y= self.size[1]-self.imagens_size[1]-20)
         self.btn_carta1.place(x = self.centro[0]+5+self.imagens_size[0]//2, y= self.size[1]-self.imagens_size[1]-20)
+        
         # texto
         self.texto_esq = StringVar()
-        self.texto_esq.set("Alguma coisa")
+        self.texto_esq.set("Novo turno")
         label = Label(self.root, textvariable=self.texto_esq)
         label.place(x=20, y=self.centro[1])
-        #
+
+        # placar
+        self.placar = StringVar()
+        self.placar.set(self.get_placar())
+        label = Label(self.root, textvariable=self.placar)
+        label.place(x=self.centro[0], y=10)
+
         self.root.update()
 
 
@@ -212,11 +219,9 @@ class InterfaceVisual(InterfaceUsuario):
         self.__addTexto('escolha o tipo da carta')
         options = ['Padre', 'Barao', 'Aia', 'Principe', 'Rei', 'Condessa', 'Princesa']
         i = self.__dropMenu(options)
-        return self.__calcValorCarta(options[i])
-    
-    def __calcValorCarta(self, nome):
-        options = ['Guarda','Padre', 'Barao', 'Aia', 'Principe', 'Rei', 'Condessa', 'Princesa']
-        return options.index(nome) +1
+        self.__addTexto('Foi escolhido ' + str(i))
+        # self.__addTexto('Foi escolhida ' + options[i])
+        return i + 2
 
     def jogadorEscolherCarta(self, cartasMao_tipos: list) -> int:
         self.btn_carta0.configure(image=self.imagens[cartasMao_tipos[0]])
@@ -254,7 +259,13 @@ class InterfaceVisual(InterfaceUsuario):
         self.__addTexto(j_nome+' pegou uma nova mao')
         
     def resultadoRei(self, j1_nome: str, j2_nome: str):
-        self.__addTexto('trocadas as maos de '+j1_nome+' e '+j2_nome)
+        self.__addTexto('trocadas as maos de ' + j1_nome + ' e ' + j2_nome)
         
     def resultadoPrincesa(self, j_nome: str):
         self.__addTexto(j_nome+' tentou descartar a Princesa')
+
+    def atualizarPlacar(self, placar):
+        self.placar = placar
+
+    def get_placar(self):
+        return self.placar

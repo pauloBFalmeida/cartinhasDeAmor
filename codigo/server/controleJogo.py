@@ -18,6 +18,8 @@ class ControleJogo():
     def gerenciarJogo(self):
         self.__mesa.iniciarJogo()
         while self.__mesa.getJogoEmExecucao():
+            self.__atualizarPlacar()
+            self.controleServer.atualizarPlacar(self.placar)
             self.controleServer.iniciarRound()
             self.__mesa.iniciarRound()
             while self.__mesa.getRoundEmExecucao():
@@ -150,7 +152,7 @@ class ControleJogo():
         self.controleServer.anunciarCompararCartas()
         j_maior = None
         v_maior = None
-        j_vivos = [j for j in self.__jogadores if j.get_vivo()]
+        j_vivos = [j for j in self.__mesa.getJogadores() if j.get_vivo()]
         for j in j_vivos:
             valor = j.getCartasMao()[0].get_valor()
             # primeiro jogador a ser testado
@@ -204,3 +206,10 @@ class ControleJogo():
         for c in deck:
             c.set_controleJogo(self)
         return deck
+    
+    def __atualizarPlacar(self):
+        self.placar = ''
+        for j in self.__mesa.getJogadores():
+            pontos = str(j.getPontos())
+            self.placar += j.getNome() + ' ' + pontos + '\n'
+        return self.placar
