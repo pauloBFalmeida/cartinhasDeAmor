@@ -29,6 +29,8 @@ class InterfaceVisual(InterfaceUsuario):
         path.append('../../')
         self.imagens = [PhotoImage(file=r"cartas/carta"+str(i)+".png") for i in range(9)]
         self.imagens_size = (150, 210)
+        
+        self.placar = StringVar()
 
         self.__telaInicial()
 
@@ -74,8 +76,7 @@ class InterfaceVisual(InterfaceUsuario):
         label.place(x=20, y=self.centro[1])
 
         # placar
-        self.placar = StringVar()
-        self.placar.set(self.get_placar())
+        self.placar.set(self.placar.get())
         label = Label(self.root, textvariable=self.placar)
         label.place(x=self.centro[0], y=10)
 
@@ -265,7 +266,4 @@ class InterfaceVisual(InterfaceUsuario):
         self.__addTexto(j_nome+' tentou descartar a Princesa')
 
     def atualizarPlacar(self, placar):
-        self.placar = placar
-
-    def get_placar(self):
-        return self.placar
+        self.placar.set(placar)
