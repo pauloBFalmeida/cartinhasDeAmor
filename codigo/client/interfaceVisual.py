@@ -170,20 +170,20 @@ class InterfaceVisual(InterfaceUsuario):
             messagebox.showinfo(message="nao houve ganhadores nesse round")
 
     def anunciarCompararCartas(self):
-        messagebox.showinfo(message='sem cartas no deck, comparando valor na mao dos jogadores restantes')
+        self.__addTexto('sem cartas no deck, comparando valor na mao dos jogadores restantes')
 
     def compararCartas(self, set_m: tuple,  set_j: tuple, ganhador_j: bool):
         n_m, c_n_m, v_m = set_m     # antigo maior
         n_j, c_n_j, v_j = set_j     # novo maior
         #
-        print('comparando cartas de '+n_maior+' e '+n_j)
-        print(v_j+' tinha carta '+c_n_j+' com o valor '+str(v_j) //
-            +'enquanto '+ v_m+' tinha carta '+c_n_m+' com o valor '+str(v_m))
+        self.__addTexto('comparando cartas de '+n_maior+' e '+n_j)
+        self.__addTexto(v_j+' tinha carta '+c_n_j+' com o valor '+str(v_j) //
+                        +'enquanto '+ v_m+' tinha carta '+c_n_m+' com o valor '+str(v_m))
         #
         if ganhador_j:
-            print(n_j+' teve a maior carta')
+            self.__addTexto(n_j+' teve a maior carta')
         else:
-            print('empate no valor das cartas ambos jogadores morrem')
+            self.__addTexto('empate no valor das cartas ambos jogadores morrem')
             
             
     def anunciarCarta(self, j_nome: str, c_nome: str):
@@ -240,7 +240,7 @@ class InterfaceVisual(InterfaceUsuario):
             self.__addTexto('errou a acusacao')
         
     def resultadoPadre(self, c_nome: str):
-        messagebox.showinfo(message='carta na mao '+c_nome)
+        self.__addTexto('carta na mao '+c_nome)
         
     def resultadoBarao(self, j_nome: str):
         if j_nome:
