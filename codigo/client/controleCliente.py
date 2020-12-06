@@ -37,8 +37,6 @@ class ControleCliente():
 # ======== Processar ==============
 
     def __processar(self, entrada):
-        print('\n processar cliente')
-        print(entrada)
         comando = entrada.pop(0)
         if   comando == self.__cmd:
             self.__processarCmd(entrada)
@@ -181,9 +179,6 @@ class ControleCliente():
 # ======== Rede ==============
 
     def __enviar(self, lista):
-        print()
-        print('enviar')
-        print(lista)
         self.__interRede.clienteEnviar(lista)
 
     def __esperarResposta(self, comando):

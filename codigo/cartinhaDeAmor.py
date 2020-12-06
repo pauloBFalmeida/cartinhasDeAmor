@@ -48,8 +48,6 @@ class CartinhaDeAmor:
 
     def preparativos(self):
         self.__online, self.__criarServer = self.__interfaceUsuario.esperarPartida()
-        print(self.__online)
-        print(self.__criarServer)
         if self.__criarServer:
             nJogadores = self.__interfaceUsuario.numeroJogadores()
             self.__serverThread = Thread(target=self.criarServer, args=(nJogadores,))

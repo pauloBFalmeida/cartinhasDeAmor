@@ -102,3 +102,11 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def resultadoPrincesa(self, j_nome: str):
         raise NotImplementedError
+
+    @abc.abstractmethod
+    def mostrarMao(self, cartasMao_tipo: list):
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def atualizarPlacar(self, placar: str):
+        raise NotImplementedError

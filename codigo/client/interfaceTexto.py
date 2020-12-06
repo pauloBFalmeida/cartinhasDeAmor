@@ -161,3 +161,11 @@ class InterfaceTexto(InterfaceUsuario):
         
     def resultadoPrincesa(self, j_nome: str):
         print(j_nome+" tentou descartar a Princesa")
+
+    @abc.abstractmethod
+    def mostrarMao(self, cartasMao_tipo: list):
+        print('mao '+cartasMao_tipo)
+    
+    @abc.abstractmethod
+    def atualizarPlacar(self, placar: str):
+        print(placar)

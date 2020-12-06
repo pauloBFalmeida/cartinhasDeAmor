@@ -42,8 +42,6 @@ class ControleServer():
 # ======== Processar ==============
 
     def __processar(self, entrada):
-        print('\n processar server')
-        print(entrada)
         comando = entrada.pop(0)
         if comando == self.__cmd:
             self.__processarCmd(entrada)
@@ -104,8 +102,6 @@ class ControleServer():
         # esperar resposta
         self.esperarResposta("selecionaJogador")
         index_jogador = self.__retSelecionaJogador
-        print('2')
-        print(index_jogador)
         return index_jogador
 
     def selecionaValorGuarda(self, jogadorTurno):
@@ -155,10 +151,6 @@ class ControleServer():
         self.__enviarJogadorEspecifico(jogadorTurno.getId(), lista)
 
     def __enviarJogadorEspecifico(self, id, lista):
-        print()
-        print('enviar server')
-        print('id'+str(id))
-        print(lista)
         self.__interRede.serverEnviar(self.__jogadores_ip[id], lista)
 
     def __atualizarJogadores_ip(self):
