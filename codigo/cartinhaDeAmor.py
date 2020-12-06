@@ -19,10 +19,10 @@ class CartinhaDeAmor:
         self.__interfaceRede = InterfaceMasterMind()
 
     def main(self):
-        self.preparativos()
+        self.__preparativos()
 
     # criar server 
-    def criarServer(self, nJogadores):
+    def __criarServer(self, nJogadores):
         self.__server = Server(self.__interfaceRede)
         self.__server.start()
         self.__server.esperarEntrarJogadores(nJogadores)
@@ -31,7 +31,7 @@ class CartinhaDeAmor:
         # fim
         self.__server.desligar()
 
-    def entrarJogo(self):
+    def __entrarJogo(self):
         if self.__online:
             host_ip = self.__interfaceUsuario.entrarIpHost()
         else:
@@ -44,18 +44,18 @@ class CartinhaDeAmor:
         # 
         self.__controleCliente.main()
         # fim
-        self.fim()
+        self.__fim()
 
-    def preparativos(self):
-        self.__online, self.__criarServer = self.__interfaceUsuario.esperarPartida()
-        if self.__criarServer:
+    def __preparativos(self):
+        self.__online, self.____criarServer = self.__interfaceUsuario.esperarPartida()
+        if self.____criarServer:
             nJogadores = self.__interfaceUsuario.numeroJogadores()
-            self.__serverThread = Thread(target=self.criarServer, args=(nJogadores,))
+            self.__serverThread = Thread(target=self.__criarServer, args=(nJogadores,))
             self.__serverThread.start()
             self.__interfaceUsuario.esperarandoJogadores()
-        self.entrarJogo()
+        self.__entrarJogo()
 
-    def fim(self):
+    def __fim(self):
         self.__controleCliente.desligar()
-        if self.__criarServer:
+        if self.____criarServer:
             self.__serverThread.join()
