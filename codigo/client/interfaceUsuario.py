@@ -60,7 +60,7 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def jogadorEscolherCarta(self, cartasMao_nomes: list) -> int:
+    def jogadorEscolherCarta(self, cartasMao_tipos: list) -> int:
         raise NotImplementedError
 
     @abc.abstractmethod

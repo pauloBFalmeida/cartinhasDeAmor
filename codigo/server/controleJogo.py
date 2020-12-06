@@ -48,7 +48,7 @@ class ControleJogo():
         while error:
             carta_i = self.controleServer.jogadorEscolherCarta(
                 jogadorTurno,
-                [c.get_nome() for c in jogadorTurno.getCartasMao()]
+                [c.get_tipo() for c in jogadorTurno.getCartasMao()]
                 )
             error = self.__condicaoCondessa(jogadorTurno, carta_i)
             if error:

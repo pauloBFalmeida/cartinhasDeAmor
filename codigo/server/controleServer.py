@@ -81,8 +81,8 @@ class ControleServer():
     def apresentarGanhadorDoJogo(self, jg_nome, jg_pontos):
         self.__enviar([self.__cmd,"apresentarGanhadorDoJogo", jg_nome, jg_pontos])
 
-    def jogadorEscolherCarta(self, jogadorTurno, cartasMao_nomes):
-        self.__jogadorTurnoEnviar(jogadorTurno, [self.__cmd,"jogadorEscolherCarta", cartasMao_nomes])
+    def jogadorEscolherCarta(self, jogadorTurno, cartasMao_tipos):
+        self.__jogadorTurnoEnviar(jogadorTurno, [self.__cmd,"jogadorEscolherCarta", cartasMao_tipos])
         # esperar resposta
         self.esperarResposta("jogadorEscolherCarta")
         index_carta = self.__retJogadorEscolherCarta

@@ -79,8 +79,8 @@ class ControleCliente():
             jg_pontos = entrada[1]
             self.__apresentarGanhadorDoJogo(jg_nome, jg_pontos)
         elif comando == "jogadorEscolherCarta":
-            cartasMao_nomes = entrada[0]
-            self.__jogadorEscolherCarta(cartasMao_nomes)
+            cartasMao_tipos = entrada[0]
+            self.__jogadorEscolherCarta(cartasMao_tipos)
         elif comando == "alertarSobreCondessa":
             self.__alertarSobreCondessa()
         elif comando == "anunciarCarta":
@@ -137,8 +137,8 @@ class ControleCliente():
     def __apresentarGanhadorDoJogo(self, jg_nome, jg_pontos):
         self.__interUsuario.apresentarGanhadorDoJogo(jg_nome, jg_pontos)
 
-    def __jogadorEscolherCarta(self, cartasMao_nomes):
-        ret = self.__interUsuario.jogadorEscolherCarta(cartasMao_nomes)
+    def __jogadorEscolherCarta(self, cartasMao_tipos):
+        ret = self.__interUsuario.jogadorEscolherCarta(cartasMao_tipos)
         self.__enviar([self.__ret, 'jogadorEscolherCarta', ret])
         
     def __alertarSobreCondessa(self):

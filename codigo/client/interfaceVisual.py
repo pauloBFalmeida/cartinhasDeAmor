@@ -29,6 +29,11 @@ class InterfaceVisual(InterfaceUsuario):
 
 
     def __telaInicial(self):
+        
+        path.append('../../')
+        self.imagens = [PhotoImage(file=r"cartas/carta"+str(i)+".png") for i in range(9)]
+
+
         self.__entrarOnline = False
         self.__criarServer = False
         self.__esperarPartida = BooleanVar(False)
@@ -41,10 +46,12 @@ class InterfaceVisual(InterfaceUsuario):
         # botoes e checks
         check_entrarOnline = Checkbutton(self.root, text = "Entrar Online", command=entrarOnlineToggle)
         check_criarServer = Checkbutton(self.root, text = "Criar Server", command=criarServerToggle)
-        self.btn_esperarPartida = Button(self.root, text = "Entrar Partida", command=lambda: self.__esperarPartida.set(True))
+        self.btn_esperarPartida = Button(self.root, text = "Entrar Partida", image=self.imagens[1], command=lambda: self.__esperarPartida.set(True))
+        self.btn_esperarPartida2 = Button(self.root, text = "Entrar Partida", image=self.imagens[2], command=lambda: self.__esperarPartida.set(True))
         check_entrarOnline.place(x = self.centro[0], y= 50)
         check_criarServer.place (x = self.centro[0], y= 75)
-        self.btn_esperarPartida.place(x = self.centro[0], y= 150)
+        self.btn_esperarPartida.place(x = self.centro[0]-100, y= 500-220)
+        self.btn_esperarPartida2.place(x = self.centro[0]+75, y= 500-220)
         # nome jogador
         self.nome_contents = tk.StringVar()
         self.nome_contents.set("Insira o nome")
@@ -83,6 +90,8 @@ class InterfaceVisual(InterfaceUsuario):
         print("chat: "+ texto)
 
     def iniciarRound(self):
+        
+
         print("--- INICIANDO ROUND ---")
 
     def apresentarGanhadorDoJogo(self, jg_nome: str, jg_pontos: int):

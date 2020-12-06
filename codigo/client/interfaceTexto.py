@@ -110,7 +110,9 @@ class InterfaceTexto(InterfaceUsuario):
                 print('escolha nao e valida')
         return card_id
     
-    def jogadorEscolherCarta(self, cartasMao_nomes: list) -> int:
+    def jogadorEscolherCarta(self, cartasMao_tipos: list) -> int:
+        cartasMao_nomes = [['Padre','Barao','Aia','Principe','Rei','Condessa','Princesa'][i]
+                                for i in cartasMao_tipos]
         i = -1
         possivel = False
         qtdCartas = len(cartasMao_nomes)
