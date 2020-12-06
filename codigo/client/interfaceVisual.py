@@ -64,11 +64,10 @@ class InterfaceVisual(InterfaceUsuario):
     def __telaJogo(self):
         # cartas
         self.carta_escolhida = IntVar(0)
-        self.btn_carta0 = Button(self.root, image=self.imagens[0], command=lambda: self.carta_escolhida.set(0))
-        self.btn_carta1 = Button(self.root, image=self.imagens[0], command=lambda: self.carta_escolhida.set(1))
-        self.btn_carta0.place(x = self.centro[0]-self.imagens_size[0]//2,   y= self.size[1]-self.imagens_size[1]-20)
-        self.btn_carta1.place(x = self.centro[0]+5+self.imagens_size[0]//2, y= self.size[1]-self.imagens_size[1]-20)
-        
+        self.btns_cartas = [
+                            Button(self.root, image=self.imagens[0], command=lambda: self.carta_escolhida.set(0)),
+                            Button(self.root, image=self.imagens[0], command=lambda: self.carta_escolhida.set(1))
+                            ]        
         # texto
         self.texto_esq = StringVar()
         self.texto_esq.set("Novo turno")
@@ -119,13 +118,6 @@ class InterfaceVisual(InterfaceUsuario):
         btn_confirma.destroy()
         self.root.update()
         return id
-
-    def __algo(self):
-        variable = StringVar()
-        variable.set("one") # default value
-        lista = ["one", "two", "three"]
-        w = OptionMenu(self.root, variable, *lista)
-        w.place(x=100, y=100)
 
     def __reset(self):
         for child in self.root.winfo_children():
@@ -225,12 +217,15 @@ class InterfaceVisual(InterfaceUsuario):
         return i + 2
 
     def jogadorEscolherCarta(self, cartasMao_tipos: list) -> int:
-        self.btn_carta0.configure(image=self.imagens[cartasMao_tipos[0]])
-        self.btn_carta1.configure(image=self.imagens[cartasMao_tipos[1]])
-        self.root.update()
+        # mostrar cartas
+        self.mostrarMao(cartasMao_tipos)
         # espera clicar em uma das cartas
-        self.btn_carta0.wait_variable(self.carta_escolhida)
-        return int(self.carta_escolhida.get())
+        self.btns_cartas[0].wait_variable(self.carta_escolhida)
+        carta_i = int(self.carta_escolhida.get())
+        # esconder a carta clicada
+        self.btns_cartas[carta_i].place_forget()
+        # retornar index do botao
+        return carta_i
 
     def alertarSobreCondessa(self):
         messagebox.showinfo(message='Voce deve jogar a condessa, pois tem um rei ou principe na mão!')
@@ -264,6 +259,13 @@ class InterfaceVisual(InterfaceUsuario):
         
     def resultadoPrincesa(self, j_nome: str):
         self.__addTexto(j_nome+' tentou descartar a Princesa')
+
+    def mostrarMao(self, cartasMao_tipo):
+        xs = [-self.imagens_size[0]//2, 5+self.imagens_size[0]//2]
+        for i in range(len(cartasMao_tipo)):
+            self.btns_cartas[i].configure(image=self.imagens[cartasMao_tipo[i]])
+            self.btns_cartas[i].place(x = self.centro[0]+xs[i],   y= self.size[1]-self.imagens_size[1]-20)
+        self.root.update()
 
     def atualizarPlacar(self, placar):
         self.placar.set(placar)

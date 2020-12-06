@@ -35,17 +35,19 @@ class ControleServer():
 
     def iniciarRound(self):
         self.__enviar([self.__cmd,"iniciarRound"])
+        for j in self.__jogadores:
+            cartas_tipo = [c.getValor() for c in j.getCartasMao()]
+            self.__enviarJogadorEspecifico(j.getId(), [self.__cmd,"mostrarMao",cartas_tipo])
 
 # ======== Processar ==============
 
     def __processar(self, entrada):
         comando = entrada.pop(0)
+        print('\n processar server')
+        print(entrada)
         if comando == self.__cmd:
             self.__processarCmd(entrada)
         elif comando == self.__ret:
-            print()
-            print('retorno server')
-            print(entrada)
             self.__processarRet(entrada)
         elif comando == self.__msg:
             pass

@@ -40,7 +40,7 @@ class ControleCliente():
         comando = entrada.pop(0)
         if   comando == self.__cmd:
             print()
-            print('processar')
+            print('processar cliente')
             print(entrada)
             self.__processarCmd(entrada)
         elif comando == self.__msg:
@@ -106,6 +106,9 @@ class ControleCliente():
         elif comando == "anunciarMorto":
             j_nome = entrada[0]
             self.__anunciarMorto(j_nome)
+        elif comando == "mostrarMao":
+            cartas_tipo = entrada[0]
+            self.__mostrarMao(cartas_tipo)
         elif comando == "atualizarPlacar":
             placar = entrada[0]
             self.__atualizarPlacar(placar)
@@ -170,6 +173,9 @@ class ControleCliente():
     def __anunciarMorto(self, j_nome):
         self.__interUsuario.anunciarMorto(j_nome)
     
+    def __mostrarMao(self, cartas_tipo):
+        self.__interUsuario.mostrarMao(cartas_tipo)
+
     def __atualizarPlacar(self, placar):
         self.__interUsuario.atualizarPlacar(placar)
 

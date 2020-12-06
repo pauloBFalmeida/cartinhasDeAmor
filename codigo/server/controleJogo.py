@@ -18,10 +18,13 @@ class ControleJogo():
     def gerenciarJogo(self):
         self.__mesa.iniciarJogo()
         while self.__mesa.getJogoEmExecucao():
+            #
             self.__atualizarPlacar()
             self.controleServer.atualizarPlacar(self.placar)
-            self.controleServer.iniciarRound()
+            #
             self.__mesa.iniciarRound()
+            self.controleServer.iniciarRound()
+            #
             while self.__mesa.getRoundEmExecucao():
                 self.__mesa.passarTurno()
                 self.__acaoTurno()
@@ -72,9 +75,9 @@ class ControleJogo():
             valor = self.controleServer.selecionaValorGuarda(jogadorTurno) if (carta_v == 1) else -1
             # resultado da acao da carta
             result = carta_jogada.executar_acao(jogadorTurno, j_alvo, valor)
+            print('\n \n\n result')
+            print(result)
             if result:
-                print('\n \n\nresult')
-                print(result)
                 # Guarda
                 if carta_v == 1:
                     # result = bool de se acusacao do j_alvo deu certo ou nao
