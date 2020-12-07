@@ -27,9 +27,6 @@ class ControleServer():
                       (100,100,200),
                       (0,0,100)]
 
-    def addJogadorIdIp(self, id, ip):
-        self.__jogadores_ip[id] = ip
-
     def getJogadores(self):
         return self.__jogadores
 
@@ -41,10 +38,10 @@ class ControleServer():
 
 # ======== Processar ==============
 
-    def __processar(self, entrada):
+    def __processar(self, entrada, id):
         comando = entrada.pop(0)
         if comando == self.__cmd:
-            self.__processarCmd(entrada)
+            self.__processarCmd(entrada, id)
         elif comando == self.__ret:
             self.__processarRet(entrada)
         elif comando == self.__msg:
@@ -59,11 +56,11 @@ class ControleServer():
         elif comando == "selecionaValorGuarda":
             self.__retSelecionaValorGuarda = entrada[0]
 
-    def __processarCmd(self, entrada):
+    def __processarCmd(self, entrada, id):
         comando = entrada.pop(0)
         if comando == "criarJogador":
             nome = entrada[0]
-            id = len(self.__jogadores)
+            #id = len(self.__jogadores)
             if len(nome) < 1:
                 nome = 'jogador_'+str(id)
             j = Jogador(id, nome, self.cores[id])
@@ -135,6 +132,9 @@ class ControleServer():
     def anunciarMorto(self, j_nome):
         self.__enviar([self.__cmd,"anunciarMorto", j_nome])
 
+    def exibirMorto(self, j_id):
+        self.__enviarJogadorEspecifico(j_id, [self.__cmd,"exibirMorto"])
+
     def atualizarPlacar(self, placar):
         self.__enviar([self.__cmd, "atualizarPlacar", placar])
 
@@ -161,12 +161,13 @@ class ControleServer():
         reply = None
         comandoEsperado = False
         while not comandoEsperado:
-            reply = self.__interRede.serverReceber()
+            #reply = self.__interRede.serverReceber()
+            reply, id = self.__interRede.serverReceberId()
             if reply:
                 comandoEsperado = (comando == reply[1]) if comando else True
         # processar reply
         if reply:
-            self.__processar(reply)
+            self.__processar(reply, id)
 
 # ============= CHAT ================
 

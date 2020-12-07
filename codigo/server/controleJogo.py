@@ -138,11 +138,12 @@ class ControleJogo():
     def __matarJogador(self, jogador):
         jogador.morre()
         self.controleServer.anunciarMorto(jogador.getNome())
+        self.controleServer.exibirMorto(jogador.getId())
 
     def __condicaoCondessa(self, jogadorTurno, index):
         cartasMao = jogadorTurno.getCartasMao()
-        if jogadorTurno.sizeCartasMao() > 1:
-            if isinstance(cartasMao[index], Rei) or isinstance(cartasMao[index], Principe):
+        if jogadorTurno.sizeCartasMao() == 2:
+            if isinstance(cartasMao[index%2], Rei) or isinstance(cartasMao[index%2], Principe):
                 if isinstance(cartasMao[(index+1)%2], Condessa):
                     return True
         return False

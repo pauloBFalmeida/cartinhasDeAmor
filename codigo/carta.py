@@ -65,7 +65,7 @@ class Padre(Carta):
 class Barao(Carta):
 
     def __init__(self, im_verso, im_frente):
-        super().__init__(3, 'Barão', im_verso, im_frente)
+        super().__init__(3, 'Barao', im_verso, im_frente)
 
     def compare_hands(self, j_origem, j_alvo):
         valor_origem = j_origem.getCartasMao()[0].get_valor()
@@ -95,7 +95,7 @@ class Aia(Carta):
 class Principe(Carta):
 
     def __init__(self, im_verso, im_frente):
-        super().__init__(5, 'Príncipe', im_verso, im_frente)
+        super().__init__(5, 'Principe', im_verso, im_frente)
 
     def executar_acao(self, j_origem, j_alvo, valor):
         return j_alvo

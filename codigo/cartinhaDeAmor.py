@@ -47,8 +47,8 @@ class CartinhaDeAmor:
         self.__fim()
 
     def __preparativos(self):
-        self.__online, self.____criarServer = self.__interfaceUsuario.esperarPartida()
-        if self.____criarServer:
+        self.__online, self.__temServer = self.__interfaceUsuario.esperarPartida()
+        if self.__temServer:
             nJogadores = self.__interfaceUsuario.numeroJogadores()
             self.__serverThread = Thread(target=self.__criarServer, args=(nJogadores,))
             self.__serverThread.start()
@@ -57,5 +57,5 @@ class CartinhaDeAmor:
 
     def __fim(self):
         self.__controleCliente.desligar()
-        if self.____criarServer:
+        if self.__temServer:
             self.__serverThread.join()

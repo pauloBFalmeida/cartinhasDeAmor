@@ -30,21 +30,14 @@ class InterfaceMasterMind(InterfaceRede):
             def receive(self):
                 self.respostas.append(super(Client, self).receive(True))
 
-        self.__lock = threading.Lock()
         self.__client = Client()
         self.__ipHost = ip
         self.__client.connect(ip, self.__port)
     
     def clienteReceber(self) -> list:
-        #if len(self.__client.respostas) > 0:
-        #    print(self.__client.respostas)
-        #    reply = self.__client.respostas.pop()
-        #return reply
-        #
-        self.__lock.acquire()
         self.__client.receive()
-        self.__lock.release()
-        return self.__client.respostas.pop()
+        if len(self.__client.respostas) > 0:
+            return self.__client.respostas.pop()
 
     def clienteEnviar(self, lista: list):
         #print(lista)
@@ -60,6 +53,7 @@ class InterfaceMasterMind(InterfaceRede):
         class Server(MastermindServerTCP):
             def __init__(self):
                 self.respostas = []
+                self.respostas_id = []
                 self.nConectados = -1
                 self.jogadores_ip = {}
                 self.connection_objects = {}
@@ -72,6 +66,7 @@ class InterfaceMasterMind(InterfaceRede):
                 #print('callback_client_handle')
                 #print(data)
                 self.respostas.append(data)
+                self.respostas_id.append( (data, self.__findId(connection_object)) )
                 self.sem.release()
                 return super(MastermindServerTCP,self).callback_client_handle(connection_object,data)
 
@@ -95,6 +90,19 @@ class InterfaceMasterMind(InterfaceRede):
                 self.jogadores_ip.pop(id_rem, None)
                 # retorno padrao
                 return super(MastermindServerTCP,self).callback_disconnect_client(connection_object)
+
+            def __findId(self, connection_object):
+                ip_desejado = None
+                for ip in self.connection_objects:
+                    if self.connection_objects[ip] == connection_object:
+                        ip_desejado = ip
+                #
+                id_desejado = None
+                for id in self.jogadores_ip:
+                    if self.jogadores_ip[id] == ip_desejado:
+                        id_desejado = id
+                #
+                return id_desejado
 
         self.__server = Server()
         # {ip : MastermindClientThreadTCP} --> acabou que nao fiz assim
@@ -122,11 +130,16 @@ class InterfaceMasterMind(InterfaceRede):
             r = self.__server.respostas.pop()
         return r
 
+    def serverReceberId(self) -> list:
+        r = None
+        self.__server.sem.acquire()
+        if len(self.__server.respostas_id) > 0:
+            r = self.__server.respostas_id.pop()
+        return r
+
     def serverEnviar(self, ip: str, lista: list):
         ## formato do dict de conexoes do server: 
         ## {(ip, port) : MastermindConnectionThreadTCP obj}
-
-        #connection_object = self.findConnectionObject(ip)
         connection_object = self.__server.connection_objects[ip]
         self.__server.callback_client_send(connection_object, lista)
     

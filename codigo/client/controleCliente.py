@@ -1,5 +1,4 @@
 # coding: utf-8
-import jsonpickle
 from sys import path
 path.append('codigo')
 from jogador import Jogador
@@ -103,6 +102,8 @@ class ControleCliente():
         elif comando == "anunciarMorto":
             j_nome = entrada[0]
             self.__anunciarMorto(j_nome)
+        elif comando == "exibirMorto":
+            self.__exibirMorto()
         elif comando == "mostrarMao":
             cartas_tipo = entrada[0]
             self.__mostrarMao(cartas_tipo)
@@ -169,6 +170,9 @@ class ControleCliente():
 
     def __anunciarMorto(self, j_nome):
         self.__interUsuario.anunciarMorto(j_nome)
+
+    def __exibirMorto(self):
+        self.__interUsuario.exibirMorto()
     
     def __mostrarMao(self, cartas_tipo):
         self.__interUsuario.mostrarMao(cartas_tipo)

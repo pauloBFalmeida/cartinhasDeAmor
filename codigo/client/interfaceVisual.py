@@ -246,6 +246,12 @@ class InterfaceVisual(InterfaceUsuario):
     def anunciarMorto(self, j_nome: str):
         self.__addTexto(j_nome+' foi morto')
 
+    def exibirMorto(self):
+        texto = StringVar()
+        texto.set("Morto")
+        label = Label(self.root, textvariable=texto, font=("Courier", 12))
+        label.place(x=self.centro[0], y=self.centro[1]-50)
+
     def resultadoGuarda(self, resultadoAcusacao: bool):
         if resultadoAcusacao:
             self.__addTexto('acertou a acusacao')
