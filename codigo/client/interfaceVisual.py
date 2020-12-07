@@ -25,10 +25,14 @@ class InterfaceVisual(InterfaceUsuario):
         self.root.resizable(False, False)
         self.root.geometry(str(self.size[0])+'x'+str(self.size[1]))
         
-        # carrega as imagens
-        path.append('../../')
-        self.imagens = [PhotoImage(file=r"cartas/carta"+str(i)+".png") for i in range(9)]
+        # carrega as imagens 
+            # cartas
+        self.imagens = [PhotoImage(file=r"recursos/cartas/carta"+str(i)+".png") for i in range(9)]
         self.imagens_size = (150, 210)
+            # background
+        self.background = PhotoImage(file=r"recursos/tigrao.png")
+
+
         
         self.placar = StringVar()
 
@@ -71,7 +75,7 @@ class InterfaceVisual(InterfaceUsuario):
         # texto
         self.texto_esq = StringVar()
         self.texto_esq.set("Novo turno")
-        label = Label(self.root, textvariable=self.texto_esq)
+        label = Label(self.root, textvariable=self.texto_esq, font=12)
         label.place(x=20, y=self.centro[1])
 
         # placar
@@ -80,6 +84,21 @@ class InterfaceVisual(InterfaceUsuario):
         label.place(x=self.centro[0], y=10)
 
         self.root.update()
+
+
+    def __telaVitoria(self, texto):
+        self.__reset()
+        
+        background_label = Label(self.root, image=self.background)
+        background_label.place(x=0, y=0)
+        
+        textoVar = StringVar()
+        textoVar.set(texto)
+        label_texto = Label(self.root, textvariable=textoVar, font=("Courier", 14))
+        label_texto.place(x=self.size[0]-270, y=130)
+
+        self.root.mainloop()
+
 
 
     def __addTexto(self, texto):
@@ -161,7 +180,8 @@ class InterfaceVisual(InterfaceUsuario):
         self.__telaJogo()
 
     def apresentarGanhadorDoJogo(self, jg_nome: str, jg_pontos: int):
-        messagebox.showinfo(message=jg_nome+" ganhou o jogo com "+str(jg_pontos)+" pontos")
+        texto = jg_nome+" ganhou o jogo"+"\n"+"Com "+str(jg_pontos)+" pontos"
+        self.__telaVitoria(texto)
 
     def apresentarGanhadorDoRound(self, jg_nome: str, jg_pontos: int):
         if jg_nome:
