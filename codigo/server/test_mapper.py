@@ -9,5 +9,6 @@ def teste():
     map.insert_into_table([j])
     retorno = map.get_jogador('Mateus')
     print(retorno)
-
+    retorno2 = map.get_jogador('joaozinho')
+    print(retorno2)
 teste()
