@@ -30,12 +30,9 @@ class InterfaceVisual(InterfaceUsuario):
         self.imagens = [PhotoImage(file=r"recursos/cartas/carta"+str(i)+".png") for i in range(9)]
         self.imagens_size = (150, 210)
             # background
-        self.background = PhotoImage(file=r"recursos/tigrao.png")
-
-
+        self.background_vit = PhotoImage(file=r"recursos/tigrao.png")
         
         self.placar = StringVar()
-
         self.__telaInicial()
 
 
@@ -75,7 +72,7 @@ class InterfaceVisual(InterfaceUsuario):
         # texto
         self.texto_esq = StringVar()
         self.texto_esq.set("Novo turno")
-        label = Label(self.root, textvariable=self.texto_esq, font=12)
+        label = Label(self.root, textvariable=self.texto_esq, font=("Courier", 11))
         label.place(x=20, y=self.centro[1])
 
         # placar
@@ -89,12 +86,12 @@ class InterfaceVisual(InterfaceUsuario):
     def __telaVitoria(self, texto):
         self.__reset()
         
-        background_label = Label(self.root, image=self.background)
+        background_label = Label(self.root, image=self.background_vit)
         background_label.place(x=0, y=0)
         
         textoVar = StringVar()
         textoVar.set(texto)
-        label_texto = Label(self.root, textvariable=textoVar, font=("Courier", 14))
+        label_texto = Label(self.root, textvariable=textoVar, font=("Courier", 13))
         label_texto.place(x=self.size[0]-270, y=130)
 
         self.root.mainloop()
