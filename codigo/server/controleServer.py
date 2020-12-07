@@ -65,8 +65,6 @@ class ControleServer():
         j = self.__tabela_jogadores.get_jogador(nome)
         if j == None:
             j = Jogador(nome, self.cores[id])
-        else:
-            print(j.getPontos())
         j.setId(id)
         self.__jogadores.append(j)
         self.__atualizarJogadores_ip()
