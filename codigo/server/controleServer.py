@@ -29,7 +29,6 @@ class ControleServer():
                       (0,0,100)]
         self.__jogo_iniciado = False
         self.__tabela_jogadores = MapeadorJogador()
-        self.__tabela_jogadores.create_table_jogadores()
 
     def getJogadores(self):
         return self.__jogadores
@@ -64,6 +63,10 @@ class ControleServer():
         if len(nome) < 1:
             nome = 'jogador_'+str(id)
         j = self.__tabela_jogadores.get_jogador(nome)
+        if j == None:
+            j = Jogador(nome, self.cores[id])
+        else:
+            print(j.getPontos())
         j.setId(id)
         self.__jogadores.append(j)
         self.__atualizarJogadores_ip()
@@ -77,9 +80,7 @@ class ControleServer():
             self.__tabela_jogadores.insert_into_table(self.__jogadores)
         # enviar inicio de jogo pros jogadores
         self.__enviar([self.__cmd,"iniciarRound"])
-        for j in self.__jogadores:
-            cartas_tipo = [c.get_valor() for c in j.getCartasMao()]
-            self.__enviarJogadorEspecifico(j.getId(), [self.__cmd,"mostrarMao",cartas_tipo])
+        self.__jogadoresAtualizarMao()
 
     def anunciarCompararCartas(self):
         self.__enviar([self.__cmd,"anunciarCompararCartas"])
@@ -138,6 +139,7 @@ class ControleServer():
 
     def resultadoRei(self, j1_nome, j2_nome):
         self.__enviar([self.__cmd,"resultadoRei", j1_nome, j2_nome])
+        self.__jogadoresAtualizarMao()
 
     def resultadoPrincesa(self, j_nome):
         self.__enviar([self.__cmd,"resultadoPrincesa", j_nome])
@@ -150,6 +152,11 @@ class ControleServer():
 
     def atualizarPlacar(self, placar):
         self.__enviar([self.__cmd, "atualizarPlacar", placar])
+
+    def __jogadoresAtualizarMao(self):
+        for j in self.__jogadores:
+            cartas_tipo = [c.get_valor() for c in j.getCartasMao()]
+            self.__enviarJogadorEspecifico(j.getId(), [self.__cmd,"mostrarMao",cartas_tipo])
 
 # ============= Rede ================
 
