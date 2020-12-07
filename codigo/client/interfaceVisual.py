@@ -8,19 +8,14 @@ from client.interfaceUsuario import InterfaceUsuario
 from tkinter import *
 from tkinter import messagebox
 from tkinter import simpledialog
-import tkinter as tk
 
-import threading
-
-
-from time import sleep
 
 class InterfaceVisual(InterfaceUsuario):
 
     def __init__(self):
         self.size = (800,500)
         self.centro = (self.size[0]//2, self.size[1]//2)
-        self.root = tk.Tk()
+        self.root = Tk()
         self.root.title("Cartinha de Amor")
         self.root.resizable(False, False)
         self.root.geometry(str(self.size[0])+'x'+str(self.size[1]))
@@ -55,7 +50,7 @@ class InterfaceVisual(InterfaceUsuario):
         check_criarServer.place (x = self.centro[0], y= 75)
         self.btn_esperarPartida.place(x = self.centro[0], y= 200)
         # nome jogador
-        self.nome_contents = tk.StringVar()
+        self.nome_contents = StringVar()
         self.nome_contents.set("Insira o nome")
         entrada_nome = Entry()
         entrada_nome["textvariable"] = self.nome_contents
