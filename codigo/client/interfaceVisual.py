@@ -72,7 +72,7 @@ class InterfaceVisual(InterfaceUsuario):
         # placar
         self.placar.set(self.placar.get())
         label = Label(self.root, textvariable=self.placar)
-        label.place(x=self.centro[0], y=10)
+        label.place(x=self.centro[0]+100, y=10)
 
         self.root.update()
 
