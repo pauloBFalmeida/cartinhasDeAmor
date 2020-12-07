@@ -26,13 +26,16 @@ class MapeadorJogador:
             nome = j.getNome()
             cor = j.getCor()
             pontos = j.getPontos()
-            self.c.execute(f"""
-                INSERT INTO JOGADORES
-                    (nome, cor, pontos)
-                VALUES(
-                    ?, ?, ?
-                )""", [nome, cor, pontos]
-            )
+            try:
+                self.c.execute(f"""
+                    INSERT INTO JOGADORES
+                        (nome, cor, pontos)
+                    VALUES(
+                        ?, ?, ?
+                    )""", [nome, cor, pontos]
+                )
+            except:
+                continue
         self.conn.commit()
 
     def read_query(self, query):
@@ -46,9 +49,9 @@ class MapeadorJogador:
             f"""
             select * from JOGADORES where nome = '{nome}'
             """
-        )
-
-        return jogador_data
+        )[0]
+        jogador = Jogador(nome=jogador_data[1], cor=jogador_data[2])
+        return jogador
 
     def __create_game_data(self):
         pass

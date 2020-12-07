@@ -4,7 +4,7 @@ path.append('codigo')
 from jogador import Jogador
 
 def teste():
-    j = Jogador(2, "Mateus", "azul")
+    j = Jogador("Mateus", "azul")
     map = MapeadorJogador()
     map.insert_into_table([j])
     retorno = map.get_jogador('Mateus')
