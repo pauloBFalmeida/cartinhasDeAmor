@@ -1,4 +1,6 @@
 import sqlite3
+from sys import path
+path.append('codigo')
 from jogador import Jogador
 
 class MapeadorJogador:
@@ -7,28 +9,31 @@ class MapeadorJogador:
         # usando sqlite para evitar ter que definir um servidor pro BD
         self.conn = sqlite3.connect('bancoDeDados.db')
         self.c = self.conn.cursor()
+        self.__create_table_jogadores()
 
     def __create_table_jogadores(self):
         self.c.execute(f"""
             CREATE TABLE IF NOT EXISTS JOGADORES
-            (id INTEGER PRIMARY KEY,
-            nome TEXT,
-            cor TEXT
+            (id INTEGER PRIVATE KEY,
+            nome TEXT UNIQUE,
+            cor TEXT,
+            pontos INTEGER
             )
         """)
 
-    def __insert_into_table(self, list_jogadores):
+    def insert_into_table(self, list_jogadores):
         for j in list_jogadores:
+            nome = j.getNome()
+            cor = j.getCor()
+            pontos = j.getPontos()
             self.c.execute(f"""
                 INSERT INTO JOGADORES
-                    (id_jogador, nome, cor)
+                    (nome, cor, pontos)
                 VALUES(
                     ?, ?, ?
-                )""",
-                (j.getId(), j.getNome(), j.getCor())
+                )""", [nome, cor, pontos]
             )
         self.conn.commit()
-        self.c.close()
 
     def read_query(self, query):
         self.c.execute(query)
@@ -36,9 +41,15 @@ class MapeadorJogador:
         self.conn.commit()
         return result
 
-    def get_jogador(self, id):
-        return self.read_query(
+    def get_jogador(self, nome):
+        jogador_data = self.read_query(
             f"""
-            Select * from JOGADORES where id={id}
+            select * from JOGADORES where nome = '{nome}'
             """
-        )[0]
+        )
+
+        return jogador_data
+
+    def __create_game_data(self):
+        pass
+
