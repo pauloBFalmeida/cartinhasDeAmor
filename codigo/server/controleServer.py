@@ -63,7 +63,8 @@ class ControleServer():
     def __criarJogador(self, nome, id):
         if len(nome) < 1:
             nome = 'jogador_'+str(id)
-        j = Jogador(id, nome, self.cores[id])
+        j = self.__tabela_jogadores.get_jogador(nome)
+        j.setId(id)
         self.__jogadores.append(j)
         self.__atualizarJogadores_ip()
 

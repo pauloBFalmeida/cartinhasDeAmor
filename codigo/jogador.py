@@ -2,8 +2,7 @@
 
 class Jogador():
 
-    def __init__(self, id, nome, cor):
-        self.__id = id
+    def __init__(self, nome, cor):
         self.__nome = nome
         self.__cor = cor
         self.__pontos = 0
