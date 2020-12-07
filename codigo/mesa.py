@@ -2,7 +2,8 @@
 from sys import path
 path.append('codigo')
 import jogador
-import carta
+#import carta
+from carta import *# Guarda, Padre, Barao, Aia, Principe, Rei, Condessa, Princesa
 from random import shuffle
 
 class Mesa():
@@ -23,6 +24,7 @@ class Mesa():
 
     def iniciarRound(self):
         self.__roundEmExecucao = True
+        self.__deck = self.__criarDeck()
         self.__embaralharDeck()
         self.__distribuirCartas()
         for j in self.__jogadores:
@@ -65,7 +67,37 @@ class Mesa():
         # preparar proxima round
         for j in self.__jogadores:
             self.jogadorDescartarMao(j)
-        self.__deck += self.__lixo
+
+    def __criarDeck(self):
+        deck = []
+        # Guarda
+        for _ in range(5):
+            deck.append(Guarda(None, None))
+        # Padre
+        for _ in range(2):
+            deck.append(Padre(None, None))
+        # Barao
+        for _ in range(2):
+            deck.append(Barao(None, None))
+        # Aia
+        for _ in range(2):
+            deck.append(Aia(None, None))
+        # Principe
+        for _ in range(2):
+            deck.append(Principe(None, None))
+        # Rei
+        for _ in range(1):
+            deck.append(Rei(None, None))
+        # Condessa
+        for _ in range(1):
+            deck.append(Condessa(None, None))
+        # Princesa
+        for _ in range(1):
+            deck.append(Princesa(None, None))
+        # set controle de jogo
+        for c in deck:
+            c.set_controleJogo(self)
+        return deck
 
     def addJogador(self, jogador):
         self.__jogadores.append(jogador)
@@ -81,10 +113,7 @@ class Mesa():
         shuffle(self.__deck)
 
     def __distribuirCartas(self):
-        for j in self.__jogadores: j.receberCarta(self.__deck.pop(0))
-
-    def setDeck(self, deck):
-        self.__deck = deck
+        for j in self.__jogadores: j.receberCarta(self.__deck.pop())
 
     def getId(self):
         return self.__id

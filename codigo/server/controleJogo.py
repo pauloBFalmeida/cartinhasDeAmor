@@ -3,7 +3,7 @@ from sys import path
 path.append('codigo')
 from jogador import Jogador
 from mesa import Mesa
-from carta import Carta, Guarda, Padre, Barao, Aia, Principe, Rei, Condessa, Princesa
+from carta import *
 #from server.controleServer import ControleServer
 
 class ControleJogo():
@@ -13,7 +13,6 @@ class ControleJogo():
 
     def setMesa(self, mesa):
         self.__mesa = mesa
-        self.__mesa.setDeck(self.__criarDeck())
 
     def gerenciarJogo(self):
         self.__mesa.iniciarJogo()
@@ -175,38 +174,6 @@ class ControleJogo():
                 self.__matarJogador(j)
                 j_maior = None
 
-
-    def __criarDeck(self):
-        deck = []
-        # Guarda
-        for _ in range(5):
-            deck.append(Guarda(None, None))
-        # Padre
-        for _ in range(2):
-            deck.append(Padre(None, None))
-        # Barao
-        for _ in range(2):
-            deck.append(Barao(None, None))
-        # Aia
-        for _ in range(2):
-            deck.append(Aia(None, None))
-        # Principe
-        for _ in range(2):
-            deck.append(Principe(None, None))
-        # Rei
-        for _ in range(1):
-            deck.append(Rei(None, None))
-        # Condessa
-        for _ in range(1):
-            deck.append(Condessa(None, None))
-        # Princesa
-        for _ in range(1):
-            deck.append(Princesa(None, None))
-        # set controle de jogo
-        for c in deck:
-            c.set_controleJogo(self)
-        return deck
-    
     def __atualizarPlacar(self):
         textos = []
         for j in self.__mesa.getJogadores():
