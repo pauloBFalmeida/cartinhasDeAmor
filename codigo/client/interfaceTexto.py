@@ -61,10 +61,11 @@ class InterfaceTexto(InterfaceUsuario):
         print('sem cartas no deck, comparando valor na mao dos jogadores restantes')
 
     def compararCartas(self, set_m: tuple,  set_j: tuple, ganhador_j: bool):
+        # nome, carta_nome, valor
         n_m, c_n_m, v_m = set_m     # antigo maior
         n_j, c_n_j, v_j = set_j     # novo maior
         #
-        print('comparando cartas de '+n_maior+' e '+n_j)
+        print('comparando cartas de '+n_m+' e '+n_j)
         print(v_j+' tinha carta '+c_n_j+' com o valor '+str(v_j) //
             +'enquanto '+ v_m+' tinha carta '+c_n_m+' com o valor '+str(v_m))
         #
