@@ -18,15 +18,12 @@ class ControleJogo():
     def gerenciarJogo(self):
         self.__mesa.iniciarJogo()
         while self.__mesa.getJogoEmExecucao():
-            #
-            self.__atualizarPlacar()
-            self.controleServer.atualizarPlacar(self.placar)
-            #
             self.__mesa.iniciarRound()
             self.controleServer.iniciarRound()
             #
             while self.__mesa.getRoundEmExecucao():
                 self.__mesa.passarTurno()
+                self.__atualizarPlacar()
                 self.__acaoTurno()
                 # verificar fim do round
                 verFimRound = self.__mesa.verificarFimDoRound()
@@ -211,8 +208,27 @@ class ControleJogo():
         return deck
     
     def __atualizarPlacar(self):
-        self.placar = ''
+        textos = []
         for j in self.__mesa.getJogadores():
-            pontos = str(j.getPontos())
-            self.placar += j.getNome() + ' ' + pontos + '\n'
-        return self.placar
+            j_texto = ""
+            if j == self.__mesa.getJogadorTurno():
+                j_texto += "(turno) "
+            else:
+                j_texto += "        "
+            #
+            j_texto += j.getNome()
+            if not j.get_vivo():
+                j_texto += " (morto)"
+            if j.getProtecao():
+                j_texto += " (protegido)"
+            textos.append(j_texto)
+        # uniforme pontos
+        tamMax = max([len(t) for t in textos])
+        placar = ""
+        for t in textos:
+            t += ' ' * (tamMax - len(t))
+            t += " pontos: "+str(j.getPontos())
+            placar += t + '\n'
+
+        # atualiza o placar
+        self.controleServer.atualizarPlacar(placar)

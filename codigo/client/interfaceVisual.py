@@ -9,12 +9,11 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import simpledialog
 
-
 class InterfaceVisual(InterfaceUsuario):
 
     def __init__(self):
         self.size = (800,500)
-        self.centro = (self.size[0]//2, self.size[1]//2)
+        self.centro = (self.size[0]//2-50, self.size[1]//2)
         self.root = Tk()
         self.root.title("Cartinha de Amor")
         self.root.resizable(False, False)
@@ -67,8 +66,8 @@ class InterfaceVisual(InterfaceUsuario):
         # texto
         self.texto_esq = StringVar()
         self.texto_esq.set("Novo turno")
-        label = Label(self.root, textvariable=self.texto_esq, font=("Courier", 11))
-        label.place(x=20, y=self.centro[1])
+        label = Label(self.root, textvariable=self.texto_esq)
+        label.place(x=5, y=5)
 
         # placar
         self.placar.set(self.placar.get())
@@ -95,7 +94,7 @@ class InterfaceVisual(InterfaceUsuario):
 
     def __addTexto(self, texto):
         chars_linha= 50
-        linhas_text= 10
+        linhas_text= 13
         if len(texto) > 0:
             linhas = self.texto_esq.get().split('\n')
             texto_chunks = [texto[i:i+chars_linha] for i in range(0, len(texto), chars_linha)]
@@ -111,15 +110,16 @@ class InterfaceVisual(InterfaceUsuario):
             self.root.update()
 
     def __dropMenu(self, opcoes):
+        xoff = -200
         # drop menu
         var_opcao = StringVar()
         var_opcao.set(opcoes[0]) # default value
         opt_menu = OptionMenu(self.root, var_opcao, *opcoes)
-        opt_menu.place(x=self.size[0]-200, y=self.centro[1]+50)
+        opt_menu.place(x=self.size[0]+xoff, y=self.centro[1]+50)
         # btn
         var_wait = BooleanVar(False)
         btn_confirma = Button(self.root, text = "Confirmar", command=lambda: var_wait.set(True))
-        btn_confirma.place(x=self.size[0]-200, y=self.centro[1])
+        btn_confirma.place(x=self.size[0]+xoff, y=self.centro[1])
         # espera apertar o btn
         btn_confirma.wait_variable(var_wait)
         #
