@@ -7,7 +7,7 @@ class MapeadorJogador:
     
     def __init__(self):
         # usando sqlite para evitar ter que definir um servidor pro BD
-        self.conn = sqlite3.connect('bancoDeDados.db')
+        self.conn = sqlite3.connect('scoreboard.db')
         self.c = self.conn.cursor()
         self.__create_table_jogadores()
 
@@ -58,11 +58,12 @@ class MapeadorJogador:
             return None
 
     def update_pontos(self, list_jogadores):
-        # for j in list_jogadores:
-        pass
+        for j in list_jogadores:
+            self.c.execute(f"""
+                UPDATE JOGADORES
+                SET pontos = pontos + {j.getPontos()}
+            """)
+        self.conn.commit()
 
-    
-
-    def __create_game_data(self):
-        pass
-
+    def close(self):
+        self.conn.close()
