@@ -19,14 +19,17 @@ class Jogador():
     def addPontos(self, p):
         self.__pontos += p
 
+    def setId(self, id):
+        self.__id = id
+
+    def setCartasMao(self, cartas):
+        self.__cartasMao = cartas
+
     def sizeCartasMao(self):
         return len(self.__cartasMao)
 
     def getCartasMao(self):
         return self.__cartasMao
-
-    def setCartasMao(self, cartas):
-        self.__cartasMao = cartas
 
     def get_vivo(self):
         return self.__vivo

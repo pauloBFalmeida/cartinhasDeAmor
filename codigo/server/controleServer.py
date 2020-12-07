@@ -5,6 +5,7 @@ path.append('codigo')
 from jogador import Jogador
 from carta import Carta
 from server.interfaceRede import InterfaceRede
+from server.mapper import MapeadorJogador
 
 class ControleServer():
 
@@ -26,15 +27,12 @@ class ControleServer():
                       (0,100,0),
                       (100,100,200),
                       (0,0,100)]
+        self.__jogo_iniciado = False
+        self.__tabela_jogadores = MapeadorJogador()
+        self.__tabela_jogadores.create_table_jogadores()
 
     def getJogadores(self):
         return self.__jogadores
-
-    def iniciarRound(self):
-        self.__enviar([self.__cmd,"iniciarRound"])
-        for j in self.__jogadores:
-            cartas_tipo = [c.get_valor() for c in j.getCartasMao()]
-            self.__enviarJogadorEspecifico(j.getId(), [self.__cmd,"mostrarMao",cartas_tipo])
 
 # ======== Processar ==============
 
@@ -60,14 +58,27 @@ class ControleServer():
         comando = entrada.pop(0)
         if comando == "criarJogador":
             nome = entrada[0]
-            #id = len(self.__jogadores)
-            if len(nome) < 1:
-                nome = 'jogador_'+str(id)
-            j = Jogador(id, nome, self.cores[id])
-            self.__jogadores.append(j)
-            self.__atualizarJogadores_ip()
+            self.__criarJogador(nome, id)
+
+    def __criarJogador(self, nome, id):
+        if len(nome) < 1:
+            nome = 'jogador_'+str(id)
+        j = Jogador(id, nome, self.cores[id])
+        self.__jogadores.append(j)
+        self.__atualizarJogadores_ip()
+
 
 # ============= enviar ================
+
+    def iniciarRound(self):
+        if not self.__jogo_iniciado:
+            self.__jogo_iniciado = True
+            self.__tabela_jogadores.insert_into_table(self.__jogadores)
+        # enviar inicio de jogo pros jogadores
+        self.__enviar([self.__cmd,"iniciarRound"])
+        for j in self.__jogadores:
+            cartas_tipo = [c.get_valor() for c in j.getCartasMao()]
+            self.__enviarJogadorEspecifico(j.getId(), [self.__cmd,"mostrarMao",cartas_tipo])
 
     def anunciarCompararCartas(self):
         self.__enviar([self.__cmd,"anunciarCompararCartas"])
