@@ -16,7 +16,9 @@ class MapeadorJogador:
             CREATE TABLE IF NOT EXISTS JOGADORES
             (id INTEGER PRIVATE KEY,
             nome TEXT UNIQUE,
-            cor TEXT,
+            corR INTEGER,
+            corG INTEGER,
+            corB INTEGER,
             pontos INTEGER
             )
         """)
@@ -26,16 +28,16 @@ class MapeadorJogador:
             nome = j.getNome()
             cor = j.getCor()
             pontos = j.getPontos()
-            try:
-                self.c.execute(f"""
-                    INSERT INTO JOGADORES
-                        (nome, cor, pontos)
-                    VALUES(
-                        ?, ?, ?
-                    )""", [nome, cor, pontos]
-                )
-            except:
-                continue
+#       try:
+            self.c.execute(f"""
+                INSERT INTO JOGADORES
+                    (nome, corR, corG, corB, pontos)
+                VALUES(
+                    ?, ?, ?, ?, ?
+            )""", [nome, cor[0], cor[1], cor[2] , pontos]
+            )
+#       except:
+#           continue
         self.conn.commit()
 
     def read_query(self, query):
@@ -52,7 +54,7 @@ class MapeadorJogador:
         )
         if jogador_data != []:
             jogador_data = jogador_data[0]
-            jogador = Jogador(nome=jogador_data[1], cor=jogador_data[2])
+            jogador = Jogador(nome=jogador_data[1], cor=(jogador_data[2], jogador_data[3], jogador_data[4]))
             return jogador
         else:
             return None

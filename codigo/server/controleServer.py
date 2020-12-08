@@ -91,6 +91,7 @@ class ControleServer():
 
     def apresentarGanhadorDoJogo(self, jg_nome, jg_pontos):
         self.__tabela_jogadores.update_pontos(self.__jogadores)
+        self.__tabela_jogadores.close()
         self.__enviar([self.__cmd,"apresentarGanhadorDoJogo", jg_nome, jg_pontos])
 
     def jogadorEscolherCarta(self, jogadorTurno, cartasMao_tipos):

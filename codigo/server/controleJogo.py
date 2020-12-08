@@ -10,7 +10,7 @@ class ControleJogo():
 
     def __init__(self, controleServer):
         self.controleServer = controleServer
-
+        
     def setMesa(self, mesa):
         self.__mesa = mesa
 
