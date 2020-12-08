@@ -2,6 +2,7 @@ import sqlite3
 from sys import path
 path.append('codigo')
 from jogador import Jogador
+from mesa import Mesa
 
 class MapeadorJogador:
     
@@ -28,7 +29,7 @@ class MapeadorJogador:
             nome = j.getNome()
             cor = j.getCor()
             pontos = j.getPontos()
-#       try:
+        try:
             self.c.execute(f"""
                 INSERT INTO JOGADORES
                     (nome, corR, corG, corB, pontos)
@@ -36,8 +37,8 @@ class MapeadorJogador:
                     ?, ?, ?, ?, ?
             )""", [nome, cor[0], cor[1], cor[2] , pontos]
             )
-#       except:
-#           continue
+        except:
+            continue
         self.conn.commit()
 
     def read_query(self, query):
@@ -69,3 +70,24 @@ class MapeadorJogador:
 
     def close(self):
         self.conn.close()
+
+
+class MapeadorMesa:
+
+    def __init__(self):
+        # usando sqlite para evitar ter que definir um servidor pro BD
+        self.conn = sqlite3.connect('scoreboard.db')
+        self.c = self.conn.cursor()
+        self.__create_table_mesa()
+    
+    def __create_table_mesa(self):
+        self.c.execute(f"""
+            CREATE TABLE IF NOT EXISTS JOGOS
+            (id INTEGER PRIVATE KEY,
+            jogadores TEXT,
+            ganhador TEXT
+            )
+        """)
+    
+    def insert_into_table(self, mesa: Mesa):
+        
