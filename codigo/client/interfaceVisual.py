@@ -160,8 +160,12 @@ class InterfaceVisual(InterfaceUsuario):
         label.place(x=self.centro[0], y=self.centro[1])
         self.root.update()
 
-    def entrarIpHost(self) -> str:
-        IP = simpledialog.askstring("IP do Host", "Insira o IP do host")
+    def entrarIpHost(self, *args) -> str:
+        meuIp = ""
+        if len(args) > 0:
+            if args[0]:
+                meuIp = "seu ip: " + args[0]
+        IP = simpledialog.askstring("IP do Host", "Insira o IP do host" + meuIp)
         return IP
 
     def addChat(self, texto: str):

@@ -33,7 +33,7 @@ class CartinhaDeAmor:
 
     def __entrarJogo(self):
         if self.__online:
-            host_ip = self.__interfaceUsuario.entrarIpHost()
+            host_ip = self.__interfaceUsuario.entrarIpHost(self.__interfaceRede.getIp() if self.__online else None)
         else:
             host_ip = "localhost"
         self.__controleCliente = ControleCliente(self.__interfaceRede, self.__interfaceUsuario)

@@ -24,7 +24,7 @@ class InterfaceUsuario(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def entrarIpHost(self) -> str:
+    def entrarIpHost(self, *args) -> str:
         raise NotImplementedError
 
     @abc.abstractmethod

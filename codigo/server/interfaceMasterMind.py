@@ -1,10 +1,10 @@
 # coding: utf-8
 import threading
+from urllib import request
 from sys import path
 path.append('codigo')
 from server.interfaceRede import InterfaceRede
 from server.Mastermind import *
-
 
 class InterfaceMasterMind(InterfaceRede):
 
@@ -12,7 +12,7 @@ class InterfaceMasterMind(InterfaceRede):
         self.__port = 6317
 
     def getIp(self) -> str:
-        external_ip_v4 = urlopen('https://v4.ident.me/').read().decode('utf8')
+        external_ip_v4 = request.urlopen('https://v4.ident.me/').read().decode('utf8')
         return external_ip_v4
 
 # ================ Cliente ======================
