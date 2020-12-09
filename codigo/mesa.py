@@ -10,7 +10,7 @@ class Mesa():
 
     def __init__(self, id):
         self.__id = id
-        self.__maxPontos = 1
+        self.__maxPontos = 3
         self.__jogadores = []
         self.__jogoEmExecucao = False
         self.__roundEmExecucao = False
