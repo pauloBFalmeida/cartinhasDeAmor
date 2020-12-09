@@ -27,6 +27,7 @@ class InterfaceVisual(InterfaceUsuario):
         self.background_vit = PhotoImage(file=r"recursos/tigrao.png")
         
         self.placar = StringVar()
+        self.scoreVar = StringVar()
         self.__telaInicial()
 
 
@@ -85,11 +86,13 @@ class InterfaceVisual(InterfaceUsuario):
         
         textoVar = StringVar()
         textoVar.set(texto)
-        label_texto = Label(self.root, textvariable=textoVar, font=("Courier", 13))
-        label_texto.place(x=self.size[0]-270, y=130)
+        label_texto = Label(self.root, textvariable=textoVar, font=("Courier", 11))
+        label_texto.place(x=self.size[0]-250, y=80)
+
+        label_score = Label(self.root, textvariable=self.scoreVar, font=("Courier", 10))
+        label_score.place(x=self.size[0]-260, y=120)
 
         self.root.mainloop()
-
 
 
     def __addTexto(self, texto):
@@ -292,3 +295,6 @@ class InterfaceVisual(InterfaceUsuario):
 
     def atualizarPlacar(self, placar):
         self.placar.set(placar)
+
+    def exibirTopScore(self, score):
+        self.scoreVar.set(score)

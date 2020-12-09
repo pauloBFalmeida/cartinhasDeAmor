@@ -110,6 +110,9 @@ class ControleCliente():
         elif comando == "atualizarPlacar":
             placar = entrada[0]
             self.__atualizarPlacar(placar)
+        elif comando == "topscore":
+            score = entrada[0]
+            self.__exibirTopScore(score)
             
 # ======== Funcoes com a interface usuario ==============
 
@@ -179,6 +182,9 @@ class ControleCliente():
 
     def __atualizarPlacar(self, placar):
         self.__interUsuario.atualizarPlacar(placar)
+
+    def __exibirTopScore(self, score):
+        self.__interUsuario.exibirTopScore(score)
 
 # ======== Rede ==============
 

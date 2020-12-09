@@ -39,10 +39,8 @@ class Server():
         for j in self.__jogadores:
             self.__mesa.addJogador(j)
         self.__controleJogo.setMesa(self.__mesa)
+        self.__controleServer.setMesa(self.__mesa)
         self.__controleJogo.gerenciarJogo()
-
-    def main(self):
-        pass
 
     def desligar(self):
         self.__interRede.serverEnd()

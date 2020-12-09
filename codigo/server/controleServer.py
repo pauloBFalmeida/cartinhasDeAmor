@@ -5,7 +5,7 @@ path.append('codigo')
 from jogador import Jogador
 from carta import Carta
 from server.interfaceRede import InterfaceRede
-from server.mapper import MapeadorJogador
+from server.mapper import MapeadorJogador, MapeadorMesa
 
 class ControleServer():
 
@@ -29,9 +29,13 @@ class ControleServer():
                       (0,0,100)]
         self.__jogo_iniciado = False
         self.__tabela_jogadores = MapeadorJogador()
+        self.__tabela_mesa = MapeadorMesa()
 
     def getJogadores(self):
         return self.__jogadores
+
+    def setMesa(self, mesa):
+        self.__mesa = mesa
 
 # ======== Processar ==============
 
@@ -90,8 +94,7 @@ class ControleServer():
         self.__enviar([self.__cmd,"apresentarGanhadorDoRound", jg_nome, jg_pontos])
 
     def apresentarGanhadorDoJogo(self, jg_nome, jg_pontos):
-        self.__tabela_jogadores.update_pontos(self.__jogadores)
-        self.__tabela_jogadores.close()
+        self.__finalRound()
         self.__enviar([self.__cmd,"apresentarGanhadorDoJogo", jg_nome, jg_pontos])
 
     def jogadorEscolherCarta(self, jogadorTurno, cartasMao_tipos):
@@ -156,6 +159,25 @@ class ControleServer():
         for j in self.__jogadores:
             cartas_tipo = [c.get_valor() for c in j.getCartasMao()]
             self.__enviarJogadorEspecifico(j.getId(), [self.__cmd,"mostrarMao",cartas_tipo])
+
+    def __finalRound(self):
+        self.__tabela_jogadores.update_pontos(self.__jogadores)
+        self.__tabela_mesa.insert_into_table(self.__mesa)
+        #
+        score = []
+        for j in self.__jogadores:
+            pontos = self.__tabela_jogadores.get_jogador(j.getNome()).getPontos()
+            score.append( (pontos, j.getNome()) )
+        #
+        score.sort(key=lambda x: x[0])
+        score = score[:5]
+        texto = "Scoreboard:"
+        for s in score:
+            texto += '\n' + s[1] + ' com ' + str(s[0]) + " pontos"
+        self.__enviar([self.__cmd, "topscore", texto])
+        #
+        self.__tabela_jogadores.close()
+        self.__tabela_mesa.close()
 
 # ============= Rede ================
 

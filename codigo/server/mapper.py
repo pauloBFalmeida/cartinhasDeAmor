@@ -29,17 +29,17 @@ class MapeadorJogador:
             nome = j.getNome()
             cor = j.getCor()
             pontos = j.getPontos()
-        try:
-            self.c.execute(f"""
-                INSERT INTO JOGADORES
-                    (nome, corR, corG, corB, pontos)
-                VALUES(
-                    ?, ?, ?, ?, ?
-            )""", [nome, cor[0], cor[1], cor[2] , pontos]
-            )
-        except:
-            continue
-        self.conn.commit()
+            try:
+                self.c.execute(f"""
+                    INSERT INTO JOGADORES
+                        (nome, corR, corG, corB, pontos)
+                    VALUES(
+                        ?, ?, ?, ?, ?
+                )""", [nome, cor[0], cor[1], cor[2] , pontos]
+                )
+            except:
+                continue
+            self.conn.commit()
 
     def read_query(self, query):
         self.c.execute(query)
@@ -90,4 +90,33 @@ class MapeadorMesa:
         """)
     
     def insert_into_table(self, mesa: Mesa):
-        
+        id = mesa.getId()
+        jg_nome = mesa.getGanhadorDoJogo().getNome()
+        j_list = mesa.getJogadores()
+        jogadores = [j.getNome() for j in j_list] + ["" for _ in range(len(j_list), 4)]
+        try:
+            self.c.execute(f"""
+                INSERT INTO JOGOS
+                    (id, jg_nome, j0, j1, j2, j3)
+                VALUES(
+                    ?, ?, ?, ?, ?, ?
+            )""", [id, jg_nome, j_list[0], j_list[1], j_list[2] , j_list[3]]
+            )
+        except:
+            pass
+        self.conn.commit()
+
+    def get_mesa_data(self, id):
+        mesa_data = self.read_query(
+            f"""
+            select * from JOGOS where id = '{id}'
+            """
+        )
+        if mesa_data != []:
+            mesa_data = mesa_data[0]
+            return mesa_data
+        else:
+            return None
+
+    def close(self):
+        self.conn.close()
