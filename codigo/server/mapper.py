@@ -15,12 +15,12 @@ class MapeadorJogador:
     def __create_table_jogadores(self):
         self.c.execute(f"""
             CREATE TABLE IF NOT EXISTS JOGADORES
-            (id INTEGER PRIVATE KEY,
-            nome TEXT UNIQUE,
+            (nome TEXT,
             corR INTEGER,
             corG INTEGER,
             corB INTEGER,
-            pontos INTEGER
+            pontos INTEGER,
+            PRIMARY KEY(nome)
             )
         """)
 
@@ -64,7 +64,7 @@ class MapeadorJogador:
         for j in list_jogadores:
             self.c.execute(f"""
                 UPDATE JOGADORES
-                SET pontos = pontos + {j.getPontos()}
+                SET pontos = pontos + {j.getPontos()} where nome = '{j.getNome()}'
             """)
         self.conn.commit()
 
@@ -82,10 +82,18 @@ class MapeadorMesa:
     
     def __create_table_mesa(self):
         self.c.execute(f"""
-            CREATE TABLE IF NOT EXISTS JOGOS
-            (id INTEGER PRIVATE KEY,
-            jogadores TEXT,
-            ganhador TEXT
+            CREATE TABLE IF NOT EXISTS MESAS
+            (id INTEGER PRIMARY KEY,
+            jog1 TEXT,
+            jog2 TEXT,
+            jog3 TEXT,
+            jog4 TEXT,
+            ganhador TEXT,
+            FOREIGN KEY(jog1) REFERENCES JOGADORES(nome)
+            FOREIGN KEY(jog2) REFERENCES JOGADORES(nome)
+            FOREIGN KEY(jog3) REFERENCES JOGADORES(nome)
+            FOREIGN KEY(jog4) REFERENCES JOGADORES(nome)
+            FOREIGN KEY(ganhador) REFERENCES JOGADORES(nome)
             )
         """)
     
@@ -93,19 +101,25 @@ class MapeadorMesa:
         id = mesa.getId()
         jg_nome = mesa.getGanhadorDoJogo().getNome()
         j_list = mesa.getJogadores()
-        jogadores = [j.getNome() for j in j_list] + ["" for _ in range(len(j_list), 4)]
+        nome_jogador = [j.getNome() for j in j_list] + [None for _ in range(len(j_list), 4)]
         try:
             self.c.execute(f"""
-                INSERT INTO JOGOS
-                    (id, jg_nome, j0, j1, j2, j3)
+                INSERT INTO MESAS
+                    (id, jog1, jog2, jog3, jog4, ganhador)
                 VALUES(
                     ?, ?, ?, ?, ?, ?
-            )""", [id, jg_nome, j_list[0], j_list[1], j_list[2] , j_list[3]]
+            )""", [id, nome_jogador[0], nome_jogador[1], nome_jogador[2] , nome_jogador[3], jg_nome]
             )
         except:
             pass
         self.conn.commit()
 
+    def read_query(self, query):
+        self.c.execute(query)
+        result = self.c.fetchall()
+        self.conn.commit()
+        return result
+        
     def get_mesa_data(self, id):
         mesa_data = self.read_query(
             f"""
