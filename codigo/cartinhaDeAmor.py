@@ -25,6 +25,7 @@ class CartinhaDeAmor:
     def __criarServer(self, nJogadores):
         self.__server = Server(self.__interfaceRede)
         self.__server.start()
+
         self.__server.esperarEntrarJogadores(nJogadores)
         # iniciar partida
         self.__server.iniciarJogo()
@@ -51,6 +52,7 @@ class CartinhaDeAmor:
         if self.__temServer:
             nJogadores = self.__interfaceUsuario.numeroJogadores()
             self.__serverThread = Thread(target=self.__criarServer, args=(nJogadores,))
+            self.__serverThread.daemon = True
             self.__serverThread.start()
             self.__interfaceUsuario.esperarandoJogadores()
         self.__entrarJogo()

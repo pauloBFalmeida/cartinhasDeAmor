@@ -99,6 +99,12 @@ class Mesa():
             c.set_controleJogo(self)
         return deck
 
+    def getPontosPartida(self):
+        pontos = 0
+        for j in self.__jogadores:
+            pontos += j.getPontos()
+        return pontos
+
     def addJogador(self, jogador):
         self.__jogadores.append(jogador)
 
@@ -114,6 +120,9 @@ class Mesa():
 
     def __distribuirCartas(self):
         for j in self.__jogadores: j.receberCarta(self.__deck.pop())
+        
+    def setId(self, id):
+        self.__id = id
 
     def getId(self):
         return self.__id

@@ -90,7 +90,7 @@ class InterfaceVisual(InterfaceUsuario):
         label_texto.place(x=self.size[0]-250, y=80)
 
         label_score = Label(self.root, textvariable=self.scoreVar, font=("Courier", 10))
-        label_score.place(x=self.size[0]-260, y=120)
+        label_score.place(x=self.size[0]-255, y=120)
 
         self.root.mainloop()
 

@@ -55,8 +55,32 @@ class MapeadorJogador:
         )
         if jogador_data != []:
             jogador_data = jogador_data[0]
-            jogador = Jogador(nome=jogador_data[1], cor=(jogador_data[2], jogador_data[3], jogador_data[4]))
+            jogador = Jogador(nome=jogador_data[0], cor=(jogador_data[1], jogador_data[2], jogador_data[3]))
             return jogador
+        else:
+            return None
+
+    def get_pontos_jogador(self, nome):
+        jogador_data = self.read_query(
+            f"""
+            select * from JOGADORES where nome = '{nome}'
+            """
+        )
+        if jogador_data != []:
+            jogador_data = jogador_data[0]
+            return jogador_data[4]
+        else:
+            return None
+
+    def get_top_5(self):
+        top_5_nome_pontos = self.c.execute(f"""
+            SELECT nome, pontos from JOGADORES
+            ORDER BY pontos DESC
+        """
+        )
+        top_5_nome_pontos = self.c.fetchall()[:5]
+        if top_5_nome_pontos:
+            return top_5_nome_pontos
         else:
             return None
 
@@ -84,11 +108,12 @@ class MapeadorMesa:
         self.c.execute(f"""
             CREATE TABLE IF NOT EXISTS MESAS
             (id INTEGER PRIMARY KEY,
+            ganhador TEXT,
+            pontos INTEGER,
             jog1 TEXT,
             jog2 TEXT,
             jog3 TEXT,
             jog4 TEXT,
-            ganhador TEXT,
             FOREIGN KEY(jog1) REFERENCES JOGADORES(nome)
             FOREIGN KEY(jog2) REFERENCES JOGADORES(nome)
             FOREIGN KEY(jog3) REFERENCES JOGADORES(nome)
@@ -98,17 +123,18 @@ class MapeadorMesa:
         """)
     
     def insert_into_table(self, mesa: Mesa):
-        id = mesa.getId()
+        id = self.get_size()
         jg_nome = mesa.getGanhadorDoJogo().getNome()
+        pontos = mesa.getPontosPartida()
         j_list = mesa.getJogadores()
         nome_jogador = [j.getNome() for j in j_list] + [None for _ in range(len(j_list), 4)]
         try:
             self.c.execute(f"""
                 INSERT INTO MESAS
-                    (id, jog1, jog2, jog3, jog4, ganhador)
+                    (id, ganhador, pontos, jog1, jog2, jog3, jog4)
                 VALUES(
-                    ?, ?, ?, ?, ?, ?
-            )""", [id, nome_jogador[0], nome_jogador[1], nome_jogador[2] , nome_jogador[3], jg_nome]
+                    ?, ?, ?, ?, ?, ?, ?
+            )""", [id, jg_nome, pontos, nome_jogador[0], nome_jogador[1], nome_jogador[2] , nome_jogador[3]]
             )
         except:
             pass
@@ -123,7 +149,7 @@ class MapeadorMesa:
     def get_mesa_data(self, id):
         mesa_data = self.read_query(
             f"""
-            select * from JOGOS where id = '{id}'
+            select * from MESAS where id = '{id}'
             """
         )
         if mesa_data != []:
@@ -131,6 +157,12 @@ class MapeadorMesa:
             return mesa_data
         else:
             return None
+
+    def get_size(self):
+        self.c.execute("SELECT max(id) from MESAS")
+        maior = self.c.fetchone()[0]
+        n = maior if maior else 0
+        return n + 1
 
     def close(self):
         self.conn.close()

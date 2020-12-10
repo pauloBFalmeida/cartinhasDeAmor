@@ -164,16 +164,10 @@ class ControleServer():
         self.__tabela_jogadores.update_pontos(self.__jogadores)
         self.__tabela_mesa.insert_into_table(self.__mesa)
         #
-        score = []
-        for j in self.__jogadores:
-            pontos = self.__tabela_jogadores.get_jogador(j.getNome()).getPontos()
-            score.append( (pontos, j.getNome()) )
-        #
-        score.sort(key=lambda x: x[0])
-        score = score[:5]
+        score = self.__tabela_jogadores.get_top_5()
         texto = "Scoreboard:"
         for s in score:
-            texto += '\n' + s[1] + ' com ' + str(s[0]) + " pontos"
+            texto += '\n' + s[0] + ' com ' + str(s[1]) + " pontos"
         self.__enviar([self.__cmd, "topscore", texto])
         #
         self.__tabela_jogadores.close()
