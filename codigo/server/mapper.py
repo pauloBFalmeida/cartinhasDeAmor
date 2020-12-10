@@ -52,13 +52,20 @@ class MapeadorJogador:
             f"""
             select * from JOGADORES where nome = '{nome}'
             """
-        )
+            )
         if jogador_data != []:
             jogador_data = jogador_data[0]
             jogador = Jogador(nome=jogador_data[1], cor=(jogador_data[2], jogador_data[3], jogador_data[4]))
             return jogador
         else:
             return None
+
+    def get_pontos(self, nome):
+        pontos = self.read_query(f"""
+            select pontos from JOGADORES where nome='{nome}'
+            """
+            )
+        return pontos
 
     def update_pontos(self, list_jogadores):
         for j in list_jogadores:

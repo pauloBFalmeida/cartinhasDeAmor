@@ -166,8 +166,8 @@ class ControleServer():
         #
         score = []
         for j in self.__jogadores:
-            pontos = self.__tabela_jogadores.get_jogador(j.getNome()).getPontos()
-            score.append( (pontos, j.getNome()) )
+            pontos = self.__tabela_jogadores.get_pontos(j.getNome())#.getPontos() ## esse get pontos não é o get pontos certo
+            score.append( (pontos, j.getNome()))
         #
         score.sort(key=lambda x: x[0])
         score = score[:5]
