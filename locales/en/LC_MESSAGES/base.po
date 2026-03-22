@@ -1,0 +1,213 @@
+# Love Letters en translation
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Paulo Almeida, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-16 20:43-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: codigo/client/interfaceVisual.py:24
+msgid "App Title"
+msgstr "Love Letters"
+
+msgid "Date: %s"
+msgstr "Date: %s"
+
+#: codigo/client/interfaceVisual.py:51
+msgid "Join Online"
+msgstr "Join Online"
+
+#: codigo/client/interfaceVisual.py:52
+msgid "Create Server"
+msgstr "Create Server"
+
+#: codigo/client/interfaceVisual.py:53
+msgid "Join Match"
+msgstr "Join Match"
+
+#: codigo/client/interfaceVisual.py:60
+msgid "Name"
+msgstr "Name"
+
+#: codigo/client/interfaceVisual.py:75
+msgid "New Round"
+msgstr "New Round"
+
+#: codigo/client/interfaceVisual.py:130
+msgid "Confirm"
+msgstr "Confirm"
+
+#: codigo/client/interfaceVisual.py:148
+msgid "Enter the number of players:"
+msgstr "Enter the number of players:"
+
+#: codigo/client/interfaceVisual.py:167
+msgid "Waiting players"
+msgstr "Waiting players"
+
+#: codigo/client/interfaceVisual.py:176
+#, python-format
+msgid "Your IP: %s"
+msgstr "Your IP: %s"
+
+#: codigo/client/interfaceVisual.py:177
+msgid "Host's IP"
+msgstr "Host's IP"
+
+#: codigo/client/interfaceVisual.py:177
+#, python-format
+msgid "Enter Host's IP, your IP: %s"
+msgstr "Enter Host's IP, your IP: %s"
+
+#: codigo/client/interfaceVisual.py:181
+#, python-format
+msgid "chat: %s"
+msgstr "chat: %s"
+
+#: codigo/client/interfaceVisual.py:188
+msgid "{name} won the game with {points} points"
+msgstr "{name} won the game with {points} points"
+
+#: codigo/client/interfaceVisual.py:203
+msgid "{name} won the round with {points} points"
+msgstr "{name} won the round with {points} points"
+
+#: codigo/client/interfaceVisual.py:208
+msgid "no winners round"
+msgstr "no winners round"
+
+#: codigo/client/interfaceVisual.py:212
+msgid "empty deck"
+msgstr "empty deck, Comparing value in players hands"
+
+#: codigo/client/interfaceVisual.py:220
+msgid "comparing cards from {name1} and {name2}"
+msgstr "comparando cartas de {name1} e {name2}"
+
+#: codigo/client/interfaceVisual.py:226
+msgid ""
+"{name2} had a card {card2} worth {points2} while {name1} had a card {card1} worth "
+"{points1}"
+msgstr "name2 had a card {card2} worth {points2} while {name1} had a card {card1} worth {points1}"
+
+#: codigo/client/interfaceVisual.py:238
+msgid "{name} had a higher value card"
+msgstr "{name} had a higher value card"
+
+#: codigo/client/interfaceVisual.py:241
+msgid "tie in card value both players die"
+msgstr "tie in card value both players die"
+
+#: codigo/client/interfaceVisual.py:246
+msgid "{name} played the {card}"
+msgstr "{name} played the {card}"
+
+#: codigo/client/interfaceVisual.py:251
+#, python-format
+msgid "choose another player to %s"
+msgstr "choose another player to %s"
+
+#: codigo/client/interfaceVisual.py:255
+msgid "no player possible to be chosen"
+msgstr "no player possible to be chosen"
+
+#: codigo/client/interfaceVisual.py:266
+msgid "not valid choice"
+msgstr "not valid choice"
+
+#: codigo/client/interfaceVisual.py:272
+msgid "Choose the card type"
+msgstr "Choose the card type"
+
+
+#: codigo/client/interfaceVisual.py:274
+msgid "Priest"
+msgstr "Priest"
+
+#: codigo/client/interfaceVisual.py:275
+msgid "Baron"
+msgstr "Baron"
+
+#: codigo/client/interfaceVisual.py:276
+msgid "Handmaid"
+msgstr "Handmaid"
+
+#: codigo/client/interfaceVisual.py:277
+msgid "Prince"
+msgstr "Prince"
+
+#: codigo/client/interfaceVisual.py:278
+msgid "King"
+msgstr "King"
+
+#: codigo/client/interfaceVisual.py:279
+msgid "Countess"
+msgstr "Countess"
+
+#: codigo/client/interfaceVisual.py:280
+msgid "Princess"
+msgstr "Princess"
+
+#: codigo/client/interfaceVisual.py:276
+#, python-format
+msgid "{card} was choosen"
+msgstr "{card} was choosen"
+
+#: codigo/client/interfaceVisual.py:292
+msgid "You must choose countess, since you have a king or prince in your hand!"
+msgstr "You must choose countess, since you have a king or prince in your hand!"
+
+#: codigo/client/interfaceVisual.py:295
+msgid "{name} was killed"
+msgstr "{name} was killed"
+
+#: codigo/client/interfaceVisual.py:299
+msgid "Dead"
+msgstr "Dead"
+
+#: codigo/client/interfaceVisual.py:312
+msgid "got the accusation right"
+msgstr "got the accusation right"
+
+#: codigo/client/interfaceVisual.py:315
+msgid "got the accusation wrong"
+msgstr "got the accusation wrong"
+
+#: codigo/client/interfaceVisual.py:318
+#, python-format
+msgid "card in hand: %s"
+msgstr "card in hand: %s"
+
+#: codigo/client/interfaceVisual.py:317
+msgid "{name} had the lowest value card"
+msgstr "{name} had the lowest value card"
+
+#: codigo/client/interfaceVisual.py:319
+msgid "Tie"
+msgstr "Tie"
+
+#: codigo/client/interfaceVisual.py:322
+msgid "{name} is protected by the next round"
+msgstr "{name} is protected by the next round"
+
+#: codigo/client/interfaceVisual.py:326
+msgid "{name} took a new hand"
+msgstr "{name} took a new hand"
+
+#: codigo/client/interfaceVisual.py:330
+msgid "{name1} exchanged hands with {name2}"
+msgstr "{name1} exchanged hands with {name2}"
+
+#: codigo/client/interfaceVisual.py:334
+msgid "{name} tried to discard the Princess"
+msgstr "{name} tried to discard the Princess"
